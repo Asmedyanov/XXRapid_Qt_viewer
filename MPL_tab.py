@@ -28,21 +28,26 @@ class MPL_tab(QWidget):
         self.figure.clear()
 
         self.grid = self.figure.add_gridspec(ncols=2, nrows=1).subplots()
+        self.grid[0].grid(linestyle='dotted')
+        self.grid[1].grid(linestyle='dotted')
         self.grid[0].set(
             title='before',
         )
         self.grid[0].imshow(image_1)
         self.grid[1].set(
-            title='shot'
+            title='shot',
+            yticklabels=[]
         )
         self.grid[1].imshow(image_2)
+        self.figure.canvas.draw()
+
 
     def compare_2_image_arrays(self, array_1, array_2):
         self.figure.clear()
 
         self.grid = self.figure.add_gridspec(ncols=array_1.shape[0], nrows=2).subplots()
         self.grid[0,0].set(
-            ylabel='before',
+            ylabel='before'
         )
 
         self.grid[1,0].set(
@@ -50,4 +55,12 @@ class MPL_tab(QWidget):
         )
         for i in range(array_1.shape[0]):
             self.grid[0, i].imshow(array_1[i])
+            self.grid[0, i].grid(linestyle='dotted')
+
             self.grid[1,i].imshow(array_2[i])
+            self.grid[1, i].grid(linestyle='dotted')
+            if i != 0:
+                self.grid[0, i].set_yticklabels([])
+                self.grid[1, i].set_yticklabels([])
+            self.grid[0, i].set_xticklabels([])
+            self.figure.canvas.draw()
