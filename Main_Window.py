@@ -106,6 +106,9 @@ class Main_window(QMainWindow):
             # self.tab_dict[f'Camera {i + 1}'].ax.clear()
             self.tab_dict[f'Camera {i + 1}'].compare_2_image(self.before_image_array[i], self.shot_image_array[i], )
         self.tab_dict["Raw comparison"].compare_2_image_arrays(self.before_image_array, self.shot_image_array)
+        self.tab_dict["Overlapped comparison"].overlap_2_image_arrays(self.before_image_array,
+                                                                      self.shot_image_array,
+                                                                      self.info_file_df['Value']['dx'])
 
     def update_waveform(self):
         """

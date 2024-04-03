@@ -1,3 +1,4 @@
+import numpy as np
 from PyQt5.QtWidgets import QVBoxLayout, QWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
@@ -41,26 +42,68 @@ class MPL_tab(QWidget):
         self.grid[1].imshow(image_2)
         self.figure.canvas.draw()
 
-
     def compare_2_image_arrays(self, array_1, array_2):
         self.figure.clear()
 
         self.grid = self.figure.add_gridspec(ncols=array_1.shape[0], nrows=2).subplots()
-        self.grid[0,0].set(
+        self.grid[0, 0].set(
             ylabel='before'
         )
 
-        self.grid[1,0].set(
+        self.grid[1, 0].set(
             ylabel='shot'
         )
         for i in range(array_1.shape[0]):
             self.grid[0, i].imshow(array_1[i])
             self.grid[0, i].grid(linestyle='dotted')
 
-            self.grid[1,i].imshow(array_2[i])
+            self.grid[1, i].imshow(array_2[i])
             self.grid[1, i].grid(linestyle='dotted')
             if i != 0:
                 self.grid[0, i].set_yticklabels([])
                 self.grid[1, i].set_yticklabels([])
             self.grid[0, i].set_xticklabels([])
             self.figure.canvas.draw()
+
+    def overlap_2_image_arrays(self, array_1, array_2, dx):
+        self.figure.clear()
+
+        self.grid = self.figure.add_gridspec(ncols=2, nrows=2).subplots()
+        self.grid[0, 0].set(
+            title='Image 1, mm',
+            xticklabels=[]
+        )
+        self.grid[0, 1].set(
+            title='Image 2, mm',
+            xticklabels=[], yticklabels=[]
+        )
+        self.grid[1, 0].set(
+            xlabel='Image 3, mm'
+        )
+        self.grid[1, 1].set(
+            xlabel='Image 4, mm',
+            yticklabels=[]
+        )
+
+        '''self.grid[0, 0].grid(linestyle='dotted')
+        self.grid[0, 1].grid(linestyle='dotted')
+        self.grid[1, 0].grid(linestyle='dotted')
+        self.grid[1, 1].grid(linestyle='dotted')'''
+
+        array_2_clean = np.where(array_2 > array_1, array_1, array_2)
+        overlapped_array = np.where(array_1 == 0, 0, array_2_clean / array_1)
+
+        extent = [0,
+                  array_1.shape[2] * dx,
+                  array_1.shape[1] * dx,
+                  0]
+
+        self.grid[0, 0].imshow(overlapped_array[0], cmap='gray', extent=extent)
+        self.grid[0, 1].imshow(overlapped_array[1], cmap='gray', extent=extent)
+        self.grid[1, 0].imshow(overlapped_array[2], cmap='gray', extent=extent)
+        self.grid[1, 1].imshow(overlapped_array[3], cmap='gray', extent=extent)
+        self.grid[0, 0].grid()
+        self.grid[0, 1].grid()
+        self.grid[1, 0].grid()
+        self.grid[1, 1].grid()
+        self.figure.canvas.draw()
