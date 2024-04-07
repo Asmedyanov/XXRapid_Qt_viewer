@@ -19,7 +19,7 @@ class Main_window(QMainWindow):
 
         # Create a dictionary of MPL_tab instances
         tab_titles = ["Waveform", "Camera 1", "Camera 2", "Camera 3", "Camera 4", "Raw comparison",
-                      "Overlapped comparison"]
+                      "Overlapped comparison", "3 camera overlapped"]
         self.tab_dict = {title: MPL_tab(title) for title in tab_titles}
 
         # Add the MPL_tab instances to the tab widget
@@ -107,6 +107,9 @@ class Main_window(QMainWindow):
             self.tab_dict[f'Camera {i + 1}'].compare_2_image(self.before_image_array[i], self.shot_image_array[i], )
         self.tab_dict["Raw comparison"].compare_2_image_arrays(self.before_image_array, self.shot_image_array)
         self.tab_dict["Overlapped comparison"].overlap_2_image_arrays(self.before_image_array,
+                                                                      self.shot_image_array,
+                                                                      self.info_file_df['Value']['dx'])
+        self.tab_dict["3 camera overlapped"].overlap_3_camera(self.before_image_array,
                                                                       self.shot_image_array,
                                                                       self.info_file_df['Value']['dx'])
 

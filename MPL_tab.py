@@ -90,13 +90,13 @@ class MPL_tab(QWidget):
         self.grid[1, 0].grid(linestyle='dotted')
         self.grid[1, 1].grid(linestyle='dotted')'''
 
-        array_2_clean = np.where(array_2 > array_1, array_1, array_2)
+        array_2_clean = np.where(array_2 > 1.0 * array_1, 1.0 * array_1, array_2)
         overlapped_array = np.where(array_1 == 0, 0, array_2_clean / array_1)
 
-        extent = [0,
-                  array_1.shape[2] * dx,
-                  array_1.shape[1] * dx,
-                  0]
+        extent = [-array_1.shape[2] * dx // 2,
+                  array_1.shape[2] * dx // 2,
+                  array_1.shape[1] * dx // 2,
+                  -array_1.shape[1] * dx // 2]
 
         self.grid[0, 0].imshow(overlapped_array[0], cmap='gray', extent=extent)
         self.grid[0, 1].imshow(overlapped_array[1], cmap='gray', extent=extent)
@@ -106,4 +106,32 @@ class MPL_tab(QWidget):
         self.grid[0, 1].grid()
         self.grid[1, 0].grid()
         self.grid[1, 1].grid()
+        self.figure.canvas.draw()
+
+    def overlap_3_camera(self, array_1, array_2, dx):
+        self.figure.clear()
+
+        self.grid = self.figure.add_gridspec(ncols=3, nrows=1).subplots()
+        self.grid[0].set(
+            title='Image 1, mm',
+        )
+        self.grid[1].set(
+            title='Image 2, mm',
+            yticklabels=[]
+        )
+        self.grid[2].set(
+            title ='Image 3, mm',
+            yticklabels=[]
+        )
+        array_2_clean = np.where(array_2 > 1.0 * array_1, 1.0 * array_1, array_2)
+        overlapped_array = np.where(array_1 == 0, 0, array_2_clean / array_1)
+
+        extent = [-array_1.shape[2] * dx // 2,
+                  array_1.shape[2] * dx // 2,
+                  array_1.shape[1] * dx // 2,
+                  -array_1.shape[1] * dx // 2]
+
+        for i in range(3):
+            self.grid[i].grid()
+            self.grid[i].imshow(overlapped_array[i], cmap='gray', extent=extent)
         self.figure.canvas.draw()
