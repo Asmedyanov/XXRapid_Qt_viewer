@@ -4,8 +4,13 @@ from MPL_tab import MPL_tab
 from PyQt5.QtGui import QKeySequence
 import os
 import pandas as pd
-import numpy as np
 from rtv_reader import open_rtv
+from Waveform_class import Waveform
+from Single_camera_class import Single_camera
+from Eight_frames_class import Eight_frames
+from Four_overlapped_frames_class import Four_overlapped_frames
+import numpy as np
+from Fronting import Fronting
 
 
 class Main_window(QMainWindow):
@@ -18,9 +23,25 @@ class Main_window(QMainWindow):
         tab_widget = QTabWidget(self)
 
         # Create a dictionary of MPL_tab instances
-        tab_titles = ["Waveform", "Camera 1", "Camera 2", "Camera 3", "Camera 4", "Raw comparison",
-                      "Overlapped comparison", "3 camera overlapped"]
+        tab_titles = ["3 camera overlapped"]
         self.tab_dict = {title: MPL_tab(title) for title in tab_titles}
+
+        self.Waveform_tab = Waveform()
+        tab_widget.addTab(self.Waveform_tab, "Waveform original")
+
+        self.Single_camera_tab_dict = dict()
+        for i in range(4):
+            self.Single_camera_tab_dict[f'Camera {i + 1}'] = Single_camera()
+            tab_widget.addTab(self.Single_camera_tab_dict[f'Camera {i + 1}'], f'Camera {i + 1}')
+
+        self.Eight_frames_tab = Eight_frames()
+
+        tab_widget.addTab(self.Eight_frames_tab, "8 frames")
+        self.Four_overlapped_frames_tab = Four_overlapped_frames()
+        tab_widget.addTab(self.Four_overlapped_frames_tab, "4 overlapped frames")
+
+        self.Fronting_tab = Fronting()
+        tab_widget.addTab(self.Fronting_tab, "Fronting")
 
         # Add the MPL_tab instances to the tab widget
         for title, tab in self.tab_dict.items():
@@ -42,28 +63,15 @@ class Main_window(QMainWindow):
         self.init_plots()
 
     def init_plots(self):
-        self.waveform_plots_dict = dict()
-        t = np.arange(0, 2.0 * np.pi, 0.1)
-        x = np.cos(t)
-        y = np.sin(t)
-        self.tab_dict['Waveform'].ax.clear()
-        self.tab_dict['Waveform'].ax.set(
-            xlabel='t, sec',
-            ylabel='u, V',
-            title='Waveform original'
-        )
-        for i in range(4):
-            self.waveform_plots_dict[f'channel_{i}'], = self.tab_dict['Waveform'].ax.plot(
-                x * (i + 1),
-                y * (i + 1),
-                label=f'channel_{i}')
-        self.tab_dict['Waveform'].ax.legend()
+        pass
 
     def open_folder_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Folder",
                                                        os.path.expanduser("~"))
         if folder_path:
             print(f"Selected folder: {folder_path}")
+        else:
+            return
         os.chdir(folder_path)
         self.setWindowTitle(f"XXRapid_Qt_viewer {folder_path.split('/')[-1]}")
         self.update()
@@ -77,6 +85,18 @@ class Main_window(QMainWindow):
         self.update_before()
         self.update_shot()
         self.update_plots()
+        self.update_overlap()
+        self.update_fronting()
+
+    def update_fronting(self):
+        self.Fronting_tab.set_data(self.Overlapped_image, self.info_file_df['Value']['dx'])
+
+    def update_overlap(self):
+        overlapped = np.where(self.shot_image_array > self.before_image_array, self.before_image_array,
+                              self.shot_image_array)
+        overlapped = overlapped / self.before_image_array
+        self.Overlapped_image = overlapped
+        self.Four_overlapped_frames_tab.set_data(overlapped, self.info_file_df['Value']['dx'])
 
     def update_before(self):
         self.before_files_list = [name for name in self.folder_list if
@@ -93,50 +113,23 @@ class Main_window(QMainWindow):
         self.shot_image_array = open_rtv(self.shot_file_name)
 
     def update_plots(self):
-        for my_key, my_plot in self.waveform_plots_dict.items():
-            my_plot.set_data(
-                self.waveform_dict[f'{my_key}_time'],
-                self.waveform_dict[f'{my_key}'],
-            )
-        self.tab_dict['Waveform'].ax.relim()
-        self.tab_dict['Waveform'].ax.autoscale_view()
-        self.tab_dict['Waveform'].figure.canvas.draw()
-
         for i in range(4):
             # self.tab_dict[f'Camera {i + 1}'].ax.clear()
-            self.tab_dict[f'Camera {i + 1}'].compare_2_image(self.before_image_array[i], self.shot_image_array[i], )
-        self.tab_dict["Raw comparison"].compare_2_image_arrays(self.before_image_array, self.shot_image_array)
-        self.tab_dict["Overlapped comparison"].overlap_2_image_arrays(self.before_image_array,
-                                                                      self.shot_image_array,
-                                                                      self.info_file_df['Value']['dx'])
+            self.Single_camera_tab_dict[f'Camera {i + 1}'].set_data(self.before_image_array[i],
+                                                                    self.shot_image_array[i])
+        self.Eight_frames_tab.set_data(self.before_image_array, self.shot_image_array)
+        # self.tab_dict["Raw comparison"].compare_2_image_arrays(self.before_image_array, self.shot_image_array)
         self.tab_dict["3 camera overlapped"].overlap_3_camera(self.before_image_array,
-                                                                      self.shot_image_array,
-                                                                      self.info_file_df['Value']['dx'])
+                                                              self.shot_image_array,
+                                                              self.info_file_df['Value']['dx'])
 
     def update_waveform(self):
-        """
-            the function read the waveform file *.csv:
-            current,synchro:camera and maxwell, voltage divider
-            :param Inductance:
-            :param fname: file name
-            :param Rogovski_ampl: coefficient to transform voltage from the Rogovski coil to Amper
-            :param Rogovski_conv: the number of points to smooth the current
-            :return:
-            {
-                'time': current_time,
-                'current': current_amp,
-                'peaks': peak_times
-            }
-            """
         self.waveform_files_list = [name for name in self.folder_list if
                                     name.startswith('shot') and name.endswith('csv')]
         print(f'Folder contains waveform files\n{self.waveform_files_list}\nI took the last one')
         self.waveform_file_name = self.waveform_files_list[-1]
         waveform_df = pd.read_csv(self.waveform_file_name)
-        self.waveform_dict = dict()
-        for i, my_key in enumerate(self.waveform_plots_dict.keys()):
-            self.waveform_dict[my_key] = waveform_df.iloc[:, 1::2].iloc[:, i].values
-            self.waveform_dict[f'{my_key}_time'] = waveform_df.iloc[:, ::2].iloc[:, i].values
+        self.Waveform_tab.set_data(waveform_df)
 
     def update_info(self):
         self.info_files_list = [name for name in self.folder_list if name.startswith('info')]
