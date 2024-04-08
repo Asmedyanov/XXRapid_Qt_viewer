@@ -3,9 +3,11 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
 import numpy as np
+from PyQt5.QtCore import pyqtSignal
 
 
 class Separator(QWidget):
+    center_signal = pyqtSignal()
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
@@ -19,12 +21,20 @@ class Separator(QWidget):
         self.layout.addWidget(NavigationToolbar(self.canvas, self))
         self.layout.addWidget(self.canvas)
         self.setLayout(self.layout)
+        self.cid_1 = self.figure.canvas.mpl_connect('button_press_event', self.On_mouse_click)
+
+    def On_mouse_click(self, event):
+        self.center_x, self.center_y = event.xdata, event.ydata
+        self.center_signal.emit()
+        print(self.center_x)
 
     def set_data(self, array_1, dx):
         self.ax.imshow(array_1, cmap='gray')
+        self.center_x = array_1.shape[1] // 2
+        self.center_y = array_1.shape[0] // 2
         try:
-            self.Horizont.set_data([0, array_1.shape[1] - 1], [array_1.shape[0] // 2, array_1.shape[0] // 2])
-            self.Vertical.set_data([array_1.shape[1] // 2, array_1.shape[1] // 2], [0, array_1.shape[0] - 1])
+            self.Horizont.set_data([0, array_1.shape[1] - 1], [self.center_y, self.center_y])
+            self.Vertical.set_data([self.center_x, self.center_x], [0, array_1.shape[0] - 1])
         except:
             self.Horizont, = self.ax.plot([0, array_1.shape[1] - 1], [array_1.shape[0] // 2, array_1.shape[0] // 2])
             self.Vertical, = self.ax.plot([array_1.shape[1] // 2, array_1.shape[1] // 2], [0, array_1.shape[0] - 1])
