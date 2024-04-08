@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QTabWidget
-from MPL_tab import MPL_tab
 from Separator import Separator
 from Quart_tab import Quart_tab
+import numpy as np
 
 
 class Quarting(QTabWidget):
@@ -13,16 +13,20 @@ class Quarting(QTabWidget):
         for i in range(4):
             self.Quart_tab_dict[f'Quart {i + 1}'] = Quart_tab()
             self.addTab(self.Quart_tab_dict[f'Quart {i + 1}'], f'Quart {i + 1}')
+        self.Separator_tab.center_signal.connect(self.On_Separator_changed)
 
-    def set_data(self, array_1, dx):
-        self.Separator_tab.set_data(array_1, dx)
-        center_x = array_1.shape[0] // 2
-        center_y = array_1.shape[1] // 2
+    def On_Separator_changed(self):
         self.Quarts_list = [
-            array_1[:center_x, center_y:],
-            array_1[:center_x, :center_y],
-            array_1[center_x:, :center_y],
-            array_1[center_x:, center_y:],
+            self.image_array[:self.Separator_tab.center_y, self.Separator_tab.center_x:],
+            np.flip(self.image_array[:self.Separator_tab.center_y, :self.Separator_tab.center_x], axis=1),
+            np.flip(np.flip(self.image_array[self.Separator_tab.center_y:, :self.Separator_tab.center_x], axis=0),
+                    axis=1),
+            np.flip(self.image_array[:self.Separator_tab.center_y, :self.Separator_tab.center_x],axis=1)
         ]
         for i in range(4):
             self.Quart_tab_dict[f'Quart {i + 1}'].set_data(self.Quarts_list[i])
+
+    def set_data(self, array_1, dx):
+        self.Separator_tab.set_data(array_1, dx)
+        self.image_array = array_1
+        self.On_Separator_changed()

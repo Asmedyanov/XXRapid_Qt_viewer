@@ -13,6 +13,7 @@ import numpy as np
 from Fronting import Fronting
 
 
+
 class Main_window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -63,7 +64,9 @@ class Main_window(QMainWindow):
         self.init_plots()
 
     def init_plots(self):
-        pass
+        os.chdir('./Default_shot')
+        self.setWindowTitle("XXRapid_Qt_viewer Default_shot_57")
+        self.update()
 
     def open_folder_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Folder",
@@ -92,9 +95,11 @@ class Main_window(QMainWindow):
         self.Fronting_tab.set_data(self.Overlapped_image, self.info_file_df['Value']['dx'])
 
     def update_overlap(self):
-        overlapped = np.where(self.shot_image_array > self.before_image_array, self.before_image_array,
+        overlapped = np.where(self.shot_image_array > 2.0*self.before_image_array, 2.0*self.before_image_array,
                               self.shot_image_array)
-        overlapped = overlapped / self.before_image_array
+        print(f'before_array_min = {self.before_image_array.min()}')
+        print(f'before_array_ax = {self.before_image_array.max()}')
+        overlapped = np.where(self.before_image_array > 1, overlapped / self.before_image_array, 1)
         self.Overlapped_image = overlapped
         self.Four_overlapped_frames_tab.set_data(overlapped, self.info_file_df['Value']['dx'])
 

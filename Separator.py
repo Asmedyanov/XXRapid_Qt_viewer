@@ -24,18 +24,22 @@ class Separator(QWidget):
         self.cid_1 = self.figure.canvas.mpl_connect('button_press_event', self.On_mouse_click)
 
     def On_mouse_click(self, event):
-        self.center_x, self.center_y = event.xdata, event.ydata
+        self.center_x, self.center_y = int(event.xdata), int(event.ydata)
+        self.Horizont.set_data([0, self.image_width - 1], [self.center_y, self.center_y])
+        self.Vertical.set_data([self.center_x, self.center_x], [0, self.image_hight - 1])
+        self.figure.canvas.draw()
         self.center_signal.emit()
-        print(self.center_x)
 
     def set_data(self, array_1, dx):
         self.ax.imshow(array_1, cmap='gray')
         self.center_x = array_1.shape[1] // 2
         self.center_y = array_1.shape[0] // 2
+        self.image_width = array_1.shape[1]
+        self.image_hight = array_1.shape[0]
         try:
-            self.Horizont.set_data([0, array_1.shape[1] - 1], [self.center_y, self.center_y])
-            self.Vertical.set_data([self.center_x, self.center_x], [0, array_1.shape[0] - 1])
+            self.Horizont.set_data([0, self.image_width - 1], [self.center_y, self.center_y])
+            self.Vertical.set_data([self.center_x, self.center_x], [0, self.image_hight-1])
         except:
-            self.Horizont, = self.ax.plot([0, array_1.shape[1] - 1], [array_1.shape[0] // 2, array_1.shape[0] // 2])
-            self.Vertical, = self.ax.plot([array_1.shape[1] // 2, array_1.shape[1] // 2], [0, array_1.shape[0] - 1])
+            self.Horizont, = self.ax.plot([0, self.image_width - 1], [self.center_y, self.center_y])
+            self.Vertical, = self.ax.plot([self.center_x, self.center_x], [0, self.image_hight-1])
         self.figure.canvas.draw()
