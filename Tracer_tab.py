@@ -40,9 +40,9 @@ class Tracer_tab(QWidget):
 
     def set_data(self, array_1):
 
-        '''conv_array = np.ones((5, 5)) / 25.0
-        self.image_array = convolve2d(array_1, conv_array, mode='same')'''
-        self.image_array=array_1
+        conv_array = np.ones((3, 3)) / 9
+        self.image_array = convolve2d(array_1, conv_array, mode='same')
+        #self.image_array=array_1
         try:
             self.image_plot.set_data(self.image_array)
         except:
@@ -56,5 +56,5 @@ class Tracer_tab(QWidget):
         try:
             self.Front_line.set_data([self.x_1, self.x_2], [self.y_1, self.y_2])
         except:
-            self.Front_line, = self.ax.plot([self.x_1, self.x_2], [self.y_1, self.y_2])
+            self.Front_line, = self.ax.plot([self.x_1, self.x_2], [self.y_1, self.y_2],'o-r')
         self.figure.canvas.draw()

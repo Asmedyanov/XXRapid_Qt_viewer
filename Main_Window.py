@@ -17,7 +17,7 @@ class Main_window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("XXRapid_Qt_viewer")
-        self.setGeometry(100, 100, 800, 600)
+        #self.setGeometry(100, 100, 800, 600)
 
         # Create a tab widget
         tab_widget = QTabWidget(self)
@@ -42,6 +42,7 @@ class Main_window(QMainWindow):
 
         self.Fronting_tab = Fronting()
         tab_widget.addTab(self.Fronting_tab, "Fronting")
+
 
         # Add the MPL_tab instances to the tab widget
         for title, tab in self.tab_dict.items():
@@ -86,6 +87,7 @@ class Main_window(QMainWindow):
 
         self.update_before()
         self.update_shot()
+        self.update_black()
         self.update_plots()
         self.update_overlap()
         self.update_fronting()
@@ -94,14 +96,24 @@ class Main_window(QMainWindow):
         self.Fronting_tab.set_data(self.Overlapped_image, self.info_file_df['Value']['dx'])
 
     def update_overlap(self):
-        overlapped = np.where(self.shot_image_array > 1.1 * self.before_image_array, 1.1 * self.before_image_array,
+        overlapped = np.where(self.shot_image_array > self.before_image_array, self.before_image_array,
                               self.shot_image_array)
-        mask = np.where(self.before_image_array < self.before_image_array.std(), 0, 1)
+        mask_list = []
+        for i in range(4):
+            mask = np.where(self.before_image_array[i] <= self.before_image_array[i].mean(), 0, 1)
+            mask_list.append(mask)
+        mask = np.array(mask_list)
+
         print(f'before_array_min = {self.before_image_array.min()}')
         print(f'before_array_ax = {self.before_image_array.max()}')
-        overlapped = np.where(self.before_image_array > 1, overlapped / self.before_image_array, 1)*mask
+        overlapped = np.where(self.before_image_array > 1, overlapped / self.before_image_array, 1) * mask
         self.Overlapped_image = overlapped
-        self.Four_overlapped_frames_tab.set_data(overlapped, self.info_file_df['Value']['dx'])
+        if self.info_file_df['Value']['Transverse'] == 1:
+            transpose_list = []
+            for i in range(4):
+                transpose_list.append(self.Overlapped_image[i].transpose())
+            self.Overlapped_image = np.array(transpose_list)
+        self.Four_overlapped_frames_tab.set_data(self.Overlapped_image, self.info_file_df['Value']['dx'])
 
     def update_before(self):
         self.before_files_list = [name for name in self.folder_list if
@@ -109,6 +121,13 @@ class Main_window(QMainWindow):
         print(f'Folder contains before files\n{self.before_files_list}\nI took the last one')
         self.before_file_name = self.before_files_list[-1]
         self.before_image_array = open_rtv(self.before_file_name)
+
+    def update_black(self):
+        self.black_files_list = [name for name in self.folder_list if
+                                 name.startswith('black') and name.endswith('rtv')]
+        print(f'Folder contains before files\n{self.black_files_list}\nI took the last one')
+        self.black_file_name = self.black_files_list[-1]
+        self.black_image_array = open_rtv(self.black_file_name)
 
     def update_shot(self):
         self.shot_files_list = [name for name in self.folder_list if
