@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QTabWidget
-from Quarting import Quarting
+from Quarting_tab import Quarting
 
 
 class Fronting(QTabWidget):

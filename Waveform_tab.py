@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-class Waveform(QWidget):
+class Waveform_tab(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()

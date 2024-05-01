@@ -39,8 +39,8 @@ class Tracer_tab(QWidget):
         self.tracer_changed.emit()
 
     def set_data(self, array_1):
-
-        conv_array = np.ones((3, 3)) / 9
+        N=2
+        conv_array = np.ones((N, N)) / N**2
         self.image_array = convolve2d(array_1, conv_array, mode='same')
         #self.image_array=array_1
         try:

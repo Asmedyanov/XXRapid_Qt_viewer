@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QTabWidget
-from Separator import Separator
+from Separator_tab import Separator
 from Quart_tab import Quart_tab
 import numpy as np
 
