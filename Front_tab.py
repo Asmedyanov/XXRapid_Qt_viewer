@@ -131,11 +131,25 @@ class Front_tab(QWidget):
             def f_free_style_local(t, db_v, x0, x_p, dxt):
                 return f_free_style_full(t, self.parent.a, self.parent.b, db_v, x0, x_p, dxt)
 
-            self.popt, pcov = curve_fit(f_free_style_local, x_data, y_data, bounds=bounds)
-            db_v, x0, x_p, dxt = self.popt
-            poly_y_data = f_free_style_local(x_data,db_v, x0, x_p, dxt)
+            popt, pcov = curve_fit(f_free_style_local, x_data, y_data, bounds=bounds)
+            self.db_v, self.x0, self.x_p, self.dxt = popt
+            poly_y_data = f_free_style_local(x_data, self.db_v, self.x0, self.x_p, self.dxt)
         try:
             self.approx_plot.set_data(x_data, poly_y_data)
         except:
             self.approx_plot, = self.ax[2].plot(x_data, poly_y_data)
 
+    def get_data_dict(self):
+        if self.approx == 'line':
+            ret = {
+                'a': self.parent.a,
+                'b': self.parent.b,
+            }
+        if self.approx == 'my':
+            ret = {
+                'db_v': self.db_v,
+                'x0': self.x0,
+                'x_p': self.x_p,
+                'dxt': self.dxt
+            }
+        return ret

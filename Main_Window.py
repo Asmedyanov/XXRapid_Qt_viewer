@@ -43,6 +43,7 @@ class Main_window(QMainWindow):
         tab_widget.addTab(self.Four_overlapped_frames_tab, "4 overlapped frames")
 
         self.Fronting_tab = Fronting()
+        self.Fronting_tab.fronting_changed.connect(self.On_fronting_changed)
         tab_widget.addTab(self.Fronting_tab, "Fronting")
         self.Histogram_tab = Histogram_tab()
         tab_widget.addTab(self.Histogram_tab, "Histogram")
@@ -66,6 +67,15 @@ class Main_window(QMainWindow):
         self.main_settings = dict()
         self.init_plots()
 
+    def On_fronting_changed(self):
+        try:
+            fronting_file = open('Fronting.txt', 'w')
+            fronting_file.write(str(self.Fronting_tab.Frame_data_dict))
+            fronting_file.close()
+        except Exception as ex:
+            print(ex)
+
+
     def init_plots(self):
         os.chdir('./Default_shot')
         self.setWindowTitle("XXRapid_Qt_viewer Default_shot_57")
@@ -79,6 +89,7 @@ class Main_window(QMainWindow):
         else:
             return
         os.chdir(folder_path)
+
         self.setWindowTitle(f"XXRapid_Qt_viewer {folder_path.split('/')[-1]}")
         self.update()
 
@@ -108,9 +119,9 @@ class Main_window(QMainWindow):
         mask_list = []
         for i in range(4):
             mask = np.where(self.before_image_array[i] <= self.before_image_array[i].mean(), 0, 1)
-            #mask = ndimage.uniform_filter(mask, size=2)
-            #mask = ndimage.maximum_filter(mask, size=10)
-            #mask = ndimage.minimum_filter(mask, size=2)
+            # mask = ndimage.uniform_filter(mask, size=2)
+            # mask = ndimage.maximum_filter(mask, size=10)
+            # mask = ndimage.minimum_filter(mask, size=2)
 
             mask_list.append(mask)
         mask = np.array(mask_list)
@@ -133,21 +144,21 @@ class Main_window(QMainWindow):
 
     def update_before(self):
         before_files_list = [name for name in self.folder_list if
-                                  name.startswith('before') and name.endswith('rtv')]
+                             name.startswith('before') and name.endswith('rtv')]
         print(f'Folder contains before files\n{before_files_list}\nI took the last one')
         self.before_file_name = before_files_list[-1]
         self.before_image_array = open_rtv(self.before_file_name)
 
     def update_black(self):
         black_files_list = [name for name in self.folder_list if
-                                 name.startswith('black') and name.endswith('rtv')]
+                            name.startswith('black') and name.endswith('rtv')]
         print(f'Folder contains before files\n{black_files_list}\nI took the last one')
         self.black_file_name = black_files_list[-1]
         self.black_image_array = open_rtv(self.black_file_name)
 
     def update_shot(self):
         shot_files_list = [name for name in self.folder_list if
-                                name.startswith('shot') and name.endswith('rtv')]
+                           name.startswith('shot') and name.endswith('rtv')]
         print(f'Folder contains shot files\n{shot_files_list}\nI took the last one')
         self.shot_file_name = shot_files_list[-1]
         self.shot_image_array = open_rtv(self.shot_file_name)
@@ -165,7 +176,7 @@ class Main_window(QMainWindow):
 
     def update_waveform(self):
         waveform_files_list = [name for name in self.folder_list if
-                                    name.startswith('shot') and name.endswith('csv')]
+                               name.startswith('shot') and name.endswith('csv')]
         print(f'Folder contains waveform files\n{waveform_files_list}\nI took the last one')
         self.waveform_file_name = waveform_files_list[-1]
         waveform_df = pd.read_csv(self.waveform_file_name)

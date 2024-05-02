@@ -8,6 +8,7 @@ from PyQt5.QtCore import pyqtSignal
 
 class Separator(QWidget):
     center_signal = pyqtSignal()
+
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
@@ -38,8 +39,14 @@ class Separator(QWidget):
         self.image_hight = array_1.shape[0]
         try:
             self.Horizont.set_data([0, self.image_width - 1], [self.center_y, self.center_y])
-            self.Vertical.set_data([self.center_x, self.center_x], [0, self.image_hight-1])
+            self.Vertical.set_data([self.center_x, self.center_x], [0, self.image_hight - 1])
         except:
             self.Horizont, = self.ax.plot([0, self.image_width - 1], [self.center_y, self.center_y])
-            self.Vertical, = self.ax.plot([self.center_x, self.center_x], [0, self.image_hight-1])
+            self.Vertical, = self.ax.plot([self.center_x, self.center_x], [0, self.image_hight - 1])
         self.figure.canvas.draw()
+
+    def get_data_dict(self):
+        ret = {
+            'center_x': self.center_x,
+            'center_y': self.center_y,
+        }
