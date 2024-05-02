@@ -11,9 +11,9 @@ class Quart_tab(QTabWidget):
         self.Tracer_tab = Tracer_tab()
         self.addTab(self.Tracer_tab, 'Tracer')
         self.Tracer_tab.tracer_changed.connect(self.On_Tracer_changed)
-        approx_list = ['line','my','my']
+        approx_list = ['line', 'my', 'my']
         for i in range(3):
-            self.Front_tab_dict[f'Front {i + 1}'] = Front_tab(approx_list[i])
+            self.Front_tab_dict[f'Front {i + 1}'] = Front_tab(self, approx_list[i])
             self.addTab(self.Front_tab_dict[f'Front {i + 1}'], f'Front {i + 1}')
 
     def On_Tracer_changed(self):
