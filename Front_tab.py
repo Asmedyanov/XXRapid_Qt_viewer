@@ -39,12 +39,13 @@ class Front_tab(QWidget):
     def On_profiles_and_level_click(self, event):
         self.intensity_level = event.ydata
         self.intensity_level_line.set_data([0, self.image_hight], [self.intensity_level, self.intensity_level])
-        self.red_points = np.zeros(self.image_width)
+        #self.red_points = np.zeros(self.image_width)
         for i in range(self.image_width):
             try:
                 self.red_points[i] = np.argwhere(self.image_array[:, i] > self.intensity_level).max()
             except:
                 pass
+        self.update_approx()
         self.red_points_plot.set_data(np.arange(self.red_points.size), self.red_points)
         self.figure.canvas.draw()
 
@@ -97,10 +98,19 @@ class Front_tab(QWidget):
         for i in range(self.image_width):
             try:
                 self.red_points[i] = np.argwhere(self.image_array[:, i] > self.intensity_level).max()
-
-
             except:
                 pass
+
+        try:
+            self.red_points_plot.set_data(np.arange(self.red_points.size), self.red_points)
+        except:
+            self.red_points_plot, = self.ax[0].plot(np.arange(self.red_points.size), self.red_points)
+
+        self.update_approx()
+        self.ax[1].relim()
+        self.ax[1].autoscale_view()
+        self.figure.canvas.draw()
+    def update_approx(self):
         x_data = np.arange(self.red_points.size)
         y_data = self.red_points
         if self.approx == 'line':
@@ -111,12 +121,3 @@ class Front_tab(QWidget):
                 self.approx_plot.set_data(x_data, poly_y_data)
             except:
                 self.approx_plot, = self.ax[2].plot(x_data, poly_y_data)
-        try:
-            self.red_points_plot.set_data(np.arange(self.red_points.size), self.red_points)
-
-        except:
-            self.red_points_plot, = self.ax[0].plot(np.arange(self.red_points.size), self.red_points)
-
-        self.ax[1].relim()
-        self.ax[1].autoscale_view()
-        self.figure.canvas.draw()
