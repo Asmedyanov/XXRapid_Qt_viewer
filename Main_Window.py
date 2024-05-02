@@ -107,10 +107,10 @@ class Main_window(QMainWindow):
                               self.shot_image_array)
         mask_list = []
         for i in range(4):
-            mask = np.where(self.before_image_array[i] <= 0.8*self.before_image_array[i].mean(), 0, 1)
+            mask = np.where(self.before_image_array[i] <= self.before_image_array[i].mean(), 0, 1)
             #mask = ndimage.uniform_filter(mask, size=2)
             #mask = ndimage.maximum_filter(mask, size=10)
-            mask = ndimage.minimum_filter(mask, size=2)
+            #mask = ndimage.minimum_filter(mask, size=2)
 
             mask_list.append(mask)
         mask = np.array(mask_list)

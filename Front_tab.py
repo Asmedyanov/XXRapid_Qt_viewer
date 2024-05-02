@@ -10,8 +10,9 @@ from PyQt5.QtCore import pyqtSignal
 class Front_tab(QWidget):
     front_tab_changed = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, approx='my'):
         super().__init__()
+        self.approx=approx
         self.layout = QVBoxLayout()
         # Create a Matplotlib figure and axis
         self.figure, self.ax = plt.subplots(ncols=3)
@@ -96,12 +97,26 @@ class Front_tab(QWidget):
         for i in range(self.image_width):
             try:
                 self.red_points[i] = np.argwhere(self.image_array[:, i] > self.intensity_level).max()
+
+
             except:
                 pass
+        x_data = np.arange(self.red_points.size)
+        y_data = self.red_points
+        if self.approx == 'line':
+            line_poly_coef = np.polyfit(x_data, y_data, 1)
+            line_poly_func = np.poly1d(line_poly_coef)
+            poly_y_data = line_poly_func(x_data)
+            try:
+                self.approx_plot.set_data(x_data, poly_y_data)
+            except:
+                self.approx_plot, = self.ax[2].plot(x_data, poly_y_data)
         try:
             self.red_points_plot.set_data(np.arange(self.red_points.size), self.red_points)
+
         except:
             self.red_points_plot, = self.ax[0].plot(np.arange(self.red_points.size), self.red_points)
+
         self.ax[1].relim()
         self.ax[1].autoscale_view()
         self.figure.canvas.draw()
