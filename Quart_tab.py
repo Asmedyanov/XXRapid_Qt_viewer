@@ -7,6 +7,7 @@ from PyQt5.QtCore import pyqtSignal
 
 class Quart_tab(QTabWidget):
     quart_changed = pyqtSignal()
+
     def __init__(self):
         super().__init__()
         self.Front_tab_dict = dict()
@@ -39,3 +40,10 @@ class Quart_tab(QTabWidget):
         self.main_image = array_1
         self.Tracer_tab.set_data(array_1)
         self.On_Tracer_changed()
+
+    def get_data_dict(self):
+        ret = {
+            'tracer': self.Tracer_tab.main_data_dict,
+            'fronts': self.front_data_dict
+        }
+        return ret

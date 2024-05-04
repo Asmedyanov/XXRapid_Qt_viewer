@@ -22,7 +22,7 @@ class Quarting(QTabWidget):
 
     def On_quart_changed(self):
         for my_key, my_Quart_tab in self.Quart_tab_dict.items():
-            self.Quart_data_dict[my_key] = my_Quart_tab.front_data_dict
+            self.Quart_data_dict[my_key] = my_Quart_tab.get_data_dict()
         self.quarting_changed.emit()
 
     def On_Separator_changed(self):
