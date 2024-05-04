@@ -140,16 +140,15 @@ class Front_tab(QWidget):
             self.approx_plot, = self.ax[2].plot(x_approx, poly_y_data)
 
     def get_data_dict(self):
+        ret = {
+            'intensity_level': self.intensity_level,
+        }
         if self.approx == 'line':
-            ret = {
-                'a': self.parent.a,
-                'b': self.parent.b,
-            }
+            ret['a'] = self.parent.a
+            ret['b'] = self.parent.b
         if self.approx == 'my':
-            ret = {
-                'db_v': self.db_v,
-                'x0': self.x0,
-                'x_p': self.x_p,
-                'dxt': self.dxt
-            }
+            ret['db_v'] = self.db_v,
+            ret['x0'] = self.x0,
+            ret['x_p'] = self.x_p,
+            ret['dxt'] = self.dxt
         return ret
