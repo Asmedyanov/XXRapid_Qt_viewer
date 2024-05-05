@@ -27,7 +27,7 @@ class Quart_tab(QTabWidget):
         self.quart_changed.emit()
 
     def On_Tracer_changed(self):
-        self.x_min = int(min(self.Tracer_tab.x_1, self.Tracer_tab.x_2))
+        self.x_min = 0 # int(min(self.Tracer_tab.x_1, self.Tracer_tab.x_2))
         self.x_max = int(max(self.Tracer_tab.x_1, self.Tracer_tab.x_2))
         self.y_min = int(min(self.Tracer_tab.y_1, self.Tracer_tab.y_2))
         self.y_max = int(max(self.Tracer_tab.y_1, self.Tracer_tab.y_2))

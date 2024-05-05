@@ -67,13 +67,16 @@ class Main_window(QMainWindow):
         self.main_settings = dict()
         self.init_plots()
 
-    def On_fronting_changed(self):
+    def closeEvent(self, event):
         try:
             fronting_file = open('Fronting.txt', 'w')
             fronting_file.write(str(self.Fronting_tab.Frame_data_dict))
             fronting_file.close()
         except Exception as ex:
             print(ex)
+
+    def On_fronting_changed(self):
+        pass
 
 
     def init_plots(self):
