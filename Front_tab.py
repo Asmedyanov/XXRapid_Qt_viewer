@@ -113,8 +113,16 @@ class Front_tab(QWidget):
             if white_points.size > 5:
                 red_points_x.append(i)
                 red_points_y.append(white_points[-1])
-        self.red_points_x = np.array(red_points_x)
-        self.red_points_y = np.array(red_points_y)
+        line_poly_coef = np.polyfit(red_points_x, red_points_y, 1)
+        line_poly_func = np.poly1d(line_poly_coef)
+        red_points_x_filtered = []
+        red_points_y_filtered = []
+        for i in range(len(red_points_x)):
+            if np.abs(line_poly_func(red_points_x[i]) - red_points_y[i]) < 30:
+                red_points_x_filtered.append(red_points_x[i])
+                red_points_y_filtered.append(red_points_y[i])
+        self.red_points_x = np.array(red_points_x_filtered)
+        self.red_points_y = np.array(red_points_y_filtered)
         try:
             self.red_points_plot.set_data(self.red_points_x, self.red_points_y)
         except:

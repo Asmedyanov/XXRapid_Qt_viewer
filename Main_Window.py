@@ -85,6 +85,7 @@ class Main_window(QMainWindow):
         self.Additional_window.show()
 
     def closeEvent(self, event):
+        self.Additional_window.close()
         qm = QMessageBox.question(self, 'Save update', 'Save update?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if qm == QMessageBox.No:
             return
@@ -94,7 +95,7 @@ class Main_window(QMainWindow):
             fronting_file.close()
         except Exception as ex:
             print(ex)
-        self.Additional_window.close()
+
 
     def On_fronting_changed(self):
         self.udate_expantion()
@@ -102,7 +103,7 @@ class Main_window(QMainWindow):
     def init_plots(self):
         os.chdir('./Default_shot')
         self.setWindowTitle("XXRapid_Qt_viewer Default_shot_57")
-        self.Additional_window.show()
+
         self.update()
 
     def open_folder_dialog(self):
@@ -130,6 +131,7 @@ class Main_window(QMainWindow):
         self.update_plots()
         self.update_overlap()
         self.update_fronting()
+        self.Additional_window.show()
         self.udate_expantion()
 
     def udate_expantion(self):
