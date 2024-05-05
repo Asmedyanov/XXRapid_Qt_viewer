@@ -58,6 +58,7 @@ class Front_tab(QWidget):
         self.figure.canvas.draw()
 
     def set_data(self, array_1, base_dict=None):
+        self.base_dict = base_dict
         self.image_array = array_1
         try:
             print(f'shape before{self.image_plot_1.get_array().shape()}')
@@ -144,18 +145,30 @@ class Front_tab(QWidget):
             self.approx_plot, = self.ax[2].plot(x_approx, poly_y_data)
 
     def get_data_dict(self):
-        ret = {
-            'intensity_level': self.intensity_level,
-        }
+
         try:
+            ret = {
+                'intensity_level': self.intensity_level,
+            }
             if self.approx == 'line':
                 ret['a'] = self.parent.a
                 ret['b'] = self.parent.b
             if self.approx == 'my':
-                ret['db_v'] = self.db_v,
-                ret['x0'] = self.x0,
-                ret['x_p'] = self.x_p,
+                ret['db_v'] = self.db_v
+                ret['x0'] = self.x0
+                ret['x_p'] = self.x_p
                 ret['dxt'] = self.dxt
         except:
             pass
+            '''ret = {
+                'intensity_level': self.base_dict['intensity_level'],
+            }
+            if self.approx == 'line':
+                ret['a'] = self.base_dict['a']
+                ret['b'] = self.base_dict['b']
+            if self.approx == 'my':
+                ret['db_v'] = self.base_dict['db_v']
+                ret['x0'] = self.base_dict['x0']
+                ret['x_p'] = self.base_dict['x_p']
+                ret['dxt'] = self.base_dict['dxt']'''
         return ret

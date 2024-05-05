@@ -38,6 +38,7 @@ class Quart_tab(QTabWidget):
         else:
             for my_key, tab in self.Front_tab_dict.items():
                 tab.set_data(self.cropped_image, base_dict=self.base_dict['fronts'][my_key])
+                self.front_data_dict[my_key] = tab.get_data_dict()
         self.quart_changed.emit()
 
     def set_data(self, array_1, base_dict=None):
@@ -47,8 +48,8 @@ class Quart_tab(QTabWidget):
             self.Tracer_tab.set_data(array_1)
         else:
             self.Tracer_tab.set_data(array_1, base_dict=base_dict['Tracer'])
-        for my_key, my_Front_tab in self.Front_tab_dict.items():
-            self.front_data_dict[my_key] = my_Front_tab.get_data_dict()
+        #for my_key, my_Front_tab in self.Front_tab_dict.items():
+            #self.front_data_dict[my_key] = my_Front_tab.get_data_dict()
         self.On_Tracer_changed()
 
     def get_data_dict(self):

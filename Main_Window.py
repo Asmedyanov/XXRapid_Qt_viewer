@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from PyQt5.QtWidgets import QMainWindow, QTabWidget, QAction, QFileDialog,QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QTabWidget, QAction, QFileDialog, QMessageBox
 from MPL_tab import MPL_tab
 from PyQt5.QtGui import QKeySequence
 import os
@@ -9,13 +9,13 @@ from Waveform_tab import Waveform_tab
 from Single_camera_tab import Single_camera
 from Eight_frames_tab import Eight_frames
 from Four_overlapped_frames_tab import Four_overlapped_frames
+from Expansion_tab import Expansion_tab
 import numpy as np
 from Fronting_tab import Fronting
 from Histogram_tab import Histogram_tab
 from scipy import ndimage
 from dict2xml import dict2xml
 import xmltodict
-import json
 
 
 class Main_window(QMainWindow):
@@ -54,6 +54,10 @@ class Main_window(QMainWindow):
         # Add the MPL_tab instances to the tab widget
         # for title, tab in self.tab_dict.items():
         #    tab_widget.addTab(tab, title)
+        self.Expansion_tab = Expansion_tab()
+        self.Additional_window = QMainWindow()
+        self.Additional_window.setCentralWidget(self.Expansion_tab)
+        # tab_widget.addTab(self.Expansion_tab, "Expansion")
 
         # Set the tab widget as the central widget
         self.setCentralWidget(tab_widget)
@@ -67,12 +71,22 @@ class Main_window(QMainWindow):
         open_folder_action.triggered.connect(self.open_folder_dialog)
         open_folder_action.setShortcut(QKeySequence("Ctrl+O"))  # Set the shortcut
         file_menu.addAction(open_folder_action)
+
+        window_menu = menu_bar.addMenu("Window")
+        expansion_action = QAction("Expansion window", self)
+        expansion_action.triggered.connect(self.On_expansion_window)
+        expansion_action.setShortcut(QKeySequence("Ctrl+E"))
+        window_menu.addAction(expansion_action)
+
         self.main_settings = dict()
         self.init_plots()
 
+    def On_expansion_window(self):
+        self.Additional_window.show()
+
     def closeEvent(self, event):
-        qm = QMessageBox.question(self,'Save update','Save update?',QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if qm==QMessageBox.No:
+        qm = QMessageBox.question(self, 'Save update', 'Save update?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if qm == QMessageBox.No:
             return
         try:
             fronting_file = open('Fronting.xml', 'w')
@@ -80,13 +94,15 @@ class Main_window(QMainWindow):
             fronting_file.close()
         except Exception as ex:
             print(ex)
+        self.Additional_window.close()
 
     def On_fronting_changed(self):
-        pass
+        self.udate_expantion()
 
     def init_plots(self):
         os.chdir('./Default_shot')
         self.setWindowTitle("XXRapid_Qt_viewer Default_shot_57")
+        self.Additional_window.show()
         self.update()
 
     def open_folder_dialog(self):
@@ -114,6 +130,13 @@ class Main_window(QMainWindow):
         self.update_plots()
         self.update_overlap()
         self.update_fronting()
+        self.udate_expantion()
+
+    def udate_expantion(self):
+        try:
+            self.Expansion_tab.set_data(self.Fronting_tab.Frame_data_dict, self.info_file_df['Value']['dx'])
+        except Exception as ex:
+            print(ex)
 
     def update_histogram(self):
         self.Histogram_tab.set_data(self.before_image_array, self.shot_image_array)
@@ -136,7 +159,7 @@ class Main_window(QMainWindow):
         for i in range(4):
             mask = np.where(self.before_image_array[i] <= self.before_image_array[i].mean(), 0, 1)
             # mask = ndimage.uniform_filter(mask, size=2)
-            #mask = ndimage.maximum_filter(mask, size=2)
+            # mask = ndimage.maximum_filter(mask, size=2)
             mask = ndimage.minimum_filter(mask, size=2)
 
             mask_list.append(mask)

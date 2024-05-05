@@ -15,9 +15,9 @@ class Quarting(QTabWidget):
         self.Quart_tab_dict = dict()
         self.Quart_data_dict = dict()
         for i in range(4):
-            self.Quart_tab_dict[f'Quart {i + 1}'] = Quart_tab()
-            self.Quart_tab_dict[f'Quart {i + 1}'].quart_changed.connect(self.On_quart_changed)
-            self.addTab(self.Quart_tab_dict[f'Quart {i + 1}'], f'Quart {i + 1}')
+            self.Quart_tab_dict[f'Quart_{i + 1}'] = Quart_tab()
+            self.Quart_tab_dict[f'Quart_{i + 1}'].quart_changed.connect(self.On_quart_changed)
+            self.addTab(self.Quart_tab_dict[f'Quart_{i + 1}'], f'Quart {i + 1}')
         self.Separator_tab.center_signal.connect(self.On_Separator_changed)
 
     def On_quart_changed(self):
@@ -36,10 +36,10 @@ class Quarting(QTabWidget):
         ]
         if self.base_dict is None:
             for i in range(4):
-                self.Quart_tab_dict[f'Quart {i + 1}'].set_data(self.Quarts_list[i])
+                self.Quart_tab_dict[f'Quart_{i + 1}'].set_data(self.Quarts_list[i])
         else:
             for i in range(4):
-                self.Quart_tab_dict[f'Quart {i + 1}'].set_data(self.Quarts_list[i],
+                self.Quart_tab_dict[f'Quart_{i + 1}'].set_data(self.Quarts_list[i],
                                                                base_dict=self.base_dict[f'Quart_{i + 1}'])
         self.quarting_changed.emit()
 
