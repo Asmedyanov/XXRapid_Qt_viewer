@@ -26,6 +26,7 @@ class Quarting(QTabWidget):
         self.quarting_changed.emit()
 
     def On_Separator_changed(self):
+        self.Quart_data_dict['center'] = self.Separator_tab.get_data_dict()
         self.Quarts_list = [
             self.image_array[:self.Separator_tab.center_y, self.Separator_tab.center_x:],
             np.flip(self.image_array[:self.Separator_tab.center_y, :self.Separator_tab.center_x], axis=1),
@@ -33,12 +34,20 @@ class Quarting(QTabWidget):
                     axis=1),
             np.flip(self.image_array[:self.Separator_tab.center_y, :self.Separator_tab.center_x], axis=1)
         ]
-        for i in range(4):
-            self.Quart_tab_dict[f'Quart {i + 1}'].set_data(self.Quarts_list[i])
-        self.Quart_data_dict['center'] = self.Separator_tab.get_data_dict()
+        if self.base_dict is None:
+            for i in range(4):
+                self.Quart_tab_dict[f'Quart {i + 1}'].set_data(self.Quarts_list[i])
+        else:
+            for i in range(4):
+                self.Quart_tab_dict[f'Quart {i + 1}'].set_data(self.Quarts_list[i],
+                                                               base_dict=self.base_dict[f'Quart_{i + 1}'])
         self.quarting_changed.emit()
 
-    def set_data(self, array_1, dx):
-        self.Separator_tab.set_data(array_1, dx)
+    def set_data(self, array_1, dx, base_dict=None):
+        if base_dict is None:
+            self.Separator_tab.set_data(array_1, dx)
+        else:
+            self.Separator_tab.set_data(array_1, dx, base_dict=base_dict['center'])
+        self.base_dict = base_dict
         self.image_array = array_1
         self.On_Separator_changed()

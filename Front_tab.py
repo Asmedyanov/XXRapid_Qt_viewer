@@ -31,6 +31,7 @@ class Front_tab(QWidget):
         self.layout.addWidget(NavigationToolbar(self.canvas, self))
         self.layout.addWidget(self.canvas)
         self.setLayout(self.layout)
+        self.intensity_level = 0.5
 
         self.cid_1 = self.figure.canvas.mpl_connect('button_press_event', self.mouse_event_press)
 
@@ -56,7 +57,7 @@ class Front_tab(QWidget):
 
         self.figure.canvas.draw()
 
-    def set_data(self, array_1):
+    def set_data(self, array_1, base_dict=None):
         self.image_array = array_1
         try:
             print(f'shape before{self.image_plot_1.get_array().shape()}')
@@ -74,7 +75,10 @@ class Front_tab(QWidget):
         self.image_width = self.image_array.shape[1]
         self.image_hight = self.image_array.shape[0]
         self.profile_x = self.image_width // 8
-        self.intensity_level = 0.5
+        if base_dict is None:
+            self.intensity_level = 0.5
+        else:
+            self.intensity_level = float(base_dict['intensity_level'])
 
         intensity_profile = self.image_array[:, self.profile_x]
         try:
@@ -143,12 +147,15 @@ class Front_tab(QWidget):
         ret = {
             'intensity_level': self.intensity_level,
         }
-        if self.approx == 'line':
-            ret['a'] = self.parent.a
-            ret['b'] = self.parent.b
-        if self.approx == 'my':
-            ret['db_v'] = self.db_v,
-            ret['x0'] = self.x0,
-            ret['x_p'] = self.x_p,
-            ret['dxt'] = self.dxt
+        try:
+            if self.approx == 'line':
+                ret['a'] = self.parent.a
+                ret['b'] = self.parent.b
+            if self.approx == 'my':
+                ret['db_v'] = self.db_v,
+                ret['x0'] = self.x0,
+                ret['x_p'] = self.x_p,
+                ret['dxt'] = self.dxt
+        except:
+            pass
         return ret

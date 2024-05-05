@@ -48,7 +48,7 @@ class Tracer_tab(QWidget):
         self.update_main_data_dict()
         self.tracer_changed.emit()
 
-    def set_data(self, array_1):
+    def set_data(self, array_1, base_dict=None):
         N = 2
         conv_array = np.ones((N, N)) / N ** 2
         self.image_array = convolve2d(array_1, conv_array, mode='same')
@@ -59,10 +59,16 @@ class Tracer_tab(QWidget):
             self.image_plot = self.ax.imshow(self.image_array, cmap='gray')
         self.image_width = array_1.shape[1]
         self.image_hight = array_1.shape[0]
-        self.x_1 = 0
-        self.y_1 = self.image_hight - 1
-        self.x_2 = self.image_width - 1
-        self.y_2 = 0
+        if base_dict is None:
+            self.x_1 = 0
+            self.y_1 = self.image_hight - 1
+            self.x_2 = self.image_width - 1
+            self.y_2 = 0
+        else:
+            self.x_1 = int(base_dict['x_1'])
+            self.y_1 = int(base_dict['y_1'])
+            self.x_2 = int(base_dict['x_2'])
+            self.y_2 = int(base_dict['y_2'])
         self.update_main_data_dict()
         try:
             self.Front_line.set_data([self.x_1, self.x_2], [self.y_1, self.y_2])

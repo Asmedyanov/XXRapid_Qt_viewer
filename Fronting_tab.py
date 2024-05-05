@@ -20,6 +20,10 @@ class Fronting(QTabWidget):
             self.Frame_data_dict[my_key] = my_frame.Quart_data_dict
         self.fronting_changed.emit()
 
-    def set_data(self, array_1, dx):
-        for i in range(4):
-            self.Frame_tab_dict[f'Frame {i + 1}'].set_data(array_1[i], dx)
+    def set_data(self, array_1, dx, base_dict=None):
+        if base_dict is None:
+            for i in range(4):
+                self.Frame_tab_dict[f'Frame {i + 1}'].set_data(array_1[i], dx)
+        else:
+            for i in range(4):
+                self.Frame_tab_dict[f'Frame {i + 1}'].set_data(array_1[i], dx, base_dict=base_dict[f'Frame_{i + 1}'])

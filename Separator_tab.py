@@ -31,10 +31,15 @@ class Separator(QWidget):
         self.figure.canvas.draw()
         self.center_signal.emit()
 
-    def set_data(self, array_1, dx):
+    def set_data(self, array_1, dx, base_dict=None):
         self.ax.imshow(array_1, cmap='gray')
-        self.center_x = array_1.shape[1] // 2
-        self.center_y = array_1.shape[0] // 2
+        if base_dict is None:
+            self.center_x = array_1.shape[1] // 2
+            self.center_y = array_1.shape[0] // 2
+        else:
+            print('i took from file')
+            self.center_x = int(base_dict['center_x'])
+            self.center_y = int(base_dict['center_y'])
         self.image_width = array_1.shape[1]
         self.image_hight = array_1.shape[0]
         try:
