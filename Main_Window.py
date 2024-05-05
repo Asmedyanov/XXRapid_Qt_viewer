@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from PyQt5.QtWidgets import QMainWindow, QTabWidget, QAction, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QTabWidget, QAction, QFileDialog,QMessageBox
 from MPL_tab import MPL_tab
 from PyQt5.QtGui import QKeySequence
 import os
@@ -71,6 +71,9 @@ class Main_window(QMainWindow):
         self.init_plots()
 
     def closeEvent(self, event):
+        qm = QMessageBox.question(self,'Save update','Save update?',QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if qm==QMessageBox.No:
+            return
         try:
             fronting_file = open('Fronting.xml', 'w')
             fronting_file.write(dict2xml({'Camera data': self.Fronting_tab.Frame_data_dict}))
@@ -133,8 +136,8 @@ class Main_window(QMainWindow):
         for i in range(4):
             mask = np.where(self.before_image_array[i] <= self.before_image_array[i].mean(), 0, 1)
             # mask = ndimage.uniform_filter(mask, size=2)
-            # mask = ndimage.maximum_filter(mask, size=10)
-            # mask = ndimage.minimum_filter(mask, size=2)
+            #mask = ndimage.maximum_filter(mask, size=2)
+            mask = ndimage.minimum_filter(mask, size=2)
 
             mask_list.append(mask)
         mask = np.array(mask_list)
