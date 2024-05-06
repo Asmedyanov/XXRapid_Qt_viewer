@@ -42,12 +42,12 @@ class Main_window(QMainWindow):
         self.Four_overlapped_frames_tab.changed.connect(self.On_overlapped_changed)
         tab_widget.addTab(self.Four_overlapped_frames_tab, "4 overlapped frames")
 
-        '''self.Fronting_tab = Fronting()
-        self.Fronting_tab.fronting_changed.connect(self.On_fronting_changed)
+        self.Fronting_tab = Fronting()
+        self.Fronting_tab.changed.connect(self.On_fronting_changed)
         tab_widget.addTab(self.Fronting_tab, "Fronting")
         self.Expansion_tab = Expansion_tab()
         self.Additional_window = QMainWindow()
-        self.Additional_window.setCentralWidget(self.Expansion_tab)'''
+        self.Additional_window.setCentralWidget(self.Expansion_tab)
 
         # Set the tab widget as the central widget
         self.setCentralWidget(tab_widget)
@@ -81,8 +81,7 @@ class Main_window(QMainWindow):
         self.Additional_window.show()
 
     def closeEvent(self, event):
-        pass
-        '''self.Additional_window.close()
+        self.Additional_window.close()
         qm = QMessageBox.question(self, 'Save update', 'Save update?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if qm == QMessageBox.No:
             return
@@ -91,7 +90,7 @@ class Main_window(QMainWindow):
             fronting_file.write(dict2xml({'Camera data': self.Fronting_tab.Frame_data_dict}))
             fronting_file.close()
         except Exception as ex:
-            print(ex)'''
+            print(ex)
 
     def On_fronting_changed(self):
         self.udate_expantion()
@@ -128,9 +127,9 @@ class Main_window(QMainWindow):
         # self.update_black()
         # self.update_plots()
         self.update_overlap()
-        '''self.update_fronting()
+        self.update_fronting()
         self.Additional_window.show()
-        self.udate_expantion()'''
+        self.udate_expantion()
 
     def update_single_camera(self):
         self.Single_camera_tab.set_data(self.before_image_array, self.shot_image_array)

@@ -21,10 +21,6 @@ class Front_widget(Matplotlib_qtwidget):
         self.ax[1].set_title('Profiles and level')
         self.ax[2].set_title('Approximation overlap')
         # Create a canvas to embed the Matplotlib plot
-        self.canvas = FigureCanvas(self.figure)
-        self.layout.addWidget(NavigationToolbar(self.canvas, self))
-        self.layout.addWidget(self.canvas)
-        self.setLayout(self.layout)
         self.intensity_level = 0.5
 
         self.cid_1 = self.figure.canvas.mpl_connect('button_press_event', self.mouse_event_press)

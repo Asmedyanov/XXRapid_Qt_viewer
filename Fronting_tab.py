@@ -4,7 +4,7 @@ from PyQt5.QtCore import pyqtSignal
 
 
 class Fronting(QTabWidget):
-    fronting_changed = pyqtSignal()
+    changed = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -19,7 +19,7 @@ class Fronting(QTabWidget):
     def On_quarting_changed(self):
         for my_key, my_frame in self.Frame_tab_dict.items():
             self.Frame_data_dict[my_key] = my_frame.Quart_data_dict
-        self.fronting_changed.emit()
+        self.changed.emit()
 
     def set_data(self, array_1, dx, base_dict=None):
         for i in range(4):

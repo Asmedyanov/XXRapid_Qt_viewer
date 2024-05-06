@@ -25,7 +25,6 @@ class Four_overlapped_frames(Matplotlib_qtwidget):
                   self.Overlapped_image.shape[2] * self.dx // 2,
                   self.Overlapped_image.shape[1] * self.dx // 2,
                   -self.Overlapped_image.shape[1] * self.dx // 2]
-        pass
         for i in range(4):
             self.ax[i].imshow(self.Overlapped_image[i], cmap='gray', extent=extent)
         self.figure.canvas.draw()
