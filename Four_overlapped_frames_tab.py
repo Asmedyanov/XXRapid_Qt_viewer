@@ -1,44 +1,45 @@
-from PyQt5.QtWidgets import QVBoxLayout, QWidget
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.pyplot as plt
+from Matplotlib_qtwidget import Matplotlib_qtwidget
 import numpy as np
 
 
-class Four_overlapped_frames(QWidget):
+class Four_overlapped_frames(Matplotlib_qtwidget):
     def __init__(self):
         super().__init__()
-        self.layout = QVBoxLayout()
-        # Create a Matplotlib figure and axis
-        self.figure, self.ax = plt.subplots(ncols=2, nrows=2)
-        self.figure.set_layout_engine(layout='tight')
-        for i in range(2):
-            for j in range(2):
-                self.ax[0, j].set(
-                    xticklabels=[]
-                )
-                if j > 0:
-                    self.ax[i, j].set(
-                        yticklabels=[]
-                    )
-                self.ax[i, j].grid(linestyle='dotted')
-        self.ax[0, 0].set_title('Image 1, mm')
-        self.ax[0, 1].set_title('Image 2, mm')
-        self.ax[1, 0].set_xlabel('Image 3, mm')
-        self.ax[1, 1].set_xlabel('Image 4, mm')
-        # Create a canvas to embed the Matplotlib plot
-        self.canvas = FigureCanvas(self.figure)
-        self.layout.addWidget(NavigationToolbar(self.canvas, self))
-        self.layout.addWidget(self.canvas)
-        self.setLayout(self.layout)
+        gs = self.figure.add_gridspec(ncols=4)
+        self.ax = gs.subplots()
+        for i in range(4):
+            self.ax[i].set(
+                title=f'Image {i + 1}'
+            )
 
-    def set_data(self, array_1, dx):
-        extent = [-array_1.shape[2] * dx // 2,
-                  array_1.shape[2] * dx // 2,
-                  array_1.shape[1] * dx // 2,
-                  -array_1.shape[1] * dx // 2]
-        self.ax[0, 0].imshow(array_1[0], cmap='gray', extent=extent)
-        self.ax[0, 1].imshow(array_1[1], cmap='gray', extent=extent)
-        self.ax[1, 0].imshow(array_1[2], cmap='gray', extent=extent)
-        self.ax[1, 1].imshow(array_1[3], cmap='gray', extent=extent)
+    def transverse(self):
+        transpose_list = []
+        for i in range(4):
+            transpose_list.append(self.Overlapped_image[i].transpose())
+        self.Overlapped_image = np.array(transpose_list)
+        self.redraw()
+        self.changed.emit()
+
+    def redraw(self):
+        extent = [-self.Overlapped_image.shape[2] * self.dx // 2,
+                  self.Overlapped_image.shape[2] * self.dx // 2,
+                  self.Overlapped_image.shape[1] * self.dx // 2,
+                  -self.Overlapped_image.shape[1] * self.dx // 2]
+        pass
+        for i in range(4):
+            self.ax[i].imshow(self.Overlapped_image[i], cmap='gray', extent=extent)
         self.figure.canvas.draw()
+
+    def set_data(self, before_image_array, shot_image_array, dx):
+        self.dx = dx
+        overlapped = np.where(shot_image_array > before_image_array, before_image_array,
+                              shot_image_array)
+        mask_list = []
+        for i in range(4):
+            mask = np.where(before_image_array[i] <= before_image_array[i].mean(), 0, 1)
+            mask_list.append(mask)
+        mask = np.array(mask_list)
+        overlapped = np.where(before_image_array > 1, overlapped / before_image_array, 1) * mask
+        self.Overlapped_image = overlapped
+        self.redraw()
+        self.changed.emit()

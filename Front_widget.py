@@ -1,26 +1,20 @@
-from PyQt5.QtWidgets import QVBoxLayout, QWidget
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.pyplot as plt
+from Matplotlib_qtwidget import Matplotlib_qtwidget
 import numpy as np
-from scipy.signal import convolve2d
 from PyQt5.QtCore import pyqtSignal
 from scipy.optimize import curve_fit
 from Approx_functions import *
 
 
-class Front_tab(QWidget):
-    front_tab_changed = pyqtSignal()
+class Front_widget(Matplotlib_qtwidget):
     line_signal = pyqtSignal()
 
     def __init__(self, parent, approx='my'):
         super().__init__()
         self.parent = parent
         self.approx = approx
-        self.layout = QVBoxLayout()
         # Create a Matplotlib figure and axis
-        self.figure, self.ax = plt.subplots(ncols=3)
-        self.figure.set_layout_engine(layout='tight')
+        gs = self.figure.add_gridspec(ncols=3)
+        self.ax = gs.subplots()
         for ax in self.ax:
             ax.grid(linestyle='dotted')
         self.ax[0].set_title('Window and red points')
@@ -47,7 +41,7 @@ class Front_tab(QWidget):
         self.update_red_points()
         self.update_approx()
         self.figure.canvas.draw()
-        self.front_tab_changed.emit()
+        self.changed.emit()
 
     def On_window_and_points_click(self, event):
         self.profile_x = int(event.xdata)
@@ -153,7 +147,7 @@ class Front_tab(QWidget):
             self.approx_plot, = self.ax[2].plot(x_approx, poly_y_data)
 
     def get_data_dict(self):
-
+        ret = None
         try:
             ret = {
                 'intensity_level': self.intensity_level,
@@ -168,15 +162,4 @@ class Front_tab(QWidget):
                 ret['dxt'] = self.dxt
         except:
             pass
-            '''ret = {
-                'intensity_level': self.base_dict['intensity_level'],
-            }
-            if self.approx == 'line':
-                ret['a'] = self.base_dict['a']
-                ret['b'] = self.base_dict['b']
-            if self.approx == 'my':
-                ret['db_v'] = self.base_dict['db_v']
-                ret['x0'] = self.base_dict['x0']
-                ret['x_p'] = self.base_dict['x_p']
-                ret['dxt'] = self.base_dict['dxt']'''
         return ret

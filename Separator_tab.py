@@ -1,27 +1,11 @@
-from PyQt5.QtWidgets import QVBoxLayout, QWidget
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.pyplot as plt
-import numpy as np
-from PyQt5.QtCore import pyqtSignal
+from Matplotlib_qtwidget import Matplotlib_qtwidget
 
-
-class Separator(QWidget):
-    center_signal = pyqtSignal()
+class Separator_widget(Matplotlib_qtwidget):
 
     def __init__(self):
         super().__init__()
-        self.layout = QVBoxLayout()
-        # Create a Matplotlib figure and axis
-        self.figure, self.ax = plt.subplots()
-        self.figure.set_layout_engine(layout='tight')
-
+        self.ax = self.figure.add_subplot(111)
         self.ax.grid(linestyle='dotted')
-        # Create a canvas to embed the Matplotlib plot
-        self.canvas = FigureCanvas(self.figure)
-        self.layout.addWidget(NavigationToolbar(self.canvas, self))
-        self.layout.addWidget(self.canvas)
-        self.setLayout(self.layout)
         self.cid_1 = self.figure.canvas.mpl_connect('button_press_event', self.On_mouse_click)
 
     def On_mouse_click(self, event):
@@ -29,7 +13,7 @@ class Separator(QWidget):
         self.Horizont.set_data([0, self.image_width - 1], [self.center_y, self.center_y])
         self.Vertical.set_data([self.center_x, self.center_x], [0, self.image_hight - 1])
         self.figure.canvas.draw()
-        self.center_signal.emit()
+        self.changed.emit()
 
     def set_data(self, array_1, dx, base_dict=None):
         self.ax.imshow(array_1, cmap='gray')

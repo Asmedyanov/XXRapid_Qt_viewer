@@ -1,30 +1,15 @@
-from PyQt5.QtWidgets import QVBoxLayout, QWidget
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.pyplot as plt
+from Matplotlib_qtwidget import Matplotlib_qtwidget
 import numpy as np
 from scipy.signal import convolve2d
 from PyQt5.QtCore import pyqtSignal
 
 
-class Tracer_tab(QWidget):
-    tracer_changed = pyqtSignal()
-
+class Tracer_widget(Matplotlib_qtwidget):
     def __init__(self):
         super().__init__()
-        self.layout = QVBoxLayout()
-        # Create a Matplotlib figure and axis
-        self.figure, self.ax = plt.subplots()
-        self.figure.set_layout_engine(layout='tight')
-
+        self.ax = self.figure.add_subplot(111)
         self.ax.grid(linestyle='dotted')
-        # Create a canvas to embed the Matplotlib plot
-        self.canvas = FigureCanvas(self.figure)
-        self.layout.addWidget(NavigationToolbar(self.canvas, self))
-        self.layout.addWidget(self.canvas)
-        self.setLayout(self.layout)
         self.main_data_dict = {}
-
         self.cid_1 = self.figure.canvas.mpl_connect('button_press_event', self.mouse_event_press)
         self.cid_2 = self.figure.canvas.mpl_connect('button_release_event', self.mouse_event_release)
 
@@ -46,7 +31,7 @@ class Tracer_tab(QWidget):
         self.Front_line.set_data([self.x_1, self.x_2], [self.y_1, self.y_2])
         self.figure.canvas.draw()
         self.update_main_data_dict()
-        self.tracer_changed.emit()
+        self.changed.emit()
 
     def set_data(self, array_1, base_dict=None):
         N = 2

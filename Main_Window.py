@@ -6,7 +6,7 @@ import os
 import pandas as pd
 from rtv_reader import open_rtv
 from Waveform_tab import Waveform_tab
-from Single_camera_tab import Single_camera
+from Single_camera_tab import Single_camera_tab
 from Eight_frames_tab import Eight_frames
 from Four_overlapped_frames_tab import Four_overlapped_frames
 from Expansion_tab import Expansion_tab
@@ -32,20 +32,17 @@ class Main_window(QMainWindow):
         tab_widget.addTab(self.Waveform_tab, "Waveform original")
         self.Waveform_processing_tab = Waveform_processing_tab()
         tab_widget.addTab(self.Waveform_processing_tab, "Waveform processing")
-        '''self.Waveform_processing_tab.waveform_processing_changed.connect(self.On_waveform_processing_changed)
+        self.Waveform_processing_tab.changed.connect(self.On_waveform_processing_changed)
+        self.Single_camera_tab = Single_camera_tab()
+        tab_widget.addTab(self.Single_camera_tab, "Single camera")
 
-        self.Single_camera_tab_dict = dict()
-        for i in range(4):
-            self.Single_camera_tab_dict[f'Camera {i + 1}'] = Single_camera()
-            tab_widget.addTab(self.Single_camera_tab_dict[f'Camera {i + 1}'], f'Camera {i + 1}')
-
-        self.Eight_frames_tab = Eight_frames()
-
-        tab_widget.addTab(self.Eight_frames_tab, "8 frames")
+        '''self.Eight_frames_tab = Eight_frames()
+        tab_widget.addTab(self.Eight_frames_tab, "8 frames")'''
         self.Four_overlapped_frames_tab = Four_overlapped_frames()
+        self.Four_overlapped_frames_tab.changed.connect(self.On_overlapped_changed)
         tab_widget.addTab(self.Four_overlapped_frames_tab, "4 overlapped frames")
 
-        self.Fronting_tab = Fronting()
+        '''self.Fronting_tab = Fronting()
         self.Fronting_tab.fronting_changed.connect(self.On_fronting_changed)
         tab_widget.addTab(self.Fronting_tab, "Fronting")
         self.Expansion_tab = Expansion_tab()
@@ -73,6 +70,9 @@ class Main_window(QMainWindow):
 
         self.main_settings = dict()
         self.init_plots()
+
+    def On_overlapped_changed(self):
+        self.Overlapped_image = self.Four_overlapped_frames_tab.Overlapped_image
 
     def On_waveform_processing_changed(self):
         self.shutter_times = self.Waveform_processing_tab.shutter_times
@@ -121,15 +121,19 @@ class Main_window(QMainWindow):
         self.update_waveform()
         self.update_waveform_processing()
 
-        '''self.update_before()
+        self.update_before()
         self.update_shot()
+        self.update_single_camera()
         # self.update_histogram()
         # self.update_black()
-        self.update_plots()
+        # self.update_plots()
         self.update_overlap()
-        self.update_fronting()
+        '''self.update_fronting()
         self.Additional_window.show()
         self.udate_expantion()'''
+
+    def update_single_camera(self):
+        self.Single_camera_tab.set_data(self.before_image_array, self.shot_image_array)
 
     def update_waveform_processing(self):
         self.Waveform_processing_tab.set_data(self.Waveform_tab.waveform_dict, self.info_file_df)
@@ -155,33 +159,14 @@ class Main_window(QMainWindow):
             self.Fronting_tab.set_data(self.Overlapped_image, self.info_file_df['Value']['dx'])
 
     def update_overlap(self):
-        overlapped = np.where(self.shot_image_array > self.before_image_array, self.before_image_array,
-                              self.shot_image_array)
-        mask_list = []
-        for i in range(4):
-            mask = np.where(self.before_image_array[i] <= self.before_image_array[i].mean(), 0, 1)
-            # mask = ndimage.uniform_filter(mask, size=2)
-            # mask = ndimage.maximum_filter(mask, size=2)
-            # mask = ndimage.minimum_filter(mask, size=7)
-
-            mask_list.append(mask)
-        mask = np.array(mask_list)
-
-        '''print(f'before_array_min = {self.before_image_array.min()}')
-        print(f'before_array_max = {self.before_image_array.max()}')
-        print(f'before_array_mean = {self.before_image_array.mean()}')'''
-        overlapped = np.where(self.before_image_array > 1, overlapped / self.before_image_array, 1) * mask
-        self.Overlapped_image = overlapped
+        self.Four_overlapped_frames_tab.set_data(self.before_image_array, self.shot_image_array,
+                                                 self.info_file_df['Value']['dx'])
         try:
 
             if self.info_file_df['Value']['Transverse'] == 1:
-                transpose_list = []
-                for i in range(4):
-                    transpose_list.append(self.Overlapped_image[i].transpose())
-                self.Overlapped_image = np.array(transpose_list)
+                self.Four_overlapped_frames_tab.transverse()
         except:
             pass
-        self.Four_overlapped_frames_tab.set_data(self.Overlapped_image, self.info_file_df['Value']['dx'])
 
     def update_before(self):
         before_files_list = [name for name in self.folder_list if
