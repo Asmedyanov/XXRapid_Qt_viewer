@@ -4,9 +4,12 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 import matplotlib.pyplot as plt
 import numpy as np
 import Approx_functions
+from PyQt5.QtCore import pyqtSignal
 
 
 class Expansion_tab(QWidget):
+    expantion_changed = pyqtSignal()
+
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
@@ -16,6 +19,11 @@ class Expansion_tab(QWidget):
         self.plot_by_quarts = dict()
         t = np.arange(0, 2 * np.pi, 0.1)
         for i in [1, 2, 3, 4]:
+            self.ax[i - 1].set(
+                title=f'Quart_{i}',
+                xlabel=f'x, mm',
+                ylabel=f'y, mm'
+            )
             self.plot_by_quarts[f'Quart_{i}'] = []
             for j in range(8):
                 self.plot_by_quarts[f'Quart_{i}'].append(
@@ -52,6 +60,7 @@ class Expansion_tab(QWidget):
                         'y': expansion})
             for j in range(len(Expansion_by_quart)):
                 self.plot_by_quarts[f'Quart_{i}'][j].set_data(Expansion_by_quart[j]['x'], Expansion_by_quart[j]['y'])
-            self.ax[i-1].relim()
-            self.ax[i-1].autoscale_view()
+            self.ax[i - 1].relim()
+            self.ax[i - 1].autoscale_view()
         self.figure.canvas.draw()
+        self.expantion_changed.emit()

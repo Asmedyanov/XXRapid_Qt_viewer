@@ -16,6 +16,7 @@ from Histogram_tab import Histogram_tab
 from scipy import ndimage
 from dict2xml import dict2xml
 import xmltodict
+from Waveform_processing_tab import Waveform_processing_tab
 
 
 class Main_window(QMainWindow):
@@ -31,8 +32,10 @@ class Main_window(QMainWindow):
         tab_titles = ["3 camera overlapped"]
         self.tab_dict = {title: MPL_tab(title) for title in tab_titles}
 
-        # self.Waveform_tab = Waveform_tab()
-        # tab_widget.addTab(self.Waveform_tab, "Waveform original")
+        self.Waveform_tab = Waveform_tab()
+        tab_widget.addTab(self.Waveform_tab, "Waveform original")
+        self.Waveform_processing_tab = Waveform_processing_tab()
+        tab_widget.addTab(self.Waveform_processing_tab, "Waveform processing")
 
         self.Single_camera_tab_dict = dict()
         for i in range(4):
@@ -96,7 +99,6 @@ class Main_window(QMainWindow):
         except Exception as ex:
             print(ex)
 
-
     def On_fronting_changed(self):
         self.udate_expantion()
 
@@ -122,7 +124,8 @@ class Main_window(QMainWindow):
         self.folder_list = os.listdir()
         print(f'Folder contains files\n{self.folder_list}')
         self.update_info()
-        # self.update_waveform()
+        self.update_waveform()
+        self.update_waveform_processing()
 
         self.update_before()
         self.update_shot()
@@ -133,6 +136,8 @@ class Main_window(QMainWindow):
         self.update_fronting()
         self.Additional_window.show()
         self.udate_expantion()
+    def update_waveform_processing(self):
+        self.Waveform_processing_tab.set_data(self.Waveform_tab.waveform_dict,self.info_file_df)
 
     def udate_expantion(self):
         try:
@@ -161,8 +166,8 @@ class Main_window(QMainWindow):
         for i in range(4):
             mask = np.where(self.before_image_array[i] <= self.before_image_array[i].mean(), 0, 1)
             # mask = ndimage.uniform_filter(mask, size=2)
-            # mask = ndimage.maximum_filter(mask, size=2)
-            mask = ndimage.minimum_filter(mask, size=2)
+            #mask = ndimage.maximum_filter(mask, size=2)
+            #mask = ndimage.minimum_filter(mask, size=7)
 
             mask_list.append(mask)
         mask = np.array(mask_list)
