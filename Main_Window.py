@@ -28,14 +28,11 @@ class Main_window(QMainWindow):
         # Create a tab widget
         tab_widget = QTabWidget(self)
 
-        # Create a dictionary of MPL_tab instances
-        tab_titles = ["3 camera overlapped"]
-        self.tab_dict = {title: MPL_tab(title) for title in tab_titles}
-
         self.Waveform_tab = Waveform_tab()
         tab_widget.addTab(self.Waveform_tab, "Waveform original")
         self.Waveform_processing_tab = Waveform_processing_tab()
         tab_widget.addTab(self.Waveform_processing_tab, "Waveform processing")
+        '''self.Waveform_processing_tab.waveform_processing_changed.connect(self.On_waveform_processing_changed)
 
         self.Single_camera_tab_dict = dict()
         for i in range(4):
@@ -51,16 +48,9 @@ class Main_window(QMainWindow):
         self.Fronting_tab = Fronting()
         self.Fronting_tab.fronting_changed.connect(self.On_fronting_changed)
         tab_widget.addTab(self.Fronting_tab, "Fronting")
-        # self.Histogram_tab = Histogram_tab()
-        # tab_widget.addTab(self.Histogram_tab, "Histogram")
-
-        # Add the MPL_tab instances to the tab widget
-        # for title, tab in self.tab_dict.items():
-        #    tab_widget.addTab(tab, title)
         self.Expansion_tab = Expansion_tab()
         self.Additional_window = QMainWindow()
-        self.Additional_window.setCentralWidget(self.Expansion_tab)
-        # tab_widget.addTab(self.Expansion_tab, "Expansion")
+        self.Additional_window.setCentralWidget(self.Expansion_tab)'''
 
         # Set the tab widget as the central widget
         self.setCentralWidget(tab_widget)
@@ -84,11 +74,15 @@ class Main_window(QMainWindow):
         self.main_settings = dict()
         self.init_plots()
 
+    def On_waveform_processing_changed(self):
+        self.shutter_times = self.Waveform_processing_tab.shutter_times
+
     def On_expansion_window(self):
         self.Additional_window.show()
 
     def closeEvent(self, event):
-        self.Additional_window.close()
+        pass
+        '''self.Additional_window.close()
         qm = QMessageBox.question(self, 'Save update', 'Save update?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if qm == QMessageBox.No:
             return
@@ -97,7 +91,7 @@ class Main_window(QMainWindow):
             fronting_file.write(dict2xml({'Camera data': self.Fronting_tab.Frame_data_dict}))
             fronting_file.close()
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
     def On_fronting_changed(self):
         self.udate_expantion()
@@ -127,7 +121,7 @@ class Main_window(QMainWindow):
         self.update_waveform()
         self.update_waveform_processing()
 
-        self.update_before()
+        '''self.update_before()
         self.update_shot()
         # self.update_histogram()
         # self.update_black()
@@ -135,9 +129,10 @@ class Main_window(QMainWindow):
         self.update_overlap()
         self.update_fronting()
         self.Additional_window.show()
-        self.udate_expantion()
+        self.udate_expantion()'''
+
     def update_waveform_processing(self):
-        self.Waveform_processing_tab.set_data(self.Waveform_tab.waveform_dict,self.info_file_df)
+        self.Waveform_processing_tab.set_data(self.Waveform_tab.waveform_dict, self.info_file_df)
 
     def udate_expantion(self):
         try:
@@ -166,8 +161,8 @@ class Main_window(QMainWindow):
         for i in range(4):
             mask = np.where(self.before_image_array[i] <= self.before_image_array[i].mean(), 0, 1)
             # mask = ndimage.uniform_filter(mask, size=2)
-            #mask = ndimage.maximum_filter(mask, size=2)
-            #mask = ndimage.minimum_filter(mask, size=7)
+            # mask = ndimage.maximum_filter(mask, size=2)
+            # mask = ndimage.minimum_filter(mask, size=7)
 
             mask_list.append(mask)
         mask = np.array(mask_list)
@@ -216,9 +211,9 @@ class Main_window(QMainWindow):
                                                                     self.shot_image_array[i])
         self.Eight_frames_tab.set_data(self.before_image_array, self.shot_image_array)
         # self.tab_dict["Raw comparison"].compare_2_image_arrays(self.before_image_array, self.shot_image_array)
-        self.tab_dict["3 camera overlapped"].overlap_3_camera(self.before_image_array,
+        '''self.tab_dict["3 camera overlapped"].overlap_3_camera(self.before_image_array,
                                                               self.shot_image_array,
-                                                              self.info_file_df['Value']['dx'])
+                                                              self.info_file_df['Value']['dx'])'''
 
     def update_waveform(self):
         waveform_files_list = [name for name in self.folder_list if
