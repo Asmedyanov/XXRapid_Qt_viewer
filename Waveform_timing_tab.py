@@ -79,7 +79,6 @@ class Waveform_timing_tab(Matplotlib_qtwidget):
         self.waveform_plots_dict['4Quick_peak'].set_data(self.peak_time * 1.0e6, self.peak_4quick)
         self.waveform_plots_dict['U'].set_data(self.df_voltage['time'][voltage_start_index:index_end] * 1.0e6,
                                                self.df_voltage['value'][voltage_start_index:index_end] * 1.0e-3)
-        pass
 
         self.ax.relim()
         self.ax_1.relim()

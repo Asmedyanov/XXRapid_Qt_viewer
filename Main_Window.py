@@ -9,7 +9,7 @@ from Waveform_tab import Waveform_tab
 from Single_camera_tab import Single_camera_tab
 from Eight_frames_tab import Eight_frames
 from Four_overlapped_frames_tab import Four_overlapped_frames
-from Expansion_tab import Expansion_tab
+from Expansion_widget import Expansion_widget
 import numpy as np
 from Fronting_tab import Fronting
 from Histogram_tab import Histogram_tab
@@ -17,6 +17,7 @@ from scipy import ndimage
 from dict2xml import dict2xml
 import xmltodict
 from Waveform_processing_tab import Waveform_processing_tab
+from TOF_tab import TOF_tab
 
 
 class Main_window(QMainWindow):
@@ -45,9 +46,14 @@ class Main_window(QMainWindow):
         self.Fronting_tab = Fronting()
         self.Fronting_tab.changed.connect(self.On_fronting_changed)
         tab_widget.addTab(self.Fronting_tab, "Fronting")
-        self.Expansion_tab = Expansion_tab()
+
+        self.Expansion_widget = Expansion_widget()
+        self.Expansion_widget.changed.connect(self.On_Expansion_widget_changed)
         self.Additional_window = QMainWindow()
-        self.Additional_window.setCentralWidget(self.Expansion_tab)
+        self.Additional_window.setCentralWidget(self.Expansion_widget)
+
+        self.TOF_tab = TOF_tab()
+        tab_widget.addTab(self.TOF_tab, "TOF")
 
         # Set the tab widget as the central widget
         self.setCentralWidget(tab_widget)
@@ -70,6 +76,10 @@ class Main_window(QMainWindow):
 
         self.main_settings = dict()
         self.init_plots()
+
+    def On_Expansion_widget_changed(self):
+        self.TOF_tab.set_data(self.Expansion_widget.expansion_by_cross_section_dict, self.shutter_times,
+                              self.Expansion_widget.dx)
 
     def On_overlapped_changed(self):
         self.Overlapped_image = self.Four_overlapped_frames_tab.Overlapped_image
@@ -139,7 +149,7 @@ class Main_window(QMainWindow):
 
     def udate_expantion(self):
         try:
-            self.Expansion_tab.set_data(self.Fronting_tab.Frame_data_dict, self.info_file_df['Value']['dx'])
+            self.Expansion_widget.set_data(self.Fronting_tab.Frame_data_dict, self.info_file_df['Value']['dx'])
         except Exception as ex:
             print(ex)
 
