@@ -85,7 +85,14 @@ class Main_window(QMainWindow):
 
     def On_TOF_tab_changed(self):
         self.Action_integral_tab.set_data(self.TOF_tab.Movement_widget.approximation_dict,
-                                          self.Waveform_processing_tab.Waveform_timing_tab.df_current)
+                                          self.Waveform_processing_tab.Waveform_timing_tab.df_current,
+                                          {
+                                              'Waist': self.info_file_df['Value']['Waist'],
+                                              'Thickness': self.info_file_df['Value']['Thickness'],
+                                              'Length': self.info_file_df['Value']['Length'],
+                                              'Width': self.info_file_df['Value']['Width'],
+
+                                          })
 
     def On_Action_integral_tab_changed(self):
         pass

@@ -1,5 +1,6 @@
 from Quart_plots_widget import Quart_plots_widget
 import numpy as np
+import pandas as pd
 
 
 class Explosion_current_widget(Quart_plots_widget):
@@ -21,6 +22,12 @@ class Explosion_current_widget(Quart_plots_widget):
             t_data = explosion_time_dict[key]['onset_time'].values
             x_data = explosion_time_dict[key]['x'].values
             current_data = f_current(t_data)
+            self.explosion_current_dict[key] = pd.DataFrame(
+                {
+                    'x': x_data,  # m
+                    'current': current_data  # A
+                }
+            )
             self.plot_by_quarts[key].set_data(x_data * 1.0e3, current_data * 1.0e-3)
             self.ax[i].relim()
             self.ax[i].autoscale_view()
