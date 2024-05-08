@@ -1,7 +1,6 @@
 from Matplotlib_qtwidget import Matplotlib_qtwidget
-import numpy as np
-from scipy.signal import convolve2d
-from PyQt5.QtCore import pyqtSignal
+
+
 
 
 class Tracer_widget(Matplotlib_qtwidget):
@@ -34,9 +33,11 @@ class Tracer_widget(Matplotlib_qtwidget):
         self.changed.emit()
 
     def set_data(self, array_1, base_dict=None):
-        N = 2
+        '''N = 4
         conv_array = np.ones((N, N)) / N ** 2
-        self.image_array = convolve2d(array_1, conv_array, mode='same')
+        self.image_array = convolve2d(array_1, conv_array, mode='same')'''
+        # self.image_array = gaussian_filter(array_1,sigma=2)
+        self.image_array = array_1
         # self.image_array=array_1
         try:
             self.image_plot.set_data(self.image_array)

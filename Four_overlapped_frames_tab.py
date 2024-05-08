@@ -1,5 +1,6 @@
 from Matplotlib_qtwidget import Matplotlib_qtwidget
 import numpy as np
+from scipy.ndimage import gaussian_filter
 
 
 class Four_overlapped_frames(Matplotlib_qtwidget):
@@ -31,14 +32,24 @@ class Four_overlapped_frames(Matplotlib_qtwidget):
 
     def set_data(self, before_image_array, shot_image_array, dx):
         self.dx = dx
-        overlapped = np.where(shot_image_array > before_image_array, before_image_array,
+        overlapped_list = []
+        for i in range(before_image_array.shape[0]):
+            before_image = gaussian_filter(before_image_array[i], sigma=1)
+            shot_image = gaussian_filter(shot_image_array[i], sigma=1)
+            overlapped = np.where(shot_image > before_image, 1, shot_image/before_image)
+            mask = np.where(before_image <= before_image.mean(), 0, 1)
+            overlapped = overlapped * mask
+            overlapped =gaussian_filter(overlapped,sigma=1)
+            overlapped_list.append(overlapped)
+        '''overlapped = np.where(shot_image_array > before_image_array, before_image_array,
                               shot_image_array)
         mask_list = []
         for i in range(4):
             mask = np.where(before_image_array[i] <= before_image_array[i].mean(), 0, 1)
             mask_list.append(mask)
         mask = np.array(mask_list)
-        overlapped = np.where(before_image_array > 1, overlapped / before_image_array, 1) * mask
-        self.Overlapped_image = overlapped
+        overlapped = np.where(before_image_array > 0, overlapped / before_image_array, 0) * mask
+        self.Overlapped_image = overlapped'''
+        self.Overlapped_image = np.array(overlapped_list)
         self.redraw()
         self.changed.emit()
