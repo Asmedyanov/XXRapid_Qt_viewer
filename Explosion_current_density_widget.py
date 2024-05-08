@@ -1,4 +1,5 @@
 from Quart_plots_widget import Quart_plots_widget
+import pandas as pd
 
 
 class Explosion_current_density_widget(Quart_plots_widget):
@@ -28,11 +29,16 @@ class Explosion_current_density_widget(Quart_plots_widget):
         self.w_foil = geometry_dict['Width']
         for i in range(4):
             key = f'Quart_{i + 1}'
-            x_data = explosion_current_dict[key]['x'].values
-            S_data = self.cross_section(x_data * 1.0e3)
-            i_data = explosion_current_dict[key]['current'].values
-            j_data = i_data / S_data
-            self.plot_by_quarts[key].set_data(x_data * 1.0e3, j_data*1.0e-6)
+            x_data = explosion_current_dict[key]['x'].values  # m
+            S_data = self.cross_section(x_data * 1.0e3)  # mm^2
+            i_data = explosion_current_dict[key]['current'].values  # A
+            j_data = i_data / S_data  # A/mm^2
+            self.explosion_current_density_dict[key] = pd.DataFrame({
+                'x': x_data,
+                'j': j_data
+            })
+
+            self.plot_by_quarts[key].set_data(x_data * 1.0e3, j_data * 1.0e-6)
             self.ax[i].relim()
             self.ax[i].autoscale_view()
         self.figure.canvas.draw()

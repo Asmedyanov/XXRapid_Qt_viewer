@@ -1,6 +1,10 @@
 from numpy import square, where
 
 
+def f_line(x, a, b):
+    return a * x + b
+
+
 def f_free_style_full(x, a0, b0, db_v, x0, x_p, dxt):
     """
     the function of 2 phase transitions:

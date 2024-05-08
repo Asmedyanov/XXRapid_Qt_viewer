@@ -36,7 +36,7 @@ class Waveform_timing_tab(Matplotlib_qtwidget):
             'value': waveform_df['channel_3'].values * float(info_df['Value']['Tektronix'])
         })
         voltage_start_index = np.argwhere(
-            np.abs(self.df_voltage['value']) > np.max(np.abs(
+            np.abs(self.df_voltage['value']) > 2*np.max(np.abs(
                 self.df_voltage['value'].values[np.argwhere(self.df_voltage['time'].values < 0)]))).min()
         voltage_timeshift = self.df_voltage['time'].values[voltage_start_index]
         self.df_voltage['time'] -= voltage_timeshift
@@ -44,13 +44,21 @@ class Waveform_timing_tab(Matplotlib_qtwidget):
 
         self.df_current = pd.DataFrame({
             'time': waveform_df['channel_0_time'].values - voltage_timeshift,
-            'value': waveform_df['channel_0'].values * info_df['Value']['Rogovski_ampl']
+            'value': waveform_df['channel_0'].values * info_df['Value']['Rogovski_ampl'],
+            'value2': np.square(waveform_df['channel_0'].values * info_df['Value']['Rogovski_ampl'])
+
         })
         self.df_current['value'] = np.where(self.df_current['value'] < 0, 0, self.df_current['value'])
         self.df_systron = pd.DataFrame({
             'time': waveform_df['channel_1_time'].values - voltage_timeshift,
             'value': waveform_df['channel_1'].values
         })
+        self.df_current['integral'] = np.zeros(len(self.df_current))
+        for i in range(len(self.df_current)):
+            if i > voltage_start_index:
+                self.df_current['integral'][i] = np.trapz(self.df_current['value2'].values[voltage_start_index:i],
+                                                          x=self.df_current['time'].values[voltage_start_index:i])
+
         self.df_systron['value'] = np.where(self.df_systron['value'] < 0, 0, self.df_systron['value'])
         self.df_4quick = pd.DataFrame({
             'time': waveform_df['channel_2_time'].values - voltage_timeshift,
