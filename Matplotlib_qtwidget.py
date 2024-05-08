@@ -17,3 +17,6 @@ class Matplotlib_qtwidget(QWidget):
         self.layout.addWidget(NavigationToolbar(self.canvas, self))
         self.layout.addWidget(self.canvas)
         self.setLayout(self.layout)
+
+    def set_data(self, *args, **kwargs):
+        pass

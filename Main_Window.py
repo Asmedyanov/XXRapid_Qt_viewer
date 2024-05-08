@@ -18,6 +18,7 @@ from dict2xml import dict2xml
 import xmltodict
 from Waveform_processing_tab import Waveform_processing_tab
 from TOF_tab import TOF_tab
+from Action_integral_tab import Action_integral_tab
 
 
 class Main_window(QMainWindow):
@@ -53,7 +54,12 @@ class Main_window(QMainWindow):
         self.Additional_window.setCentralWidget(self.Expansion_widget)
 
         self.TOF_tab = TOF_tab()
+        self.TOF_tab.changed.connect(self.On_TOF_tab_changed)
         tab_widget.addTab(self.TOF_tab, "TOF")
+
+        self.Action_integral_tab = Action_integral_tab()
+        self.Action_integral_tab.changed.connect(self.On_Action_integral_tab_changed)
+        tab_widget.addTab(self.Action_integral_tab, 'Action integral')
 
         # Set the tab widget as the central widget
         self.setCentralWidget(tab_widget)
@@ -76,6 +82,13 @@ class Main_window(QMainWindow):
 
         self.main_settings = dict()
         self.init_plots()
+
+    def On_TOF_tab_changed(self):
+        self.Action_integral_tab.set_data(self.TOF_tab.Movement_widget.approximation_dict,
+                                          self.Waveform_processing_tab.Waveform_timing_tab.df_current)
+
+    def On_Action_integral_tab_changed(self):
+        pass
 
     def On_Expansion_widget_changed(self):
         self.TOF_tab.set_data(self.Expansion_widget.expansion_by_cross_section_dict, self.shutter_times,
