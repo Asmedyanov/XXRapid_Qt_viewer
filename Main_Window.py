@@ -19,6 +19,7 @@ import xmltodict
 from Waveform_processing_tab import Waveform_processing_tab
 from TOF_tab import TOF_tab
 from Action_integral_tab import Action_integral_tab
+from J_comsol_widget import J_comsol_widget
 
 
 class Main_window(QMainWindow):
@@ -61,6 +62,10 @@ class Main_window(QMainWindow):
         self.Action_integral_tab.changed.connect(self.On_Action_integral_tab_changed)
         tab_widget.addTab(self.Action_integral_tab, 'Action integral')
 
+        self.J_comsol_widget = J_comsol_widget()
+        self.J_comsol_widget.changed.connect(self.On_J_comsol_widget_changed)
+        tab_widget.addTab(self.J_comsol_widget, 'J_comsol')
+
         # Set the tab widget as the central widget
         self.setCentralWidget(tab_widget)
 
@@ -83,8 +88,12 @@ class Main_window(QMainWindow):
         self.main_settings = dict()
         self.init_plots()
 
+    def On_J_comsol_widget_changed(self):
+        pass
+
     def On_TOF_tab_changed(self):
-        self.Action_integral_tab.set_data(self.TOF_tab.Movement_widget.approximation_dict,
+        pass
+        '''self.Action_integral_tab.set_data(self.TOF_tab.Movement_widget.approximation_dict,
                                           self.Waveform_processing_tab.Waveform_timing_tab.df_current,
                                           {
                                               'Waist': self.info_file_df['Value']['Waist'],
@@ -92,14 +101,18 @@ class Main_window(QMainWindow):
                                               'Length': self.info_file_df['Value']['Length'],
                                               'Width': self.info_file_df['Value']['Width'],
 
-                                          })
+                                          },
+                                          self.J_comsol_widget.ratio_array,
+                                          self.J_comsol_widget.time_array,
+                                          self.J_comsol_widget.width_array)'''
 
     def On_Action_integral_tab_changed(self):
         pass
 
     def On_Expansion_widget_changed(self):
-        self.TOF_tab.set_data(self.Expansion_widget.expansion_by_cross_section_dict, self.shutter_times,
-                              self.Expansion_widget.dx)
+        pass
+        '''self.TOF_tab.set_data(self.Expansion_widget.expansion_by_cross_section_dict, self.shutter_times,
+                              self.Expansion_widget.dx)'''
 
     def On_overlapped_changed(self):
         self.Overlapped_image = self.Four_overlapped_frames_tab.Overlapped_image
@@ -149,6 +162,7 @@ class Main_window(QMainWindow):
         self.update_info()
         self.update_waveform()
         self.update_waveform_processing()
+        self.J_comsol_widget.set_data()
 
         self.update_before()
         self.update_shot()
@@ -160,6 +174,22 @@ class Main_window(QMainWindow):
         self.update_fronting()
         self.Additional_window.show()
         self.udate_expantion()
+        self.TOF_tab.set_data(self.Expansion_widget.expansion_by_cross_section_dict, self.shutter_times,
+                              self.Expansion_widget.dx)
+        self.Action_integral_tab.set_data(self.TOF_tab.Movement_widget.approximation_dict,
+                                          self.Waveform_processing_tab.Waveform_timing_tab.df_current,
+                                          {
+                                              'Waist': self.info_file_df['Value']['Waist'],
+                                              'Thickness': self.info_file_df['Value']['Thickness'],
+                                              'Length': self.info_file_df['Value']['Length'],
+                                              'Width': self.info_file_df['Value']['Width'],
+
+                                          },
+                                          self.J_comsol_widget.ratio_array,
+                                          self.J_comsol_widget.time_array,
+                                          self.J_comsol_widget.width_array)
+
+
 
     def update_single_camera(self):
         self.Single_camera_tab.set_data(self.before_image_array, self.shot_image_array)

@@ -5,6 +5,9 @@ from Explosion_current_density_widget import Explosion_current_density_widget
 from Action_integral_widget import Action_integral_widget
 
 
+# from J_comsol_widget import J_comsol_widget
+
+
 class Action_integral_tab(QTabWidget):
     changed = pyqtSignal()
 
@@ -22,6 +25,13 @@ class Action_integral_tab(QTabWidget):
         self.Action_integral_widget.changed.connect(self.On_Action_integral_widget_changed)
         self.addTab(self.Action_integral_widget, 'Action integral')
 
+        '''self.J_comsol_widget = J_comsol_widget()
+        self.J_comsol_widget.changed.connect(self.On_J_comsol_widget_changed)
+        self.addTab(self.J_comsol_widget, 'J_comsol')'''
+
+    def On_J_comsol_widget_changed(self):
+        pass
+
     def On_Explosion_current_widget_changed(self):
         self.Explosion_current_density_widget.set_data(self.Explosion_current_widget.explosion_current_dict,
                                                        self.geometry_dict)
@@ -32,8 +42,22 @@ class Action_integral_tab(QTabWidget):
     def On_Action_integral_widget_changed(self):
         pass
 
-    def set_data(self, explosion_time_dict, df_current, geometry_dict):
+    def set_data(self,
+                 explosion_time_dict,
+                 df_current,
+                 geometry_dict,
+                 ratio_array,
+                 time_array,
+                 width_array
+                 ):
         self.geometry_dict = geometry_dict
         self.Explosion_current_widget.set_data(explosion_time_dict, df_current)
-        self.Action_integral_widget.set_data(explosion_time_dict, df_current, geometry_dict)
+        self.Action_integral_widget.set_data(explosion_time_dict,
+                                             df_current,
+                                             geometry_dict,
+                                             ratio_array,
+                                             time_array,
+                                             width_array
+                                             )
+        # self.J_comsol_widget.set_data()
         self.changed.emit()
