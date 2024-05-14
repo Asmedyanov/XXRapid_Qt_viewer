@@ -32,14 +32,15 @@ class Four_overlapped_frames(Matplotlib_qtwidget):
 
     def set_data(self, before_image_array, shot_image_array, dx):
         self.dx = dx
+        sigma = 1.5
         overlapped_list = []
         for i in range(before_image_array.shape[0]):
-            before_image = gaussian_filter(before_image_array[i], sigma=1)
-            shot_image = gaussian_filter(shot_image_array[i], sigma=1)
+            before_image = gaussian_filter(before_image_array[i], sigma=sigma)
+            shot_image = gaussian_filter(shot_image_array[i], sigma=sigma)
             overlapped = np.where(shot_image > before_image, 1, shot_image / before_image)
             mask = np.where(before_image <= before_image.mean(), 0, 1)
             overlapped = overlapped * mask
-            overlapped = gaussian_filter(overlapped, sigma=2)
+            overlapped = gaussian_filter(overlapped, sigma=sigma)
             overlapped_list.append(overlapped)
         self.Overlapped_image = np.array(overlapped_list)
         self.redraw()

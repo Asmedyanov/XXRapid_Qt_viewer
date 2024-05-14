@@ -33,18 +33,20 @@ class Movement_widget(Quart_plots_widget):
                 expansion_data = []
 
                 for k in range(8):
-                    if expansion_by_cross_section_dict[key][j][k] == 0:
+                    if expansion_by_cross_section_dict[key][j][k] <= 0:
+
                         try:
-                            if expansion_by_cross_section_dict[key][j + 1][k] == 0:
+                            if expansion_by_cross_section_dict[key][j][k + 1] == 0:
                                 continue
                         except:
                             continue
                     t_data.append(shutter_times[k])
                     expansion_data.append(expansion_by_cross_section_dict[key][j][k])
-                if len(t_data) < 2:
+                if len(t_data) < 6:
                     continue
-                line_poly_coef, res, _, _, _ = np.polyfit(t_data, expansion_data, 1, full=True)
-                line_poly_func = np.poly1d(line_poly_coef)
+                w = np.arange(len(t_data)) + 0.5*len(t_data)
+                w = w / np.sum(w)
+                line_poly_coef, res, _, _, _ = np.polyfit(t_data, expansion_data, 1, full=True, w=w)
 
                 perr = np.sqrt(np.sum(res))
                 velocity = line_poly_coef[0]
@@ -58,6 +60,7 @@ class Movement_widget(Quart_plots_widget):
 
                 if j in [0, cross_section_number // 2, cross_section_number - 1]:
                     t_approx = np.arange(onset_time, shutter_times[-1], np.gradient(shutter_times).mean() / 10)
+                    line_poly_func = np.poly1d(line_poly_coef)
                     poly_y_data = line_poly_func(t_approx)
                     if j == 0:
                         self.plot_by_quarts[key][0][1].set_data(t_approx * 1.0e6, poly_y_data)

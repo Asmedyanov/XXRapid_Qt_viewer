@@ -46,18 +46,16 @@ class Action_integral_tab(QTabWidget):
                  explosion_time_dict,
                  df_current,
                  geometry_dict,
-                 ratio_array,
-                 time_array,
-                 width_array
+                 ratio_df_list,
+                 possible_width
                  ):
         self.geometry_dict = geometry_dict
         self.Explosion_current_widget.set_data(explosion_time_dict, df_current)
         self.Action_integral_widget.set_data(explosion_time_dict,
                                              df_current,
                                              geometry_dict,
-                                             ratio_array,
-                                             time_array,
-                                             width_array
+                                             ratio_df_list,
+                                             possible_width
                                              )
         # self.J_comsol_widget.set_data()
         self.changed.emit()

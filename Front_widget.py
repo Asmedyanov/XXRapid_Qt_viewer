@@ -43,7 +43,12 @@ class Front_widget(Matplotlib_qtwidget):
         self.profile_x = int(event.xdata)
         self.Front_line.set_data([self.profile_x, self.profile_x], [0, self.image_hight])
         intensity_profile = self.image_array[:, self.profile_x]
+        intensity_gradient = np.gradient(intensity_profile)
+        intensity_gradient = np.where(intensity_gradient < 0, -intensity_gradient, 0)
+        intensity_gradient /= intensity_gradient.max()
         self.Intensity_line.set_data(np.arange(intensity_profile.size), intensity_profile)
+        self.Intensity_gradient_line.set_data(np.arange(intensity_gradient.size), intensity_gradient)
+
 
         self.figure.canvas.draw()
 
@@ -72,6 +77,9 @@ class Front_widget(Matplotlib_qtwidget):
             self.intensity_level = float(base_dict['intensity_level'])
 
         intensity_profile = self.image_array[:, self.profile_x]
+        intensity_gradient = np.gradient(intensity_profile)
+        intensity_gradient = np.where(intensity_gradient < 0, -intensity_gradient, 0)
+        intensity_gradient /= intensity_gradient.max()
         try:
             self.Front_line.set_data([self.profile_x, self.profile_x], [0, self.image_hight])
 
@@ -79,12 +87,14 @@ class Front_widget(Matplotlib_qtwidget):
             self.Front_line, = self.ax[0].plot([self.profile_x, self.profile_x], [0, self.image_hight], 'o-r')
         try:
             self.Intensity_line.set_data(np.arange(intensity_profile.size), intensity_profile)
+            self.Intensity_gradient_line.set_data(np.arange(intensity_gradient.size), intensity_gradient)
         except:
-            self.Intensity_line, = self.ax[1].plot(np.arange(intensity_profile.size),
-                                                   intensity_profile)
+            self.Intensity_line, = self.ax[1].plot(np.arange(intensity_profile.size), intensity_profile)
+            self.Intensity_gradient_line, = self.ax[1].plot(np.arange(intensity_gradient.size), intensity_gradient)
             pass
         try:
             self.intensity_level_line.set_data([0, self.image_hight], [self.intensity_level, self.intensity_level])
+
         except:
             self.intensity_level_line, = self.ax[1].plot([0, self.image_hight],
                                                          [self.intensity_level, self.intensity_level], 'o-r')

@@ -185,11 +185,9 @@ class Main_window(QMainWindow):
                                               'Width': self.info_file_df['Value']['Width'],
 
                                           },
-                                          self.J_comsol_widget.ratio_array,
-                                          self.J_comsol_widget.time_array,
-                                          self.J_comsol_widget.width_array)
-
-
+                                          self.J_comsol_widget.finit_list,
+                                          self.J_comsol_widget.possible_width,
+                                          )
 
     def update_single_camera(self):
         self.Single_camera_tab.set_data(self.before_image_array, self.shot_image_array)
