@@ -1,7 +1,7 @@
 import sys
 import qdarktheme
 import matplotlib.pyplot as plt
-plt.style.use('dark_background')
+#plt.style.use('dark_background')
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QVBoxLayout, QWidget, QAction, QFileDialog, QShortcut
 

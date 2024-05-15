@@ -11,7 +11,8 @@ class Action_integral_widget(Quart_plots_widget):
         self.explosion_h_dict = dict()
         for i in range(4):
             key = f'Quart_{i + 1}'
-            self.ax[i].set(xlabel='j,$10^8 A/cm^2$', ylabel='h, $10^9 A^2*s/cm^4$')
+            # self.ax[i].set(xlabel='j,$10^8 A/cm^2$', ylabel='h, $10^9 A^2*s/cm^4$')
+            self.ax[i].set(xlabel='x, mm', ylabel='j,$10^8 A/cm^2$')
             self.plot_by_quarts[key], = self.ax[i].plot([0, 0], [0, 0], 'o')
 
     def cross_section(self, z):
@@ -44,18 +45,17 @@ class Action_integral_widget(Quart_plots_widget):
             ret = np.interp(t, df_current['time'], df_current['integral'])
             return ret
 
-        '''def f_ratio(w, t):
-
-            w_array = np.abs(np.array(possible_width) - w)
-            i = np.argmin(w_array)
-            df = ratio_df_list[i]
-            t_array = np.abs(df['time'].values - t)
-            j = np.argmin(t_array)
-            ratio = df['ratio'].values[j]
-            
+        def f_ratio(w, t):
+            deleta_0 = 3e-3  # mm
+            mu_0 = 1.3e-6
+            rho = 8.9e3  # kg/m^3
+            B = mu_0 * f_current(t) / w / 1.0e-3 / 2
+            delta_1 = B / np.sqrt(mu_0 * rho) * 1.0e3  # mm/s
+            delta = deleta_0 + t * delta_1
+            ratio = w / delta / 2 / np.tanh(w / delta / 2)
             return ratio
 
-        f_ratio_vect = np.vectorize(f_ratio, excluded='w')'''
+        f_ratio_vect = np.vectorize(f_ratio, excluded='w')
 
         def j_ratio_local(t, w):
             return j_ratio(t, w, h=self.h_foil, t_0=df_current['time'].max())
@@ -70,9 +70,14 @@ class Action_integral_widget(Quart_plots_widget):
             integral_data = f_integral(t_data)
             S_data = self.cross_section(x_data * 1.0e3)
             w_data = S_data / self.h_foil
-            w_max = self.w_foil
+            deleta_0 = 3e-3  # mm
+            mu_0 = 1.3e-6
+            rho = 8.9e3  # kg/m^3
+            B = mu_0 * current_data / w_data / 1.0e-3 / 2
+            delta_1 = B / np.sqrt(mu_0 * rho)*1.0e3  # mm/s
+            delta = deleta_0 + t_data * delta_1
 
-            j_ratio_data = w_max/w_data / np.tanh(w_data / w_max / 2)
+            j_ratio_data = w_data / delta / 2 / np.tanh(w_data / delta / 2)
 
             j_data = current_data / S_data * j_ratio_data
             h_data = integral_data / S_data ** 2 * j_ratio_data ** 2
@@ -107,8 +112,8 @@ class Action_integral_widget(Quart_plots_widget):
                 }
 
             )
-            # self.plot_by_quarts[key].set_data(j_coef_data * 1.0e-6, h_coef_data * 1.0e-5)
-            self.plot_by_quarts[key].set_data(j_data*1.0e-6, h_data*1.0e-5)
+            self.plot_by_quarts[key].set_data(x_data * 1.0e3, j_data * 1.0e-6)
+            # self.plot_by_quarts[key].set_data(j_data * 1.0e-6, h_data * 1.0e-5)
             self.ax[i].relim()
             self.ax[i].autoscale_view()
         self.figure.canvas.draw()
