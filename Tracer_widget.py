@@ -1,9 +1,9 @@
-from Matplotlib_qtwidget import Matplotlib_qtwidget
+from MatplotlibQWidget import MatplotlibQWidget
 
 
 
 
-class Tracer_widget(Matplotlib_qtwidget):
+class Tracer_widget(MatplotlibQWidget):
     def __init__(self):
         super().__init__()
         self.ax = self.figure.add_subplot(111)

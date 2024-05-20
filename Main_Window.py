@@ -4,8 +4,8 @@ from MPL_tab import MPL_tab
 from PyQt5.QtGui import QKeySequence
 import os
 import pandas as pd
-from rtv_reader import open_rtv
-from Waveform_tab import Waveform_tab
+from rtv_reader import *
+from WaveformOriginalQWidget import *
 from Single_camera_tab import Single_camera_tab
 from Eight_frames_tab import Eight_frames
 from Four_overlapped_frames_tab import Four_overlapped_frames
@@ -16,13 +16,13 @@ from Histogram_tab import Histogram_tab
 from scipy import ndimage
 from dict2xml import dict2xml
 import xmltodict
-from Waveform_processing_tab import Waveform_processing_tab
+from WaveformProcessingWidget import *
 from TOF_tab import TOF_tab
 from Action_integral_tab import Action_integral_tab
 from J_comsol_widget import J_comsol_widget
 
 
-class Main_window(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("XXRapid_Qt_viewer")
@@ -31,40 +31,40 @@ class Main_window(QMainWindow):
         # Create a tab widget
         tab_widget = QTabWidget(self)
 
-        self.Waveform_tab = Waveform_tab()
+        self.Waveform_tab = WaveformOriginalQWidget()
         tab_widget.addTab(self.Waveform_tab, "Waveform original")
-        self.Waveform_processing_tab = Waveform_processing_tab()
+        self.Waveform_processing_tab = WaveformProcessingWidget()
         tab_widget.addTab(self.Waveform_processing_tab, "Waveform processing")
         self.Waveform_processing_tab.changed.connect(self.On_waveform_processing_changed)
-        self.Single_camera_tab = Single_camera_tab()
-        tab_widget.addTab(self.Single_camera_tab, "Single camera")
+        '''self.Single_camera_tab = Single_camera_tab()
+        tab_widget.addTab(self.Single_camera_tab, "Single camera")'''
 
         '''self.Eight_frames_tab = Eight_frames()
         tab_widget.addTab(self.Eight_frames_tab, "8 frames")'''
-        self.Four_overlapped_frames_tab = Four_overlapped_frames()
+        '''self.Four_overlapped_frames_tab = Four_overlapped_frames()
         self.Four_overlapped_frames_tab.changed.connect(self.On_overlapped_changed)
-        tab_widget.addTab(self.Four_overlapped_frames_tab, "4 overlapped frames")
+        tab_widget.addTab(self.Four_overlapped_frames_tab, "4 overlapped frames")'''
 
-        self.Fronting_tab = Fronting()
+        '''self.Fronting_tab = Fronting()
         self.Fronting_tab.changed.connect(self.On_fronting_changed)
-        tab_widget.addTab(self.Fronting_tab, "Fronting")
+        tab_widget.addTab(self.Fronting_tab, "Fronting")'''
 
-        self.Expansion_widget = Expansion_widget()
+        '''self.Expansion_widget = Expansion_widget()
         self.Expansion_widget.changed.connect(self.On_Expansion_widget_changed)
         self.Additional_window = QMainWindow()
-        self.Additional_window.setCentralWidget(self.Expansion_widget)
+        self.Additional_window.setCentralWidget(self.Expansion_widget)'''
 
-        self.TOF_tab = TOF_tab()
+        '''self.TOF_tab = TOF_tab()
         self.TOF_tab.changed.connect(self.On_TOF_tab_changed)
-        tab_widget.addTab(self.TOF_tab, "TOF")
+        tab_widget.addTab(self.TOF_tab, "TOF")'''
 
-        self.Action_integral_tab = Action_integral_tab()
+        '''self.Action_integral_tab = Action_integral_tab()
         self.Action_integral_tab.changed.connect(self.On_Action_integral_tab_changed)
-        tab_widget.addTab(self.Action_integral_tab, 'Action integral')
+        tab_widget.addTab(self.Action_integral_tab, 'Action integral')'''
 
-        self.J_comsol_widget = J_comsol_widget()
+        '''self.J_comsol_widget = J_comsol_widget()
         self.J_comsol_widget.changed.connect(self.On_J_comsol_widget_changed)
-        tab_widget.addTab(self.J_comsol_widget, 'J_comsol')
+        tab_widget.addTab(self.J_comsol_widget, 'J_comsol')'''
 
         # Set the tab widget as the central widget
         self.setCentralWidget(tab_widget)
@@ -124,7 +124,8 @@ class Main_window(QMainWindow):
         self.Additional_window.show()
 
     def closeEvent(self, event):
-        self.Additional_window.close()
+        pass
+        '''self.Additional_window.close()
         qm = QMessageBox.question(self, 'Save update', 'Save update?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if qm == QMessageBox.No:
             return
@@ -133,7 +134,7 @@ class Main_window(QMainWindow):
             fronting_file.write(dict2xml({'Camera data': self.Fronting_tab.Frame_data_dict}))
             fronting_file.close()
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
     def On_fronting_changed(self):
         self.udate_expantion()
@@ -162,7 +163,7 @@ class Main_window(QMainWindow):
         self.update_info()
         self.update_waveform()
         self.update_waveform_processing()
-        self.J_comsol_widget.set_data()
+        '''self.J_comsol_widget.set_data()
 
         self.update_before()
         self.update_shot()
@@ -175,7 +176,24 @@ class Main_window(QMainWindow):
         self.Additional_window.show()
         self.udate_expantion()
         self.TOF_tab.set_data(self.Expansion_widget.expansion_by_cross_section_dict, self.shutter_times,
-                              self.Expansion_widget.dx)
+                              self.Expansion_widget.dx)'''
+
+        '''def cross_section(z):
+            """
+            The function to calculate the foil cross-section in direction of the current z
+            :param z:
+            distance from the butterfly waist in direction of current in mm
+            :return:
+            cross-section of the foil in square mm
+            """
+            s = 0.5 * self.info_file_df['Value']['Waist'] + (
+                    self.info_file_df['Value']['Width'] - self.info_file_df['Value']['Waist']) * z / \
+                self.info_file_df['Value']['Length']
+            return 2 * s# * self.info_file_df['Value']['Thickness']
+
+        for my_key, df in self.TOF_tab.Movement_widget.approximation_dict.items():
+            df['w(x)'] = cross_section(df['x'] * 1e3)
+            df.to_csv(f'SW_onset_{my_key}.csv')
         self.Action_integral_tab.set_data(self.TOF_tab.Movement_widget.approximation_dict,
                                           self.Waveform_processing_tab.Waveform_timing_tab.df_current,
                                           {
@@ -187,13 +205,13 @@ class Main_window(QMainWindow):
                                           },
                                           self.J_comsol_widget.finit_list,
                                           self.J_comsol_widget.possible_width,
-                                          )
+                                          )'''
 
     def update_single_camera(self):
         self.Single_camera_tab.set_data(self.before_image_array, self.shot_image_array)
 
     def update_waveform_processing(self):
-        self.Waveform_processing_tab.set_data(self.Waveform_tab.waveform_dict, self.info_file_df)
+        self.Waveform_processing_tab.set_data(self.Waveform_tab.ChannelDFDict, self.info_file_df)
 
     def udate_expantion(self):
         try:

@@ -1,6 +1,6 @@
-from Matplotlib_qtwidget import Matplotlib_qtwidget
+from MatplotlibQWidget import MatplotlibQWidget
 
-class Separator_widget(Matplotlib_qtwidget):
+class Separator_widget(MatplotlibQWidget):
 
     def __init__(self):
         super().__init__()

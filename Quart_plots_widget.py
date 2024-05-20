@@ -1,7 +1,7 @@
-from Matplotlib_qtwidget import Matplotlib_qtwidget
+from MatplotlibQWidget import MatplotlibQWidget
 
 
-class Quart_plots_widget(Matplotlib_qtwidget):
+class Quart_plots_widget(MatplotlibQWidget):
     def __init__(self):
         super().__init__()
         gs = self.figure.add_gridspec(ncols=4)

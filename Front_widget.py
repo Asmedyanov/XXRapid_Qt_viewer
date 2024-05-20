@@ -1,11 +1,11 @@
-from Matplotlib_qtwidget import Matplotlib_qtwidget
+from MatplotlibQWidget import MatplotlibQWidget
 import numpy as np
 from PyQt5.QtCore import pyqtSignal
 from scipy.optimize import curve_fit
 from Approx_functions import *
 
 
-class Front_widget(Matplotlib_qtwidget):
+class Front_widget(MatplotlibQWidget):
     line_signal = pyqtSignal()
 
     def __init__(self, parent, approx='my'):

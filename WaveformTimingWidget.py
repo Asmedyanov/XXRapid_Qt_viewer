@@ -1,10 +1,10 @@
-from Matplotlib_qtwidget import Matplotlib_qtwidget
+from MatplotlibQWidget import MatplotlibQWidget
 import numpy as np
 import pandas as pd
 from scipy.signal import find_peaks
 
 
-class Waveform_timing_tab(Matplotlib_qtwidget):
+class WaveformTimingWidget(MatplotlibQWidget):
     def __init__(self):
         super().__init__()
         t = np.arange(0, 2.0 * np.pi, 0.1)
@@ -27,16 +27,17 @@ class Waveform_timing_tab(Matplotlib_qtwidget):
             'Systron': self.ax_1.plot(x * 2, y * 2, label=f'Systron')[0],
             'U': self.ax_3.plot(x * 4, y * 4, 'b', label=f'U')[0],
             '4Quick': self.ax_2.plot(x * 3, y * 3, 'r', label=f'4Quick')[0],
-            '4Quick_peak': self.ax_2.plot(x * 3, y * 3, 'og', label=f'4Quick')[0]
+            '4Quick_peak': self.ax_2.plot(x * 3, y * 3, 'og', label=f'4Quick')[0],
+            '4Quick_original': self.ax_2.plot(x * 3, y * 3, label=f'4Quick')[0]
         }
 
-    def set_data(self, waveform_df, info_df):
+    def set_data(self, waveform_df, df_4quick, info_df):
         self.df_voltage = pd.DataFrame({
             'time': waveform_df['channel_3_time'].values,
             'value': waveform_df['channel_3'].values * float(info_df['Value']['Tektronix'])
         })
         voltage_start_index = np.argwhere(
-            np.abs(self.df_voltage['value']) > 2*np.max(np.abs(
+            np.abs(self.df_voltage['value']) > 2 * np.max(np.abs(
                 self.df_voltage['value'].values[np.argwhere(self.df_voltage['time'].values < 0)]))).min()
         voltage_timeshift = self.df_voltage['time'].values[voltage_start_index]
         self.df_voltage['time'] -= voltage_timeshift
@@ -49,6 +50,8 @@ class Waveform_timing_tab(Matplotlib_qtwidget):
 
         })
         self.df_current['value'] = np.where(self.df_current['value'] < 0, 0, self.df_current['value'])
+        self.df_current['time [us]'] = self.df_current['time'] * 1e6
+        self.df_current.to_csv('Current.csv')
         self.df_systron = pd.DataFrame({
             'time': waveform_df['channel_1_time'].values - voltage_timeshift,
             'value': waveform_df['channel_1'].values
@@ -85,6 +88,8 @@ class Waveform_timing_tab(Matplotlib_qtwidget):
         self.waveform_plots_dict['4Quick'].set_data(self.df_4quick['time'][voltage_start_index:index_end] * 1.0e6,
                                                     self.df_4quick['value'][voltage_start_index:index_end])
         self.waveform_plots_dict['4Quick_peak'].set_data(self.peak_time * 1.0e6, self.peak_4quick)
+        self.waveform_plots_dict['4Quick_original'].set_data((df_4quick['time'] - voltage_timeshift)[voltage_start_index:index_end] * 1.0e6,
+                                                             df_4quick['signal'][voltage_start_index:index_end])
         self.waveform_plots_dict['U'].set_data(self.df_voltage['time'][voltage_start_index:index_end] * 1.0e6,
                                                self.df_voltage['value'][voltage_start_index:index_end] * 1.0e-3)
 

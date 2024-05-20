@@ -1,7 +1,7 @@
-from Matplotlib_qtwidget import Matplotlib_qtwidget
+from MatplotlibQWidget import MatplotlibQWidget
 
 
-class Single_camera_widget(Matplotlib_qtwidget):
+class Single_camera_widget(MatplotlibQWidget):
     def __init__(self):
         super().__init__()
         # Create a Matplotlib figure and axis

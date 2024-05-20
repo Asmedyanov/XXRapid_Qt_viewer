@@ -1,9 +1,9 @@
-from Matplotlib_qtwidget import Matplotlib_qtwidget
+from MatplotlibQWidget import MatplotlibQWidget
 import numpy as np
 from scipy.ndimage import gaussian_filter
 
 
-class Four_overlapped_frames(Matplotlib_qtwidget):
+class Four_overlapped_frames(MatplotlibQWidget):
     def __init__(self):
         super().__init__()
         gs = self.figure.add_gridspec(ncols=4)

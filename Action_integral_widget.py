@@ -36,6 +36,7 @@ class Action_integral_widget(Quart_plots_widget):
         self.h_foil = geometry_dict['Thickness']
         self.l_foil = geometry_dict['Length']
         self.w_foil = geometry_dict['Width']
+        self.possible_width = np.array(possible_width)
 
         def f_current(t):
             ret = np.interp(t, df_current['time'], df_current['value'])
@@ -46,13 +47,18 @@ class Action_integral_widget(Quart_plots_widget):
             return ret
 
         def f_ratio(w, t):
-            deleta_0 = 3e-3  # mm
+            '''deleta_0 = 3e-3  # mm
             mu_0 = 1.3e-6
             rho = 8.9e3  # kg/m^3
             B = mu_0 * f_current(t) / w / 1.0e-3 / 2
             delta_1 = B / np.sqrt(mu_0 * rho) * 1.0e3  # mm/s
             delta = deleta_0 + t * delta_1
-            ratio = w / delta / 2 / np.tanh(w / delta / 2)
+            ratio = w / delta / 2 / np.tanh(w / delta / 2)'''
+            index_w = np.argmin(np.abs(self.possible_width - w))
+            t_data = ratio_df_list[index_w]['time'].values
+            t_index = np.argmin(np.abs(t_data - t))
+            ratio = ratio_df_list[index_w]['ratio'].values[t_index]
+
             return ratio
 
         f_ratio_vect = np.vectorize(f_ratio, excluded='w')
@@ -70,14 +76,14 @@ class Action_integral_widget(Quart_plots_widget):
             integral_data = f_integral(t_data)
             S_data = self.cross_section(x_data * 1.0e3)
             w_data = S_data / self.h_foil
-            deleta_0 = 3e-3  # mm
+            deleta_0 = 130e-3  # mm
             mu_0 = 1.3e-6
             rho = 8.9e3  # kg/m^3
             B = mu_0 * current_data / w_data / 1.0e-3 / 2
-            delta_1 = B / np.sqrt(mu_0 * rho)*1.0e3  # mm/s
+            delta_1 = 2 * 4.7e6  # B / np.sqrt(mu_0 * rho) * 1.0e3  # mm/s
             delta = deleta_0 + t_data * delta_1
 
-            j_ratio_data = w_data / delta / 2 / np.tanh(w_data / delta / 2)
+            j_ratio_data = f_ratio_vect(w_data, t_data)  # w_data / delta / 2 / np.tanh(w_data / delta / 2)
 
             j_data = current_data / S_data * j_ratio_data
             h_data = integral_data / S_data ** 2 * j_ratio_data ** 2
