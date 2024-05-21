@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QTabWidget
 from PyQt5.QtCore import pyqtSignal
 from WaveformSmoothingWidget import WaveformSmoothingWidget
-from WaveformTimingWidget import WaveformTimingWidget
+from WaveformTimingQWidget import WaveformTimingQWidget
 from WaveformChannelsTab import WaveformChannelsTab
 
 
@@ -20,9 +20,12 @@ class WaveformProcessingWidget(QTabWidget):
             self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict, self.SettingsDict['Waveform_channels'])
         self.WaveformChannelsTab.changed.connect(self.OnWaveformChannelsTabChanged)
         self.addTab(self.WaveformChannelsTab, 'Waveform channels')
+        self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict)
+        self.addTab(self.WaveformTimingQWidget, 'Waveform timing')
 
     def OnWaveformChannelsTabChanged(self):
         self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
+        self.WaveformTimingQWidget.set_data(self.WaveformChannelsTab.PhysicalDFDict)
         self.changed.emit()
 
     def On_waveform_timing_changed(self):
