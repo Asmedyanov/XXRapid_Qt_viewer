@@ -19,6 +19,12 @@ class ChannelQWidget(QWidget):
         self.MainMatplotlibQWidget = MatplotlibQWidget()
         self.MainQHBoxLayout.addWidget(self.MainMatplotlibQWidget)
         self.ChannelSettingsQWidget = ChannelSettingsQWidget(settings_dict)
+
+        self.df_scaled = pd.DataFrame({
+            'time': self.df_original['time'],
+            'Units': self.df_original[
+                         'Volts'] * self.ChannelSettingsQWidget.Coefficient + self.ChannelSettingsQWidget.Shift
+        })
         self.SettingsDict = self.ChannelSettingsQWidget.SettingsDict
         self.ChannelSettingsQWidget.changed.connect(self.OnChannelSettingsQWidgetChanged)
 
@@ -27,28 +33,34 @@ class ChannelQWidget(QWidget):
         self.Axis = self.MainMatplotlibQWidget.figure.add_subplot(111)
         self.Axis.set(
             xlabel='t, s',
-            ylabel='U, V'
+            ylabel='Units'
         )
         self.dt = np.mean(np.gradient(self.df_original['time']))
         self.NSmooth = int(self.ChannelSettingsQWidget.TauSmooth / self.dt)
 
-        self.df_smoothed = self.df_original.rolling(self.NSmooth, min_periods=1).mean()
+        self.df_smoothed = self.df_scaled.rolling(self.NSmooth, min_periods=1).mean()
 
-        self.OriginalPlot, = self.Axis.plot(self.df_original['time'],
-                                            self.df_original['Volts'], label='Original')
+        self.ScaledPlot, = self.Axis.plot(self.df_scaled['time'],
+                                          self.df_scaled['Units'], label='Original')
         self.SmoothedPlot, = self.Axis.plot(self.df_smoothed['time'],
-                                            self.df_smoothed['Volts'], label='Smoothed')
+                                            self.df_smoothed['Units'], label='Smoothed')
 
         self.Axis.legend()
 
     def OnChannelSettingsQWidgetChanged(self):
         nsmooth = int(self.ChannelSettingsQWidget.TauSmooth / self.dt)
-        self.df_smoothed = self.df_original.rolling(nsmooth, min_periods=1).mean()
+        self.df_scaled['Units'] = self.df_original[
+                                      'Volts'] * self.ChannelSettingsQWidget.Coefficient + self.ChannelSettingsQWidget.Shift
+        self.df_smoothed = self.df_scaled.rolling(nsmooth, min_periods=1).mean()
         self.SettingsDict = self.ChannelSettingsQWidget.SettingsDict
 
         self.SmoothedPlot.set_data(
             self.df_smoothed['time'],
-            self.df_smoothed['Volts']
+            self.df_smoothed['Units']
+        )
+        self.ScaledPlot.set_data(
+            self.df_scaled['time'],
+            self.df_scaled['Units']
         )
         self.Axis.relim()
         self.Axis.autoscale_view()

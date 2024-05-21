@@ -26,9 +26,15 @@ class ChannelSettingsQWidget(QWidget):
                 comment='ns'
             )
             self.SettingsDict['Smoothing'] = self.SmoothingSettingsQWidget.value
+            self.ShiftSettingsQWidget = MySettingsQWidget(
+                name='Shift',
+                default=0,
+                comment='Unit'
+            )
+            self.SettingsDict['Shift'] = self.ShiftSettingsQWidget.value
             self.CoefficientSettingsQWidget = MySettingsQWidget(
                 name='Coefficient',
-                default=300,
+                default=1,
                 comment='Unit/Volt'
             )
             self.SettingsDict['Coefficient'] = self.CoefficientSettingsQWidget.value
@@ -47,6 +53,11 @@ class ChannelSettingsQWidget(QWidget):
                 default=self.SettingsDict['Smoothing'],
                 comment='ns'
             )
+            self.ShiftSettingsQWidget = MySettingsQWidget(
+                name='Shift',
+                default=self.SettingsDict['Shift'],
+                comment='Unit'
+            )
             self.CoefficientSettingsQWidget = MySettingsQWidget(
                 name='Coefficient',
                 default=self.SettingsDict['Coefficient'],
@@ -64,6 +75,15 @@ class ChannelSettingsQWidget(QWidget):
         self.Coefficient = self.CoefficientSettingsQWidget.value
         self.CoefficientSettingsQWidget.changed.connect(self.OnCoefficientSettingsQWidgetChanged)
         self.QVBoxLayout.addWidget(self.CoefficientSettingsQWidget)
+
+        self.Shift = self.ShiftSettingsQWidget.value
+        self.ShiftSettingsQWidget.changed.connect(self.OnShiftSettingsQWidgetChanged)
+        self.QVBoxLayout.addWidget(self.ShiftSettingsQWidget)
+
+    def OnShiftSettingsQWidgetChanged(self):
+        self.Shift = self.ShiftSettingsQWidget.value
+        self.SettingsDict['Shift'] = self.ShiftSettingsQWidget.value
+        self.changed.emit()
 
     def OnDiagnosticsSettingsQWidgetChanged(self):
         self.Diagnostics = self.DiagnosticsSettingsQWidget.value

@@ -1,4 +1,3 @@
-from PyQt5.QtWidgets import QTabWidget
 from WaveformOriginalQWidget import *
 from WaveformProcessingWidget import *
 import os
