@@ -5,11 +5,9 @@ from MatplotlibQWidget import *
 
 
 class WaveformOriginalQWidget(MatplotlibQWidget):
-    def __init__(self):
+    def __init__(self, filename='Default_shot/shot57.csv'):
         super().__init__()
-        t = np.arange(0, 2.0 * np.pi, 0.1)
-        x = np.cos(t)
-        y = np.sin(t)
+        self.filename = filename
         self.ax = self.figure.add_subplot(111)
         self.ax.set(
             xlabel='t, sec',
@@ -17,15 +15,25 @@ class WaveformOriginalQWidget(MatplotlibQWidget):
             title='Waveform original'
         )
         self.waveform_plots_dict = dict()
-        '''for i in range(4):
-            self.waveform_plots_dict[f'channel_{i}'], = self.ax.plot(
-                x * (i + 1),
-                y * (i + 1),
-                label=f'channel_{i}')'''
-
-        self.waveform_dict = dict()
+        df = pd.read_csv(self.filename)
         self.NChannels = 0
         self.ChannelDFDict = dict()
+        for key in df.columns:
+            if key.startswith('s'):
+                self.ChannelDFDict[f'Channel_{self.NChannels + 1}'] = pd.DataFrame({'time': df[key]})
+            if key.startswith('Volts'):
+                self.ChannelDFDict[f'Channel_{self.NChannels + 1}']['Volts'] = df[key]
+                self.NChannels += 1
+
+        for mykey, myChannelDF in self.ChannelDFDict.items():
+            self.waveform_plots_dict[mykey], = self.ax.plot(
+                    myChannelDF['time'],
+                    myChannelDF['Volts'],
+                    label=mykey
+                )
+            self.ax.legend()
+
+
 
     def set_data(self, df):
         self.NChannels = 0

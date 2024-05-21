@@ -5,9 +5,12 @@ from ChannelQWidget import ChannelQWidget
 
 
 class WaveformChannelsTab(QTabWidget):
-    def __init__(self):
+    def __init__(self, channel_df_dict):
         super().__init__()
         self.ChannelQWidgetDict = dict()
+        for my_key, my_df in channel_df_dict.items():
+            self.ChannelQWidgetDict[my_key] = ChannelQWidget(my_df)
+            self.addTab(self.ChannelQWidgetDict[my_key], my_key)
 
     def set_data(self, channel_df_dict):
         for my_key, my_df in channel_df_dict.items():

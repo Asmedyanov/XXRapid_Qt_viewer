@@ -8,14 +8,10 @@ from WaveformChannelsTab import WaveformChannelsTab
 class WaveformProcessingWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, channel_df_dict):
         super().__init__()
-        '''self.Waveform_smoothing_tab = WaveformSmoothingWidget()
-        self.addTab(self.Waveform_smoothing_tab, 'Waveform smoothing')
-        self.Waveform_timing_tab = WaveformTimingWidget()
-        self.addTab(self.Waveform_timing_tab, 'Waveform timing')
-        self.Waveform_timing_tab.changed.connect(self.On_waveform_timing_changed)'''
-        self.WaveformChannelsTab = WaveformChannelsTab()
+        self.ChannelDFDict = channel_df_dict
+        self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict)
         self.addTab(self.WaveformChannelsTab, 'Waveform channels')
 
     def On_waveform_timing_changed(self):

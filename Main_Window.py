@@ -20,6 +20,7 @@ from WaveformProcessingWidget import *
 from TOF_tab import TOF_tab
 from Action_integral_tab import Action_integral_tab
 from J_comsol_widget import J_comsol_widget
+from ExperimentQWidget import *
 
 
 class MainWindow(QMainWindow):
@@ -29,14 +30,18 @@ class MainWindow(QMainWindow):
         # self.setGeometry(100, 100, 800, 600)
 
         # Create a tab widget
-        tab_widget = QTabWidget(self)
+        self.tab_widget = QTabWidget(self)
+        self.ExperimentQWidgetDict = {
+            'Default': ExperimentQWidget()
+        }
+        self.tab_widget.addTab(self.ExperimentQWidgetDict['Default'], 'Default')
 
-        self.Waveform_tab = WaveformOriginalQWidget()
+        '''self.Waveform_tab = WaveformOriginalQWidget()
         tab_widget.addTab(self.Waveform_tab, "Waveform original")
         self.Waveform_processing_tab = WaveformProcessingWidget()
         tab_widget.addTab(self.Waveform_processing_tab, "Waveform processing")
         self.Waveform_processing_tab.changed.connect(self.On_waveform_processing_changed)
-        '''self.Single_camera_tab = Single_camera_tab()
+        self.Single_camera_tab = Single_camera_tab()
         tab_widget.addTab(self.Single_camera_tab, "Single camera")'''
 
         '''self.Eight_frames_tab = Eight_frames()
@@ -67,7 +72,7 @@ class MainWindow(QMainWindow):
         tab_widget.addTab(self.J_comsol_widget, 'J_comsol')'''
 
         # Set the tab widget as the central widget
-        self.setCentralWidget(tab_widget)
+        self.setCentralWidget(self.tab_widget)
 
         # Create a menu bar
         menu_bar = self.menuBar()
@@ -86,7 +91,7 @@ class MainWindow(QMainWindow):
         window_menu.addAction(expansion_action)
 
         self.main_settings = dict()
-        self.init_plots()
+        # self.init_plots()
 
     def On_J_comsol_widget_changed(self):
         pass
@@ -152,10 +157,10 @@ class MainWindow(QMainWindow):
             print(f"Selected folder: {folder_path}")
         else:
             return
-        os.chdir(folder_path)
 
-        self.setWindowTitle(f"XXRapid_Qt_viewer {folder_path.split('/')[-1]}")
-        self.update()
+        key = folder_path.split('/')[-1]
+        self.ExperimentQWidgetDict[key] = ExperimentQWidget(folder_path)
+        self.tab_widget.addTab(self.ExperimentQWidgetDict[key],key)
 
     def update(self):
         self.folder_list = os.listdir()
