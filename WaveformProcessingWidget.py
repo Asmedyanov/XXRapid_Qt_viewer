@@ -8,11 +8,22 @@ from WaveformChannelsTab import WaveformChannelsTab
 class WaveformProcessingWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, channel_df_dict):
+    def __init__(self, channel_df_dict, settings_dict=None):
         super().__init__()
         self.ChannelDFDict = channel_df_dict
-        self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict)
+        self.SettingsDict = dict()
+        if settings_dict is None:
+            self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict)
+            self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
+        else:
+            self.SettingsDict = settings_dict
+            self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict, self.SettingsDict['Waveform_channels'])
+        self.WaveformChannelsTab.changed.connect(self.OnWaveformChannelsTabChanged)
         self.addTab(self.WaveformChannelsTab, 'Waveform channels')
+
+    def OnWaveformChannelsTabChanged(self):
+        self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
+        self.changed.emit()
 
     def On_waveform_timing_changed(self):
         self.shutter_times = self.Waveform_timing_tab.peak_time

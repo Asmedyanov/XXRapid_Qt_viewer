@@ -4,17 +4,22 @@ from MatplotlibQWidget import *
 from ChannelSettingsQWidget import *
 import scipy.signal as signal
 import numpy as np
+from PyQt5.QtCore import pyqtSignal
 
 
 class ChannelQWidget(QWidget):
-    def __init__(self, df):
+    changed = pyqtSignal()
+
+    def __init__(self, my_key, df, settings_dict=None):
         super().__init__()
+        self.my_key = my_key
         self.df_original = df
         self.MainQHBoxLayout = QHBoxLayout()
         self.setLayout(self.MainQHBoxLayout)
         self.MainMatplotlibQWidget = MatplotlibQWidget()
         self.MainQHBoxLayout.addWidget(self.MainMatplotlibQWidget)
-        self.ChannelSettingsQWidget = ChannelSettingsQWidget()
+        self.ChannelSettingsQWidget = ChannelSettingsQWidget(settings_dict)
+        self.SettingsDict = self.ChannelSettingsQWidget.SettingsDict
         self.ChannelSettingsQWidget.changed.connect(self.OnChannelSettingsQWidgetChanged)
 
         self.MainQHBoxLayout.addWidget(self.ChannelSettingsQWidget)
@@ -39,6 +44,7 @@ class ChannelQWidget(QWidget):
     def OnChannelSettingsQWidgetChanged(self):
         nsmooth = int(self.ChannelSettingsQWidget.TauSmooth / self.dt)
         self.df_smoothed = self.df_original.rolling(nsmooth, min_periods=1).mean()
+        self.SettingsDict = self.ChannelSettingsQWidget.SettingsDict
 
         self.SmoothedPlot.set_data(
             self.df_smoothed['time'],
@@ -47,6 +53,7 @@ class ChannelQWidget(QWidget):
         self.Axis.relim()
         self.Axis.autoscale_view()
         self.MainMatplotlibQWidget.figure.canvas.draw()
+        self.changed.emit()
 
     def set_data(self, df_original):
         self.df_original = df_original

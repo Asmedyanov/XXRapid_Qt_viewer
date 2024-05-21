@@ -19,6 +19,10 @@ class MySettingsQWidget(QWidget):
         else:
             self.QComboBox = QComboBox()
             self.QComboBox.addItems(options_list)
+            try:
+                self.QComboBox.setCurrentText(default)
+            except:
+                pass
             self.QHBoxLayout.addWidget(self.QComboBox)
             self.QComboBox.currentTextChanged.connect(self.OnQComboBoxChanged)
             self.value = self.QComboBox.currentText()
