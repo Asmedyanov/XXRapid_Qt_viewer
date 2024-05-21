@@ -51,17 +51,24 @@ class ChannelSettingsQWidget(QWidget):
             self.SmoothingSettingsQWidget = MySettingsQWidget(
                 name='Smoothing',
                 default=self.SettingsDict['Smoothing'],
-                comment='ns'
+                comment='ns',
+                limit=[0.5, 1e3],
+                step=0.5
             )
             self.ShiftSettingsQWidget = MySettingsQWidget(
                 name='Shift',
                 default=self.SettingsDict['Shift'],
-                comment='Unit'
+                comment='Unit',
+                limit=[-1e6, 1e6],
+                step=0.5
+
             )
             self.CoefficientSettingsQWidget = MySettingsQWidget(
                 name='Coefficient',
                 default=self.SettingsDict['Coefficient'],
-                comment='Unit/Volt'
+                comment='Unit/Volt',
+                limit=[-1e6, 1e6],
+                step=0.5
             )
 
         self.Diagnostics = self.DiagnosticsSettingsQWidget.value
