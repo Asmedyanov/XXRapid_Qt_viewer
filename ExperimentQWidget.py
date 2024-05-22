@@ -18,7 +18,7 @@ class ExperimentQWidget(QTabWidget):
             self.SettingsDict = {'Experiment_settings': dict()}
         else:
             try:
-                self.SettingsDict = self.OpenSettings()
+                self.SettingsDict = self.OpenSettings('SettingsFile.xml')
             except Exception as ex:
                 print(ex)
                 self.SettingsDict = {'Experiment_settings': dict()}
@@ -46,8 +46,12 @@ class ExperimentQWidget(QTabWidget):
         SettingsFile.write(dict2xml(self.SettingsDict))
         SettingsFile.close()
 
-    def OpenSettings(self, filename='SettingsFile.xml'):
-        SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'r')
+    def OpenSettings(self, filename='Default_shot/QtTraceFolder/SettingsFile.xml'):
+        try:
+            SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'r')
+        except Exception as ex:
+            print(ex)
+            SettingsFile = open(filename, 'r')
         SettingsDict = {'Experiment_settings': xmltodict.parse(SettingsFile.read())['Experiment_settings']}
         return SettingsDict
 
