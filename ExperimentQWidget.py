@@ -17,8 +17,11 @@ class ExperimentQWidget(QTabWidget):
             os.makedirs(f'{folder_name}/QtTraceFolder')
             self.SettingsDict = {'Experiment_settings': dict()}
         else:
-
-            self.SettingsDict = self.OpenSettings()
+            try:
+                self.SettingsDict = self.OpenSettings()
+            except Exception as ex:
+                print(ex)
+                self.SettingsDict = {'Experiment_settings': dict()}
 
         self.WaveformOriginalQWidget = WaveformOriginalQWidget(self.getWaveformFileName())
         self.addTab(self.WaveformOriginalQWidget, 'Waveform Original')
@@ -45,7 +48,7 @@ class ExperimentQWidget(QTabWidget):
 
     def OpenSettings(self, filename='SettingsFile.xml'):
         SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'r')
-        SettingsDict = {'Experiment_settings':xmltodict.parse(SettingsFile.read())['Experiment_settings']}
+        SettingsDict = {'Experiment_settings': xmltodict.parse(SettingsFile.read())['Experiment_settings']}
         return SettingsDict
 
     def getWaveformFileName(self):

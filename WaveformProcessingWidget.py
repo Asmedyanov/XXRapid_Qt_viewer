@@ -12,20 +12,52 @@ class WaveformProcessingWidget(QTabWidget):
         super().__init__()
         self.ChannelDFDict = channel_df_dict
         self.SettingsDict = dict()
-        if settings_dict is None:
+        try:
+            self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict, settings_dict['Waveform_channels'])
+        except:
             self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict)
-            self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
-        else:
-            self.SettingsDict = settings_dict
-            self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict, self.SettingsDict['Waveform_channels'])
+
+        self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
         self.WaveformChannelsTab.changed.connect(self.OnWaveformChannelsTabChanged)
-        self.addTab(self.WaveformChannelsTab, 'Waveform channels')
-        self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict)
-        self.addTab(self.WaveformTimingQWidget, 'Waveform timing')
+        self.addTab(self.WaveformChannelsTab, 'Waveform_channels')
+        try:
+            self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict,
+                                                               settings_dict['Waveform_timing'])
+        except Exception as ex:
+            print(ex)
+            try:
+                self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict)
+            except Exception as ex:
+                print(ex)
+                return
+
+        self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
+        self.WaveformTimingQWidget.changed.connect(self.OnWaveformTimingQWidget)
+        self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
+
+    def OnWaveformTimingQWidget(self):
+        self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
+        self.changed.emit()
 
     def OnWaveformChannelsTabChanged(self):
         self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
-        self.WaveformTimingQWidget.set_data(self.WaveformChannelsTab.PhysicalDFDict)
+        try:
+            self.WaveformTimingQWidget.set_data(self.WaveformChannelsTab.PhysicalDFDict)
+        except Exception as ex:
+            print(ex)
+            try:
+                self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict,
+                                                                   self.SettingsDict['Waveform_timing'])
+            except:
+                try:
+                    self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict)
+                    self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
+                    self.WaveformTimingQWidget.changed.connect(self.OnWaveformTimingQWidget)
+                    self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
+                except Exception as ex:
+                    print(ex)
+
+
         self.changed.emit()
 
     def On_waveform_timing_changed(self):
@@ -35,6 +67,7 @@ class WaveformProcessingWidget(QTabWidget):
     def set_data(self, ChannelDFDict, info_file_df):
         self.WaveformChannelsTab.set_data(ChannelDFDict)
         pass
-        '''self.Waveform_smoothing_tab.set_data(waveform_dict, info_file_df['Value']['Rogovski_conv'])
-        self.Waveform_timing_tab.set_data(self.Waveform_smoothing_tab.df_smoothed,
-                                          self.Waveform_smoothing_tab.df_4quick, info_file_df)'''
+
+    '''self.Waveform_smoothing_tab.set_data(waveform_dict, info_file_df['Value']['Rogovski_conv'])
+    self.Waveform_timing_tab.set_data(self.Waveform_smoothing_tab.df_smoothed,
+                                      self.Waveform_smoothing_tab.df_4quick, info_file_df)'''
