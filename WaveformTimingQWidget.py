@@ -34,23 +34,23 @@ class WaveformTimingQWidget(QWidget):
             self.Normed_plots_dict[mykey], = self.ax.plot(mydf['time'].loc[mydf['time'] < self.max_time] * 1.0e6,
                                                           mydf['Units'].loc[mydf['time'] < self.max_time], label=mykey)
         self.ax.legend()
-        self.t_start = self.WaveformTimingSettingsQWidget.PulseStartTimeTab.TimeSettingsQWidget.value
-        self.PulseStartLine, = self.ax.plot([self.t_start * 1e-3, self.t_start * 1e-3], [0, 1], '-o')
+        self.t_start = self.WaveformTimingSettingsQWidget.PulseStartTimeTab.TimeSettingsQWidget.value * 1e-9
+        self.PulseStartLine, = self.ax.plot([self.t_start * 1e6, self.t_start * 1e6], [0, 1], '-o')
         self.t_shutter_dict = dict()
         self.ShutterLineDict = dict()
         for mykey, myshutter in self.WaveformTimingSettingsQWidget.ShutterTabDict.items():
-            self.t_shutter_dict[mykey] = myshutter.TimeSettingsQWidget.value
+            self.t_shutter_dict[mykey] = myshutter.TimeSettingsQWidget.value * 1e-9
             self.ShutterLineDict[mykey], = self.ax.plot(
-                [self.t_shutter_dict[mykey] * 1e-3, self.t_shutter_dict[mykey] * 1e-3], [0, 1], '-o')
+                [self.t_shutter_dict[mykey] * 1e6, self.t_shutter_dict[mykey] * 1e6], [0, 1], '-o')
 
     def OnWaveformTimingSettingsQWidget(self):
         self.SettingsDict = self.WaveformTimingSettingsQWidget.SettingsDict
-        self.t_start = self.WaveformTimingSettingsQWidget.PulseStartTimeTab.TimeSettingsQWidget.value * 1.0e-3
-        self.PulseStartLine.set_data([self.t_start, self.t_start], [0, 1])
+        self.t_start = self.WaveformTimingSettingsQWidget.PulseStartTimeTab.TimeSettingsQWidget.value * 1e-9
+        self.PulseStartLine.set_data([self.t_start * 1e6, self.t_start * 1e6], [0, 1])
         for mykey, myshutter in self.WaveformTimingSettingsQWidget.ShutterTabDict.items():
-            self.t_shutter_dict[mykey] = myshutter.TimeSettingsQWidget.value
+            self.t_shutter_dict[mykey] = myshutter.TimeSettingsQWidget.value * 1e-9
             self.ShutterLineDict[mykey].set_data(
-                [self.t_shutter_dict[mykey] * 1e-3, self.t_shutter_dict[mykey] * 1e-3], [0, 1])
+                [self.t_shutter_dict[mykey] * 1e6, self.t_shutter_dict[mykey] * 1e6], [0, 1])
         self.ax.relim()
         self.ax.autoscale_view()
         self.MatplotlibQWidget.figure.canvas.draw()

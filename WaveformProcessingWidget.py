@@ -1,8 +1,6 @@
-from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtCore import pyqtSignal
-from WaveformSmoothingWidget import WaveformSmoothingWidget
-from WaveformTimingQWidget import WaveformTimingQWidget
-from WaveformChannelsTab import WaveformChannelsTab
+from WaveformTimingQWidget import *
+from WaveformChannelsTab import *
+from WaveformPhysicalValuesQWidget import *
 
 
 class WaveformProcessingWidget(QTabWidget):
@@ -35,8 +33,18 @@ class WaveformProcessingWidget(QTabWidget):
         self.WaveformTimingQWidget.changed.connect(self.OnWaveformTimingQWidget)
         self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
 
+        try:
+            self.WaveformPhysicalValuesQWidget = WaveformPhysicalValuesQWidget(
+                self.WaveformChannelsTab.PhysicalDFDict, timeshift=self.WaveformTimingQWidget.t_start)
+        except Exception as ex:
+            print(ex)
+            return
+        self.addTab(self.WaveformPhysicalValuesQWidget, 'Waveform_physical')
+
     def OnWaveformTimingQWidget(self):
         self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
+        self.WaveformPhysicalValuesQWidget.set_data(self.WaveformChannelsTab.PhysicalDFDict,
+                                                    self.WaveformTimingQWidget.t_start)
         self.changed.emit()
 
     def OnWaveformChannelsTabChanged(self):
@@ -56,7 +64,6 @@ class WaveformProcessingWidget(QTabWidget):
                     self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
                 except Exception as ex:
                     print(ex)
-
 
         self.changed.emit()
 
