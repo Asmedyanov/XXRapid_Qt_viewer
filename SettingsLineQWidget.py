@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit, QComboBox, 
 from PyQt5.QtCore import pyqtSignal
 
 
-class MySettingsQWidget(QWidget):
+class SettingsLineQWidget(QWidget):
     changed = pyqtSignal()
 
     def __init__(self, name='name', default=0, comment='_', options_list=None, limit=None, step=None):
@@ -35,7 +35,11 @@ class MySettingsQWidget(QWidget):
             self.QLineEdit = QLineEdit(f'{default}')
             self.QLineEdit.editingFinished.connect(self.OnQLineEditChanged)
             self.QHBoxLayout.addWidget(self.QLineEdit)
-            self.value = float(self.QLineEdit.text())
+            try:
+                self.value = float(self.QLineEdit.text())
+            except Exception as ex:
+                print(ex)
+                self.value = self.QLineEdit.text()
 
         self.CommentLabel = QLabel(comment)
         self.QHBoxLayout.addWidget(self.CommentLabel)
@@ -45,9 +49,16 @@ class MySettingsQWidget(QWidget):
         self.changed.emit()
 
     def OnQLineEditChanged(self):
-        self.value = float(self.QLineEdit.text())
+        try:
+            self.value = float(self.QLineEdit.text())
+        except:
+            self.value = self.QLineEdit.text()
         self.changed.emit()
 
     def OnQComboBoxChanged(self):
-        self.value = self.QComboBox.currentText()
+        try:
+            self.value = float(self.QLineEdit.text())
+        except Exception as ex:
+            print(ex)
+            self.value = self.QLineEdit.text()
         self.changed.emit()

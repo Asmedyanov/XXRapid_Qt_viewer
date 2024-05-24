@@ -5,13 +5,13 @@ class WaveformTimingShutterSettingsQWidget(WaveformTimingPointSettingsQWidget):
     def __init__(self, settings_dict=None):
         super().__init__(settings_dict)
         if settings_dict is None:
-            self.CameraNumber = MySettingsQWidget(
+            self.CameraNumber = SettingsLineQWidget(
                 name='Camera',
                 default=1,
                 limit=[1, 4],
                 step=1
             )
-            self.ShutterNumber = MySettingsQWidget(
+            self.ShutterNumber = SettingsLineQWidget(
                 name='Shutter',
                 default=1,
                 limit=[1, 2],
@@ -19,13 +19,13 @@ class WaveformTimingShutterSettingsQWidget(WaveformTimingPointSettingsQWidget):
             )
 
         else:
-            self.CameraNumber = MySettingsQWidget(
+            self.CameraNumber = SettingsLineQWidget(
                 name='Camera',
                 default=settings_dict['Camera'],
                 limit=[1, 4],
                 step=1
             )
-            self.ShutterNumber = MySettingsQWidget(
+            self.ShutterNumber = SettingsLineQWidget(
                 name='Shutter',
                 default=settings_dict['Shutter'],
                 limit=[1, 2],

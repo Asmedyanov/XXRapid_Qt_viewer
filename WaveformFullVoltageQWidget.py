@@ -20,3 +20,6 @@ class WaveformFullVoltageQWidget(MatplotlibQWidget):
         self.voltageDF['time'] -= time_shift
         voltage_df_to_plot = self.voltageDF.loc[self.voltageDF['time'] > 0]
         self.voltageLine.set_data(voltage_df_to_plot['time'] * 1e6, voltage_df_to_plot['Units'] * 1e-3)
+        self.ax.relim()
+        self.ax.autoscale_view()
+        self.figure.canvas.draw()

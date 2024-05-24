@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
-from MySettingsQWidget import *
+from SettingsLineQWidget import *
 from PyQt5.QtCore import pyqtSignal
 
 
@@ -14,14 +14,14 @@ class WaveformTimingPointSettingsQWidget(QWidget):
         self.SettingsDict = dict()
         if settings_dict is None:
 
-            self.TimeSettingsQWidget = MySettingsQWidget(
+            self.TimeSettingsQWidget = SettingsLineQWidget(
                 name='Time',
                 limit=[-1e6, 1e6],
                 step=1.0,
                 comment='ns'
             )
         else:
-            self.TimeSettingsQWidget = MySettingsQWidget(
+            self.TimeSettingsQWidget = SettingsLineQWidget(
                 name='Time',
                 default=settings_dict['Time'],
                 limit=[-1e6, 1e6],

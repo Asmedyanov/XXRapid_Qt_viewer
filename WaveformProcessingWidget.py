@@ -34,12 +34,23 @@ class WaveformProcessingWidget(QTabWidget):
         self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
 
         try:
+            try:
+                default_settings = settings_dict['Waveform_physical']
+            except:
+                default_settings = None
             self.WaveformPhysicalValuesQWidget = WaveformPhysicalValuesQWidget(
-                self.WaveformChannelsTab.PhysicalDFDict, timeshift=self.WaveformTimingQWidget.t_start)
+                self.WaveformChannelsTab.PhysicalDFDict, timeshift=self.WaveformTimingQWidget.t_start,
+                settings_dict=default_settings)
+            self.WaveformPhysicalValuesQWidget.changed.connect(self.OnWaveformPhysicalValuesQWidget)
+            self.SettingsDict['Waveform_physical'] = self.WaveformPhysicalValuesQWidget.SettingsDict
         except Exception as ex:
             print(ex)
             return
         self.addTab(self.WaveformPhysicalValuesQWidget, 'Waveform_physical')
+
+    def OnWaveformPhysicalValuesQWidget(self):
+        self.SettingsDict['Waveform_physical'] = self.WaveformPhysicalValuesQWidget.SettingsDict
+        self.changed.emit()
 
     def OnWaveformTimingQWidget(self):
         self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
