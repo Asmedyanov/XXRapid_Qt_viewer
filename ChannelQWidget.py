@@ -2,7 +2,6 @@ import pandas as pd
 
 from MatplotlibQWidget import *
 from ChannelSettingsQWidget import *
-import scipy.signal as signal
 import numpy as np
 from PyQt5.QtCore import pyqtSignal
 
