@@ -32,10 +32,9 @@ class MainWindow(QMainWindow):
 
         # Create a tab widget
         self.tab_widget = QTabWidget(self)
-        self.ExperimentQWidgetDict = {
-            'Default': ExperimentQWidget()
-        }
-        self.tab_widget.addTab(self.ExperimentQWidgetDict['Default'], 'Default')
+        self.DefaultExperiment = ExperimentQWidget()
+        self.ExperimentQWidgetDict = dict()
+        self.tab_widget.addTab(self.DefaultExperiment, 'Default')
 
         '''self.Waveform_tab = WaveformOriginalQWidget()
         tab_widget.addTab(self.Waveform_tab, "Waveform original")
@@ -130,6 +129,7 @@ class MainWindow(QMainWindow):
         self.Additional_window.show()
 
     def closeEvent(self, event):
+        self.DefaultExperiment.SaveSettings()
         for experiment in self.ExperimentQWidgetDict.values():
             experiment.SaveSettings()
         pass
@@ -163,7 +163,7 @@ class MainWindow(QMainWindow):
 
         key = folder_path.split('/')[-1]
         self.ExperimentQWidgetDict[key] = ExperimentQWidget(folder_path)
-        self.tab_widget.addTab(self.ExperimentQWidgetDict[key],key)
+        self.tab_widget.addTab(self.ExperimentQWidgetDict[key], key)
 
     def update(self):
         self.folder_list = os.listdir()

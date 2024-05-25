@@ -15,13 +15,8 @@ class ExperimentQWidget(QTabWidget):
         self.folder_list = os.listdir(folder_name)
         if 'QtTraceFolder' not in self.folder_list:
             os.makedirs(f'{folder_name}/QtTraceFolder')
-            self.SettingsDict = {'Experiment_settings': dict()}
-        else:
-            try:
-                self.SettingsDict = self.OpenSettings('SettingsFile.xml')
-            except Exception as ex:
-                print(ex)
-                self.SettingsDict = {'Experiment_settings': dict()}
+        self.SettingsDict = self.OpenSettings('SettingsFile.xml')
+
 
         self.WaveformOriginalQWidget = WaveformOriginalQWidget(self.getWaveformFileName())
         self.addTab(self.WaveformOriginalQWidget, 'Waveform Original')
@@ -51,7 +46,8 @@ class ExperimentQWidget(QTabWidget):
             SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'r')
         except Exception as ex:
             print(ex)
-            SettingsFile = open(filename, 'r')
+            SettingsFile = open('Default_shot/QtTraceFolder/SettingsFile.xml', 'r')
+            print('Default settings')
         SettingsDict = {'Experiment_settings': xmltodict.parse(SettingsFile.read())['Experiment_settings']}
         return SettingsDict
 
