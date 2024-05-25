@@ -3,6 +3,8 @@ from WaveformCurrentQWidget import *
 from WaveformFullVoltageQWidget import *
 from WaveformIdotQWidget import *
 from WaveformUresQWidget import *
+from WaveformPowerQWidget import *
+from WaveformResistanceQWidget import *
 
 
 class WaveformPhysicalValuesQWidget(QTabWidget):
@@ -41,16 +43,47 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
                 df_idot=self.WaveformIdotQWidget.df_idot_smoothed_to_plot,
                 idot_peak_time=self.WaveformIdotQWidget.Peak_time
             )
+            self.WaveformUresQWidget.changed.connect(self.OnWaveformUresQWidget)
             self.addTab(self.WaveformUresQWidget, 'Resistive voltage')
         except Exception as ex:
             print(ex)
+
+        try:
+            self.WaveformPowerQWidget = WaveformPowerQWidget(
+                df_current=self.WaveformCurrentQWidget.current_df_to_plot,
+                df_Ures=self.WaveformUresQWidget.df_resistive_voltage
+            )
+            self.addTab(self.WaveformPowerQWidget, 'Resistive power')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformResistanceQWidget = WaveformResistanceQWidget(
+                df_current=self.WaveformCurrentQWidget.current_df_to_plot,
+                df_Ures=self.WaveformUresQWidget.df_resistive_voltage,
+                ind_peak_time=self.WaveformIdotQWidget.Peak_time
+            )
+            self.addTab(self.WaveformResistanceQWidget, 'Resistance')
+        except Exception as ex:
+            print(ex)
+
+    def OnWaveformUresQWidget(self):
+        self.WaveformPowerQWidget.set_data(
+            df_current=self.WaveformCurrentQWidget.current_df_to_plot,
+            df_Ures=self.WaveformUresQWidget.df_resistive_voltage
+        )
+        self.WaveformResistanceQWidget.set_data(
+            df_current=self.WaveformCurrentQWidget.current_df_to_plot,
+            df_Ures=self.WaveformUresQWidget.df_resistive_voltage,
+            ind_peak_time=self.WaveformIdotQWidget.Peak_time
+        )
+        self.changed.emit()
 
     def OnWaveformIdotQWidgetChanged(self):
         self.SettingsDict['I_dot'] = self.WaveformIdotQWidget.SettingsDict
         self.WaveformUresQWidget.set_data(
             df_full_voltage=self.WaveformFullVoltageQWidget.voltageDF,
             df_idot=self.WaveformIdotQWidget.df_idot_smoothed_to_plot,
-            idot_peak_time=self.WaveformIdotQWidget.Peak_time
+            idot_peak_time=self.WaveformIdotQWidget.Peak_time,
         )
         self.changed.emit()
 

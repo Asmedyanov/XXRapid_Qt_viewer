@@ -23,3 +23,4 @@ class WaveformFullVoltageQWidget(MatplotlibQWidget):
         self.ax.relim()
         self.ax.autoscale_view()
         self.figure.canvas.draw()
+        self.changed.emit()
