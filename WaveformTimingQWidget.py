@@ -35,22 +35,22 @@ class WaveformTimingQWidget(QWidget):
                                                           mydf['Units'].loc[mydf['time'] < self.max_time], label=mykey)
         self.ax.legend()
         self.t_start = self.WaveformTimingSettingsQWidget.PulseStartTimeTab.TimeSettingsQWidget.value * 1e-9
-        self.PulseStartLine, = self.ax.plot([self.t_start * 1e6, self.t_start * 1e6], [0, 1], '-o')
+        self.PulseStartLine = self.ax.axvline(self.t_start * 1e6, linestyle=':', c='r')
         self.t_shutter_dict = dict()
         self.ShutterLineDict = dict()
         for mykey, myshutter in self.WaveformTimingSettingsQWidget.ShutterTabDict.items():
             self.t_shutter_dict[mykey] = myshutter.TimeSettingsQWidget.value * 1e-9
-            self.ShutterLineDict[mykey], = self.ax.plot(
-                [self.t_shutter_dict[mykey] * 1e6, self.t_shutter_dict[mykey] * 1e6], [0, 1], '-o')
+            self.ShutterLineDict[mykey] = self.ax.axvline(self.t_shutter_dict[mykey] * 1e6, linestyle=':', c='r')
+        self.ax.grid(ls=':')
 
     def OnWaveformTimingSettingsQWidget(self):
         self.SettingsDict = self.WaveformTimingSettingsQWidget.SettingsDict
         self.t_start = self.WaveformTimingSettingsQWidget.PulseStartTimeTab.TimeSettingsQWidget.value * 1e-9
-        self.PulseStartLine.set_data([self.t_start * 1e6, self.t_start * 1e6], [0, 1])
+        # self.PulseStartLine.set_data([self.t_start * 1e6, self.t_start * 1e6], [0, 1])
+        self.PulseStartLine.set_xdata(self.t_start * 1e6)
         for mykey, myshutter in self.WaveformTimingSettingsQWidget.ShutterTabDict.items():
             self.t_shutter_dict[mykey] = myshutter.TimeSettingsQWidget.value * 1e-9
-            self.ShutterLineDict[mykey].set_data(
-                [self.t_shutter_dict[mykey] * 1e6, self.t_shutter_dict[mykey] * 1e6], [0, 1])
+            self.ShutterLineDict[mykey].set_xdata(self.t_shutter_dict[mykey] * 1e6)
         self.ax.relim()
         self.ax.autoscale_view()
         self.MatplotlibQWidget.figure.canvas.draw()
@@ -100,8 +100,8 @@ class WaveformTimingQWidget(QWidget):
         self.max_time = self.get_max_time()
         self.Normed_df_dict = self.get_normed_dict()
         for mykey, mydf in self.Normed_df_dict.items():
-            self.Normed_plots_dict[mykey].set_data(mydf['time'].loc[mydf['time'] < self.max_time] * 1.0e6,
-                                                   mydf['Units'].loc[mydf['time'] < self.max_time])
+            df_to_plot = mydf.loc[((mydf['time'] > 0) & (mydf['time'] < self.max_time))]
+            self.Normed_plots_dict[mykey].set_data(df_to_plot['time'] * 1e6, df_to_plot['Units'])
         self.ax.relim()
         self.ax.autoscale_view()
         self.MatplotlibQWidget.figure.canvas.draw()

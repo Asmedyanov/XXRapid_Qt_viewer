@@ -9,6 +9,7 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
 
     def __init__(self, physical_df_dict=None, settings_dict=None, timeshift=0):
         super().__init__()
+        self.setTabPosition(QTabWidget.TabPosition.West)
         self.WaveformCurrentQWidget = WaveformCurrentQWidget(physical_df_dict['Current'], timeshift)
         self.addTab(self.WaveformCurrentQWidget, 'Waveform_current')
         self.WaveformFullVoltageQWidget = WaveformFullVoltageQWidget(physical_df_dict['Voltage'], timeshift)
@@ -32,5 +33,5 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
     def set_data(self, physical_df_dict=None, timeshift=0):
         self.WaveformCurrentQWidget.set_data(physical_df_dict['Current'], timeshift)
         self.WaveformFullVoltageQWidget.set_data(physical_df_dict['Voltage'], timeshift)
-        self.WaveformIdotQWidget.set_data(physical_df_dict['Current'])
+        self.WaveformIdotQWidget.set_data(physical_df_dict['Current'], timeshift)
         self.changed.emit()

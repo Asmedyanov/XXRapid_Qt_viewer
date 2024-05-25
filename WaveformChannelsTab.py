@@ -9,6 +9,7 @@ class WaveformChannelsTab(QTabWidget):
 
     def __init__(self, channel_df_dict, settings_dict=None):
         super().__init__()
+        self.setTabPosition(QTabWidget.TabPosition.West)
         self.ChannelQWidgetDict = dict()
         self.PhysicalDFDict = dict()
         if settings_dict is None:

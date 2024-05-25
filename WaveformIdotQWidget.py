@@ -24,7 +24,7 @@ class WaveformIdotQWidget(QWidget):
         self.QHBoxLayout.addWidget(self.WaveformIdotSettingsQWidget)
         self.WaveformIdotSettingsQWidget.changed.connect(self.OnSettings)
         self.df_idot = pd.DataFrame({
-            'time': df_current['time'],
+            'time': df_current['time']-timeshift,
             'Units': np.gradient(df_current['Units'].values) / np.gradient(df_current['time'].values)
         })
         self.dt = np.gradient(df_current['time'].values).mean()
@@ -37,10 +37,8 @@ class WaveformIdotQWidget(QWidget):
 
         self.Peak_time = self.WaveformIdotSettingsQWidget.PeakSettingsLine.value * 1e-9
 
-        self.PeakPlot, = self.ax.plot([self.Peak_time * 1e6,
-                                       self.Peak_time * 1e6],
-                                      [self.df_idot_smoothed_to_plot['Units'].min() * 1e-12,
-                                       self.df_idot_smoothed_to_plot['Units'].max() * 1e-12], '-o')
+        self.PeakLine = self.ax.axvline(self.Peak_time * 1e6, ls=':', c='r')
+        self.ax.grid(ls=':')
 
     def OnSettings(self):
         self.N_smoothing = int(self.WaveformIdotSettingsQWidget.SmoothingSettingsLine.value * 1.0e-9 / self.dt)
@@ -51,11 +49,7 @@ class WaveformIdotQWidget(QWidget):
 
         self.Peak_time = self.WaveformIdotSettingsQWidget.PeakSettingsLine.value * 1e-9
 
-        self.PeakPlot.set_data([self.Peak_time * 1e6,
-                                self.Peak_time * 1e6],
-                               [self.df_idot_smoothed_to_plot['Units'].min() * 1e-12,
-                                self.df_idot_smoothed_to_plot['Units'].max() * 1e-12,
-                                ])
+        self.PeakLine.set_xdata(self.Peak_time * 1e6)
 
         self.ax.relim()
         self.ax.autoscale_view()
@@ -64,9 +58,9 @@ class WaveformIdotQWidget(QWidget):
         self.SettingsDict = self.WaveformIdotSettingsQWidget.SettingsDict
         self.changed.emit()
 
-    def set_data(self, df_current):
+    def set_data(self, df_current, timeshift=0):
         self.df_idot = pd.DataFrame({
-            'time': df_current['time'],
+            'time': df_current['time'] - timeshift,
             'Units': np.gradient(df_current['Units'].values) / np.gradient(df_current['time'].values)
         })
         self.dt = np.gradient(df_current['time'].values).mean()
@@ -79,7 +73,7 @@ class WaveformIdotQWidget(QWidget):
 
         self.Peak_time = self.WaveformIdotSettingsQWidget.PeakSettingsLine.value * 1e-9
 
-        self.PeakPlot.set_data([self.Peak_time * 1e6,
-                                self.Peak_time * 1e6],
-                               [self.df_idot_smoothed_to_plot['Units'].min() * 1e-12,
-                                self.df_idot_smoothed_to_plot['Units'].max() * 1e-12])
+        self.PeakLine.set_xdata(self.Peak_time * 1e6)
+        self.ax.relim()
+        self.ax.autoscale_view()
+        self.MatplotlibQWidget.figure.canvas.draw()
