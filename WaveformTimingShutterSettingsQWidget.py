@@ -4,34 +4,27 @@ from WaveformTimingPointSettingsQWidget import *
 class WaveformTimingShutterSettingsQWidget(WaveformTimingPointSettingsQWidget):
     def __init__(self, settings_dict=None):
         super().__init__(settings_dict)
-        if settings_dict is None:
-            self.CameraNumber = SettingsLineQWidget(
-                name='Camera',
-                default=1,
-                limit=[1, 4],
-                step=1
-            )
-            self.ShutterNumber = SettingsLineQWidget(
-                name='Shutter',
-                default=1,
-                limit=[1, 2],
-                step=1
-            )
-
-        else:
-            self.CameraNumber = SettingsLineQWidget(
-                name='Camera',
-                default=settings_dict['Camera'],
-                limit=[1, 4],
-                step=1
-            )
-            self.ShutterNumber = SettingsLineQWidget(
-                name='Shutter',
-                default=settings_dict['Shutter'],
-                limit=[1, 2],
-                step=1
-            )
+        try:
+            default = settings_dict['Camera']
+        except:
+            default = 1
+        self.CameraNumber = SettingsLineQWidget(
+            name='Camera',
+            default=default,
+            limit=[1, 4],
+            step=1
+        )
         self.SettingsDict['Camera'] = self.CameraNumber.value
+        try:
+            default = settings_dict['Shutter']
+        except:
+            default = 1
+        self.ShutterNumber = SettingsLineQWidget(
+            name='Shutter',
+            default=default,
+            limit=[1, 2],
+            step=1
+        )
         self.SettingsDict['Shutter'] = self.ShutterNumber.value
         self.CameraNumber.changed.connect(self.OnCameraNumberChanged)
         self.ShutterNumber.changed.connect(self.OnShutterNumberChanged)

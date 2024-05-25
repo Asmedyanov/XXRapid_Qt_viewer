@@ -17,11 +17,11 @@ class WaveformTimingSettingsQWidget(QTabWidget):
         self.ShutterTabDict = dict()
         for i in range(self.n_shutters):
             key = f'Shutter_{i + 1}'
-            if settings_dict is None:
-                self.ShutterTabDict[key] = WaveformTimingShutterSettingsQWidget()
-            else:
-                self.ShutterTabDict[key] = WaveformTimingShutterSettingsQWidget(settings_dict[key])
-
+            try:
+                settings = settings_dict[key]
+            except:
+                settings = None
+            self.ShutterTabDict[key] = WaveformTimingShutterSettingsQWidget(settings)
             self.addTab(self.ShutterTabDict[key], key)
             self.SettingsDict[key] = self.ShutterTabDict[key].SettingsDict
             self.ShutterTabDict[key].changed.connect(self.OnShutterTab)

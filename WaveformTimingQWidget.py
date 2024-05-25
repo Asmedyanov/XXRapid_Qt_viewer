@@ -1,8 +1,6 @@
-from MatplotlibQWidget import MatplotlibQWidget
-from PyQt5.QtWidgets import QHBoxLayout, QWidget
+from MatplotlibQWidget import *
 import numpy as np
 import pandas as pd
-from scipy.signal import find_peaks
 from WaveformTimingSettingsQWidget import *
 
 
@@ -27,7 +25,7 @@ class WaveformTimingQWidget(QWidget):
         self.ax.set(
             xlabel='t, us',
             ylabel='Unit',
-            # title='Waveform timing'
+            title='Waveform timing'
         )
         self.Normed_plots_dict = dict()
         for mykey, mydf in self.Normed_df_dict.items():
@@ -46,7 +44,6 @@ class WaveformTimingQWidget(QWidget):
     def OnWaveformTimingSettingsQWidget(self):
         self.SettingsDict = self.WaveformTimingSettingsQWidget.SettingsDict
         self.t_start = self.WaveformTimingSettingsQWidget.PulseStartTimeTab.TimeSettingsQWidget.value * 1e-9
-        # self.PulseStartLine.set_data([self.t_start * 1e6, self.t_start * 1e6], [0, 1])
         self.PulseStartLine.set_xdata(self.t_start * 1e6)
         for mykey, myshutter in self.WaveformTimingSettingsQWidget.ShutterTabDict.items():
             self.t_shutter_dict[mykey] = myshutter.TimeSettingsQWidget.value * 1e-9
