@@ -5,6 +5,7 @@ from WaveformIdotQWidget import *
 from WaveformUresQWidget import *
 from WaveformPowerQWidget import *
 from WaveformResistanceQWidget import *
+from WaveformEnergyQWidget import *
 
 
 class WaveformPhysicalValuesQWidget(QTabWidget):
@@ -66,6 +67,15 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
         except Exception as ex:
             print(ex)
 
+        try:
+            self.WaveformEnergyQWidget = WaveformEnergyQWidget(
+                df_current=self.WaveformCurrentQWidget.current_df_to_plot,
+                df_Ures=self.WaveformUresQWidget.df_resistive_voltage,
+            )
+            self.addTab(self.WaveformEnergyQWidget, 'Energy')
+        except Exception as ex:
+            print(ex)
+
     def OnWaveformUresQWidget(self):
         self.WaveformPowerQWidget.set_data(
             df_current=self.WaveformCurrentQWidget.current_df_to_plot,
@@ -75,6 +85,10 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
             df_current=self.WaveformCurrentQWidget.current_df_to_plot,
             df_Ures=self.WaveformUresQWidget.df_resistive_voltage,
             ind_peak_time=self.WaveformIdotQWidget.Peak_time
+        )
+        self.WaveformEnergyQWidget.set_data(
+            df_current=self.WaveformCurrentQWidget.current_df_to_plot,
+            df_Ures=self.WaveformUresQWidget.df_resistive_voltage
         )
         self.changed.emit()
 
