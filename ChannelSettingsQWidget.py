@@ -1,81 +1,61 @@
-from PyQt5.QtWidgets import QVBoxLayout
-
-from SettingsLineQWidget import *
+from SettingsBoxQWidget import *
 
 
-class ChannelSettingsQWidget(QWidget):
-    changed = pyqtSignal()
-
+class ChannelSettingsQWidget(SettingsBoxQWidget):
     def __init__(self, settings_dict=None):
-        super().__init__()
-        self.QVBoxLayout = QVBoxLayout()
-        self.setLayout(self.QVBoxLayout)
-        if settings_dict is None:
-            self.SettingsDict = dict()
-            self.DiagnosticsSettingsQWidget = SettingsLineQWidget(
-                name='Diagnostics',
-                options_list=['Rogowski_coil',
-                              'Systron',
-                              'XXRapid_trig_out',
-                              'Tektronix_VD']
-            )
-            self.SettingsDict['Diagnostics'] = self.DiagnosticsSettingsQWidget.value
-            self.SmoothingSettingsQWidget = SettingsLineQWidget(
-                name='Smoothing',
-                default=5,
-                comment='ns',
-                limit=[0.5, 1e3],
-                step=0.5
-            )
-            self.SettingsDict['Smoothing'] = self.SmoothingSettingsQWidget.value
-            self.ShiftSettingsQWidget = SettingsLineQWidget(
-                name='Shift',
-                default=0,
-                comment='Unit',
-                limit=[-1e6, 1e6],
-                step=0.5
-            )
-            self.SettingsDict['Shift'] = self.ShiftSettingsQWidget.value
-            self.CoefficientSettingsQWidget = SettingsLineQWidget(
-                name='Coefficient',
-                default=1,
-                comment='Unit/Volt',
-                limit=[-1e6, 1e6],
-                step=0.5
-            )
-            self.SettingsDict['Coefficient'] = self.CoefficientSettingsQWidget.value
-        else:
-            self.SettingsDict = settings_dict
-            self.DiagnosticsSettingsQWidget = SettingsLineQWidget(
-                name='Diagnostics',
-                default=self.SettingsDict['Diagnostics'],
-                options_list=['Rogowski_coil',
-                              'Systron',
-                              'XXRapid_trig_out',
-                              'Tektronix_VD']
-            )
-            self.SmoothingSettingsQWidget = SettingsLineQWidget(
-                name='Smoothing',
-                default=self.SettingsDict['Smoothing'],
-                comment='ns',
-                limit=[0.5, 1e3],
-                step=0.5
-            )
-            self.ShiftSettingsQWidget = SettingsLineQWidget(
-                name='Shift',
-                default=self.SettingsDict['Shift'],
-                comment='Unit',
-                limit=[-1e6, 1e6],
-                step=0.5
+        super().__init__(settings_dict)
+        try:
+            default = settings_dict['Diagnostics']
+        except:
+            default = 'Systron'
+        self.DiagnosticsSettingsQWidget = SettingsLineQWidget(
+            name='Diagnostics',
+            options_list=['Rogowski_coil',
+                          'Systron',
+                          'XXRapid_trig_out',
+                          'Tektronix_VD'],
+            default=default
+        )
+        self.SettingsDict['Diagnostics'] = self.DiagnosticsSettingsQWidget.value
 
-            )
-            self.CoefficientSettingsQWidget = SettingsLineQWidget(
-                name='Coefficient',
-                default=self.SettingsDict['Coefficient'],
-                comment='Unit/Volt',
-                limit=[-1e6, 1e6],
-                step=0.5
-            )
+        try:
+            default = settings_dict['Smoothing']
+        except:
+            default = 5.0
+        self.SmoothingSettingsQWidget = SettingsLineQWidget(
+            name='Smoothing',
+            default=default,
+            comment='ns',
+            limit=[0.5, 1e3],
+            step=0.5
+        )
+        self.SettingsDict['Smoothing'] = self.SmoothingSettingsQWidget.value
+
+        try:
+            default = settings_dict['Coefficient']
+        except:
+            default = 1
+        self.CoefficientSettingsQWidget = SettingsLineQWidget(
+            name='Coefficient',
+            default=default,
+            comment='Unit/Volt',
+            limit=[-1e6, 1e6],
+            step=0.5
+        )
+        self.SettingsDict['Coefficient'] = self.CoefficientSettingsQWidget.value
+
+        try:
+            default = settings_dict['Shift']
+        except:
+            default = 0
+        self.ShiftSettingsQWidget = SettingsLineQWidget(
+            name='Shift',
+            default=default,
+            comment='Unit',
+            limit=[-1e6, 1e6],
+            step=0.5
+        )
+        self.SettingsDict['Shift'] = self.ShiftSettingsQWidget.value
 
         self.Diagnostics = self.DiagnosticsSettingsQWidget.value
         self.DiagnosticsSettingsQWidget.changed.connect(self.OnDiagnosticsSettingsQWidgetChanged)
