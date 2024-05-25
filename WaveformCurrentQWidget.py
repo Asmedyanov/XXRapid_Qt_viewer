@@ -1,13 +1,13 @@
-from MatplotlibQWidget import *
+import os
+
+from MatplotlibSingeAxQWidget import *
 
 
-class WaveformCurrentQWidget(MatplotlibQWidget):
+class WaveformCurrentQWidget(MatplotlibSingeAxQWidget):
     def __init__(self, current_df, time_shift):
-        super().__init__()
-
+        super().__init__('Current')
         self.CurrentDF = current_df.copy()
         self.CurrentDF['time'] -= time_shift
-        self.ax = self.figure.add_subplot(111)
         self.ax.set(
             xlabel='t, us',
             ylabel='I, kA',
@@ -21,6 +21,10 @@ class WaveformCurrentQWidget(MatplotlibQWidget):
         self.CurrentDF['time'] -= time_shift
         self.current_df_to_plot = self.CurrentDF.loc[self.CurrentDF['time'] > 0]
         self.CurrentLine.set_data(self.current_df_to_plot['time'] * 1e6, self.current_df_to_plot['Units'] * 1e-3)
-        self.ax.relim()
-        self.ax.autoscale_view()
-        self.figure.canvas.draw()
+        self.changed.emit()
+
+    def Save_Raport(self, folder_name):
+        if 'Current' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Current')
+        super().Save_Raport(f'{folder_name}/Current')
+        self.current_df_to_plot.to_csv(f'{folder_name}/Current/Current.csv')

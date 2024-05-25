@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import pandas as pd
 
@@ -27,13 +29,17 @@ class WaveformOriginalQWidget(MatplotlibQWidget):
 
         for mykey, myChannelDF in self.ChannelDFDict.items():
             self.waveform_plots_dict[mykey], = self.ax.plot(
-                    myChannelDF['time'],
-                    myChannelDF['Volts'],
-                    label=mykey
-                )
-            self.ax.legend()
+                myChannelDF['time'],
+                myChannelDF['Volts'],
+                label=mykey
+            )
+        self.ax.legend()
+        self.ax.grid(ls=':')
 
-
+    def Save_Raport(self, folder_name='Default_shot/QtTraceFolder'):
+        if 'Waveform_original' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Waveform_original')
+        self.figure.savefig(f'{folder_name}/Waveform_original/Waveform_original.png')
 
     def set_data(self, df):
         self.NChannels = 0

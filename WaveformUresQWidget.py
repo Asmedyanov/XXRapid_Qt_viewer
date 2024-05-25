@@ -1,13 +1,12 @@
 import pandas as pd
 
-from MatplotlibQWidget import *
+from MatplotlibSingeAxQWidget import *
 import numpy as np
 
 
-class WaveformUresQWidget(MatplotlibQWidget):
+class WaveformUresQWidget(MatplotlibSingeAxQWidget):
     def __init__(self, df_full_voltage, df_idot, idot_peak_time):
-        super().__init__()
-        self.ax = self.figure.add_subplot(111)
+        super().__init__('Resistive_voltage')
         self.ax.set(
             xlabel='t, us',
             ylabel='U, kV',
@@ -82,8 +81,10 @@ class WaveformUresQWidget(MatplotlibQWidget):
 
         self.df_resistive_voltage_line.set_data(self.df_resistive_voltage['time'] * 1e6,
                                                 self.df_resistive_voltage['Units'] * 1e-3)
-
-        self.ax.relim()
-        self.ax.autoscale_view()
-        self.figure.canvas.draw()
         self.changed.emit()
+
+    def Save_Raport(self, folder_name):
+        if 'Resistive_voltage' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Resistive_voltage')
+        super().Save_Raport(f'{folder_name}/Resistive_voltage')
+        self.df_resistive_voltage.to_csv(f'{folder_name}/Resistive_voltage/Resistive_voltage.csv')

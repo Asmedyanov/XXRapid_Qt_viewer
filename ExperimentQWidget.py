@@ -17,7 +17,6 @@ class ExperimentQWidget(QTabWidget):
             os.makedirs(f'{folder_name}/QtTraceFolder')
         self.SettingsDict = self.OpenSettings('SettingsFile.xml')
 
-
         self.WaveformOriginalQWidget = WaveformOriginalQWidget(self.getWaveformFileName())
         self.addTab(self.WaveformOriginalQWidget, 'Waveform Original')
         if 'Waveform_processing_settings' not in self.SettingsDict['Experiment_settings'].keys():
@@ -40,6 +39,10 @@ class ExperimentQWidget(QTabWidget):
         SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'w')
         SettingsFile.write(dict2xml(self.SettingsDict))
         SettingsFile.close()
+
+    def SaveTrace(self, ):
+        self.WaveformOriginalQWidget.Save_Raport(f'{self.folder_name}/QtTraceFolder')
+        self.WaveformProcessingWidget.Save_Raport(f'{self.folder_name}/QtTraceFolder')
 
     def OpenSettings(self, filename='Default_shot/QtTraceFolder/SettingsFile.xml'):
         try:

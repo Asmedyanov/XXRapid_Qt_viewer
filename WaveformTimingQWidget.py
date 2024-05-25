@@ -1,3 +1,5 @@
+import os
+
 from MatplotlibQWidget import *
 import numpy as np
 import pandas as pd
@@ -103,3 +105,8 @@ class WaveformTimingQWidget(QWidget):
         self.ax.autoscale_view()
         self.MatplotlibQWidget.figure.canvas.draw()
         self.changed.emit()
+
+    def Save_Raport(self, folder_name):
+        if 'Waveform_timing' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Waveform_timing')
+        self.MatplotlibQWidget.figure.savefig(f'{folder_name}/Waveform_timing/Waveform_timing.png')

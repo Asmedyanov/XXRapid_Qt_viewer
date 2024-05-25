@@ -1,19 +1,18 @@
 import pandas as pd
 import numpy as np
 
-from MatplotlibQWidget import *
+from MatplotlibSingeAxQWidget import *
 
 
-class WaveformPowerQWidget(MatplotlibQWidget):
+class WaveformPowerQWidget(MatplotlibSingeAxQWidget):
     def __init__(self, df_current, df_Ures):
-        super().__init__()
-        self.ax_1 = self.figure.add_subplot(111)
-        self.ax_1.set(
+        super().__init__('Power')
+        self.ax.set(
             xlabel='t, us',
             ylabel='$P_{res}$, GW',
             title='Resistive power'
         )
-        self.ax_2 = self.ax_1.twinx()
+        self.ax_2 = self.ax.twinx()
         self.ax_2.set(
             ylabel='I, kA',
         )
@@ -31,7 +30,7 @@ class WaveformPowerQWidget(MatplotlibQWidget):
             'Units': self.power_function(df_Ures['time'].values)
         })
         self.CurrentLine, = self.ax_2.plot(self.df_current['time'] * 1e6, self.df_current['Units'] * 1e-3, ':r')
-        self.PowerLine, = self.ax_1.plot(self.df_Power['time'] * 1e6, self.df_Power['Units'] * 1e-9)
+        self.PowerLine, = self.ax.plot(self.df_Power['time'] * 1e6, self.df_Power['Units'] * 1e-9)
 
     def ures_function(self, time):
         ret = np.interp(time, self.df_Ures['time'].values, self.df_Ures['Units'].values)
@@ -60,9 +59,12 @@ class WaveformPowerQWidget(MatplotlibQWidget):
         })
         self.CurrentLine.set_data(self.df_current['time'] * 1e6, self.df_current['Units'] * 1e-3)
         self.PowerLine.set_data(self.df_Power['time'] * 1e6, self.df_Power['Units'] * 1e-9)
-        self.ax_1.relim()
-        self.ax_1.autoscale_view()
         self.ax_2.relim()
         self.ax_2.autoscale_view()
-        self.figure.canvas.draw()
         self.changed.emit()
+
+    def Save_Raport(self, folder_name):
+        if 'Power' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Power')
+        super().Save_Raport(f'{folder_name}/Power')
+        self.df_Power.to_csv(f'{folder_name}/Power/Power.csv')

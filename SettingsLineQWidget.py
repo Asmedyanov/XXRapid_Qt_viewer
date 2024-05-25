@@ -35,11 +35,12 @@ class SettingsLineQWidget(QWidget):
             self.QLineEdit = QLineEdit(f'{default}')
             self.QLineEdit.editingFinished.connect(self.OnQLineEditChanged)
             self.QHBoxLayout.addWidget(self.QLineEdit)
-            try:
+            '''try:
                 self.value = float(self.QLineEdit.text())
             except Exception as ex:
                 print(ex)
-                self.value = self.QLineEdit.text()
+                self.value = self.QLineEdit.text()'''
+            self.value = self.QLineEdit.text()
 
         self.CommentLabel = QLabel(comment)
         self.QHBoxLayout.addWidget(self.CommentLabel)
@@ -49,16 +50,13 @@ class SettingsLineQWidget(QWidget):
         self.changed.emit()
 
     def OnQLineEditChanged(self):
-        try:
+        '''try:
             self.value = float(self.QLineEdit.text())
         except:
-            self.value = self.QLineEdit.text()
+            self.value = self.QLineEdit.text()'''
+        self.value = self.QLineEdit.text()
         self.changed.emit()
 
     def OnQComboBoxChanged(self):
-        try:
-            self.value = float(self.QLineEdit.text())
-        except Exception as ex:
-            print(ex)
-            self.value = self.QLineEdit.text()
+        self.value = self.QComboBox.currentText()
         self.changed.emit()

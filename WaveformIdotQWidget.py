@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from MatplotlibQWidget import *
+from MatplotlibSingeAxQWidget import *
 from WaveformIdotSettingsQWidget import *
 
 
@@ -12,9 +12,10 @@ class WaveformIdotQWidget(QWidget):
         super().__init__()
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
-        self.MatplotlibQWidget = MatplotlibQWidget()
+        self.MatplotlibQWidget = MatplotlibSingeAxQWidget()
+        self.MatplotlibQWidget.png_name = 'Idot'
         self.QHBoxLayout.addWidget(self.MatplotlibQWidget)
-        self.ax = self.MatplotlibQWidget.figure.add_subplot(111)
+        self.ax = self.MatplotlibQWidget.ax
         self.ax.set(
             xlabel='$t, \\mu s$',
             ylabel='$\\dot I, kA/ns$',
@@ -24,7 +25,7 @@ class WaveformIdotQWidget(QWidget):
         self.QHBoxLayout.addWidget(self.WaveformIdotSettingsQWidget)
         self.WaveformIdotSettingsQWidget.changed.connect(self.OnSettings)
         self.df_idot = pd.DataFrame({
-            'time': df_current['time']-timeshift,
+            'time': df_current['time'] - timeshift,
             'Units': np.gradient(df_current['Units'].values) / np.gradient(df_current['time'].values)
         })
         self.dt = np.gradient(df_current['time'].values).mean()
@@ -51,9 +52,7 @@ class WaveformIdotQWidget(QWidget):
 
         self.PeakLine.set_xdata(self.Peak_time * 1e6)
 
-        self.ax.relim()
-        self.ax.autoscale_view()
-        self.MatplotlibQWidget.figure.canvas.draw()
+        self.MatplotlibQWidget.changed.emit()
 
         self.SettingsDict = self.WaveformIdotSettingsQWidget.SettingsDict
         self.changed.emit()
@@ -74,6 +73,11 @@ class WaveformIdotQWidget(QWidget):
         self.Peak_time = self.WaveformIdotSettingsQWidget.PeakSettingsLine.value * 1e-9
 
         self.PeakLine.set_xdata(self.Peak_time * 1e6)
-        self.ax.relim()
-        self.ax.autoscale_view()
-        self.MatplotlibQWidget.figure.canvas.draw()
+        self.MatplotlibQWidget.changed.emit()
+        self.changed.emit()
+
+    def Save_Raport(self, folder_name):
+        if 'Idot' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Idot')
+        self.MatplotlibQWidget.Save_Raport(f'{folder_name}/Idot')
+        self.df_idot_smoothed_to_plot.to_csv(f'{folder_name}/Idot/Idot.csv')

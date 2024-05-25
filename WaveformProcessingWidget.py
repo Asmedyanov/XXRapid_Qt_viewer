@@ -1,6 +1,7 @@
 from WaveformTimingQWidget import *
 from WaveformChannelsTab import *
 from WaveformPhysicalValuesQWidget import *
+import os
 
 
 class WaveformProcessingWidget(QTabWidget):
@@ -11,27 +12,26 @@ class WaveformProcessingWidget(QTabWidget):
         self.ChannelDFDict = channel_df_dict
         self.SettingsDict = dict()
         try:
-            self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict, settings_dict['Waveform_channels'])
+            settings = settings_dict['Waveform_channels']
         except:
-            self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict)
-
+            settings = None
+        self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict, settings_dict=settings)
         self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
         self.WaveformChannelsTab.changed.connect(self.OnWaveformChannelsTabChanged)
         self.addTab(self.WaveformChannelsTab, 'Waveform_channels')
         try:
+            settings = settings_dict['Waveform_timing']
+        except:
+            settings = None
+        try:
             self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict,
-                                                               settings_dict['Waveform_timing'])
+                                                               settings_dict=settings)
+
+            self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
+            self.WaveformTimingQWidget.changed.connect(self.OnWaveformTimingQWidget)
+            self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
         except Exception as ex:
             print(ex)
-            try:
-                self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict)
-            except Exception as ex:
-                print(ex)
-                return
-
-        self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
-        self.WaveformTimingQWidget.changed.connect(self.OnWaveformTimingQWidget)
-        self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
 
         try:
             try:
@@ -86,6 +86,15 @@ class WaveformProcessingWidget(QTabWidget):
         self.WaveformChannelsTab.set_data(ChannelDFDict)
         pass
 
-    '''self.Waveform_smoothing_tab.set_data(waveform_dict, info_file_df['Value']['Rogovski_conv'])
-    self.Waveform_timing_tab.set_data(self.Waveform_smoothing_tab.df_smoothed,
-                                      self.Waveform_smoothing_tab.df_4quick, info_file_df)'''
+    def Save_Raport(self, folder_name='Default_shot/QtTraceFolder'):
+        if 'Waveform_processing' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Waveform_processing')
+        self.WaveformChannelsTab.Save_Raport(f'{folder_name}/Waveform_processing')
+        try:
+            self.WaveformTimingQWidget.Save_Raport(f'{folder_name}/Waveform_processing')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformPhysicalValuesQWidget.Save_Raport(f'{folder_name}/Waveform_processing')
+        except Exception as ex:
+            print(ex)

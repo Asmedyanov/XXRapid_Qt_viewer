@@ -1,18 +1,17 @@
 import pandas as pd
 import numpy as np
-from MatplotlibQWidget import *
+from MatplotlibSingeAxQWidget import *
 
 
-class WaveformResistanceQWidget(MatplotlibQWidget):
+class WaveformResistanceQWidget(MatplotlibSingeAxQWidget):
     def __init__(self, df_current, df_Ures, ind_peak_time=0):
-        super().__init__()
-        self.ax_1 = self.figure.add_subplot(111)
-        self.ax_1.set(
+        super().__init__('Resistance')
+        self.ax.set(
             xlabel='t, us',
             ylabel='R, $\\Omega$',
             title='Resistance'
         )
-        self.ax_2 = self.ax_1.twinx()
+        self.ax_2 = self.ax.twinx()
         self.ax_2.set(
             ylabel='I, kA',
         )
@@ -34,7 +33,7 @@ class WaveformResistanceQWidget(MatplotlibQWidget):
         })
 
         self.CurrentLine, = self.ax_2.plot(self.df_current['time'] * 1e6, self.df_current['Units'] * 1e-3, ':r')
-        self.ResistanceLine, = self.ax_1.plot(self.df_Resistance['time'] * 1e6, self.df_Resistance['Units'])
+        self.ResistanceLine, = self.ax.plot(self.df_Resistance['time'] * 1e6, self.df_Resistance['Units'])
 
     def ures_function(self, time):
         ret = np.interp(time, self.df_Ures['time'].values, self.df_Ures['Units'].values)
@@ -69,9 +68,12 @@ class WaveformResistanceQWidget(MatplotlibQWidget):
         })
         self.CurrentLine.set_data(self.df_current['time'] * 1e6, self.df_current['Units'] * 1e-3)
         self.ResistanceLine.set_data(self.df_Resistance['time'] * 1e6, self.df_Resistance['Units'])
-        self.ax_1.relim()
-        self.ax_1.autoscale_view()
         self.ax_2.relim()
         self.ax_2.autoscale_view()
-        self.figure.canvas.draw()
         self.changed.emit()
+
+    def Save_Raport(self, folder_name):
+        if 'Resistance' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Resistance')
+        super().Save_Raport(f'{folder_name}/Resistance')
+        self.df_Resistance.to_csv(f'{folder_name}/Resistance/Resistance.csv')

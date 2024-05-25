@@ -130,8 +130,10 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         self.DefaultExperiment.SaveSettings()
+        self.DefaultExperiment.SaveTrace()
         for experiment in self.ExperimentQWidgetDict.values():
             experiment.SaveSettings()
+            experiment.SaveTrace()
         pass
         '''self.Additional_window.close()
         qm = QMessageBox.question(self, 'Save update', 'Save update?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)

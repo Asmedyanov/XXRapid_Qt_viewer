@@ -6,6 +6,7 @@ from WaveformUresQWidget import *
 from WaveformPowerQWidget import *
 from WaveformResistanceQWidget import *
 from WaveformEnergyQWidget import *
+import os
 
 
 class WaveformPhysicalValuesQWidget(QTabWidget):
@@ -70,7 +71,8 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
         try:
             self.WaveformEnergyQWidget = WaveformEnergyQWidget(
                 df_current=self.WaveformCurrentQWidget.current_df_to_plot,
-                df_Ures=self.WaveformUresQWidget.df_resistive_voltage,
+                # df_Ures=self.WaveformUresQWidget.df_resistive_voltage,
+                df_power=self.WaveformPowerQWidget.df_Power
             )
             self.addTab(self.WaveformEnergyQWidget, 'Energy')
         except Exception as ex:
@@ -88,7 +90,8 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
         )
         self.WaveformEnergyQWidget.set_data(
             df_current=self.WaveformCurrentQWidget.current_df_to_plot,
-            df_Ures=self.WaveformUresQWidget.df_resistive_voltage
+            # df_Ures=self.WaveformUresQWidget.df_resistive_voltage,
+            df_power=self.WaveformPowerQWidget.df_Power
         )
         self.changed.emit()
 
@@ -111,3 +114,35 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
             idot_peak_time=self.WaveformIdotQWidget.Peak_time
         )
         self.changed.emit()
+
+    def Save_Raport(self, folder_name):
+        if 'Waveform_physical' not in os.listdir(folder_name):
+            os.makedirs(f'{folder_name}/Waveform_physical')
+        try:
+            self.WaveformCurrentQWidget.Save_Raport(f'{folder_name}/Waveform_physical')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformFullVoltageQWidget.Save_Raport(f'{folder_name}/Waveform_physical')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformIdotQWidget.Save_Raport(f'{folder_name}/Waveform_physical')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformUresQWidget.Save_Raport(f'{folder_name}/Waveform_physical')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformPowerQWidget.Save_Raport(f'{folder_name}/Waveform_physical')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformResistanceQWidget.Save_Raport(f'{folder_name}/Waveform_physical')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformEnergyQWidget.Save_Raport(f'{folder_name}/Waveform_physical')
+        except Exception as ex:
+            print(ex)

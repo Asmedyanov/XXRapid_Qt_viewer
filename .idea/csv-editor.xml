@@ -31,6 +31,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_1\Rogowski_coil.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_physical\Current\Current.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_physical\Idot\Idot.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\SW_onset_Quart_1.csv">
           <value>
             <Attribute>
