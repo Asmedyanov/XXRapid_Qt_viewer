@@ -19,25 +19,24 @@ class WaveformChannelsTab(QTabWidget):
             except:
                 settings = None
             self.ChannelQWidgetDict[my_key] = ChannelQWidget(my_key, my_df, settings)
+            self.SettingsDict[my_key] = self.ChannelQWidgetDict[my_key].SettingsDict
+            self.addTab(self.ChannelQWidgetDict[my_key], my_key)
+            self.ChannelQWidgetDict[my_key].changed.connect(self.OnChannelChanged)
+            self.PhysicalDFDict = self.get_physical_dict()
+
+    def get_physical_dict(self):
+        PhysicalDFDict = dict()
         for my_key, my_channel in self.ChannelQWidgetDict.items():
-            self.addTab(my_channel, my_key)
             if my_channel.ChannelSettingsQWidget.Diagnostics == 'Rogowski_coil':
-                self.PhysicalDFDict['Current'] = my_channel.df_smoothed
+                PhysicalDFDict['Current'] = my_channel.df_smoothed
             elif my_channel.ChannelSettingsQWidget.Diagnostics == 'Tektronix_VD':
-                self.PhysicalDFDict['Voltage'] = my_channel.df_smoothed
+                PhysicalDFDict['Voltage'] = my_channel.df_smoothed
             elif my_channel.ChannelSettingsQWidget.Diagnostics == 'XXRapid_trig_out':
-                self.PhysicalDFDict['Trigger'] = my_channel.df_smoothed
-            my_channel.changed.connect(self.OnChannelChanged)
+                PhysicalDFDict['Trigger'] = my_channel.df_smoothed
+        return PhysicalDFDict
 
     def OnChannelChanged(self):
-        for my_key, my_channel in self.ChannelQWidgetDict.items():
-            self.SettingsDict[my_key] = my_channel.SettingsDict
-            if my_channel.ChannelSettingsQWidget.Diagnostics == 'Rogowski_coil':
-                self.PhysicalDFDict['Current'] = my_channel.df_smoothed
-            elif my_channel.ChannelSettingsQWidget.Diagnostics == 'Tektronix_VD':
-                self.PhysicalDFDict['Voltage'] = my_channel.df_smoothed
-            elif my_channel.ChannelSettingsQWidget.Diagnostics == 'XXRapid_trig_out':
-                self.PhysicalDFDict['Trigger'] = my_channel.df_smoothed
+        self.PhysicalDFDict = self.get_physical_dict()
         self.changed.emit()
 
     def set_data(self, channel_df_dict):

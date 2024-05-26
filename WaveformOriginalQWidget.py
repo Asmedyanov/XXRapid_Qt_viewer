@@ -1,8 +1,5 @@
 import os
-
-import numpy as np
 import pandas as pd
-
 from MatplotlibQWidget import *
 
 
@@ -36,7 +33,7 @@ class WaveformOriginalQWidget(MatplotlibQWidget):
         self.ax.legend()
         self.ax.grid(ls=':')
 
-    def Save_Raport(self, folder_name='Default_shot/QtTraceFolder'):
+    def Save_Report(self, folder_name='Default_shot/QtTraceFolder'):
         if 'Waveform_original' not in os.listdir(folder_name):
             os.makedirs(f'{folder_name}/Waveform_original')
         self.figure.savefig(f'{folder_name}/Waveform_original/Waveform_original.png')
@@ -76,3 +73,9 @@ class WaveformOriginalQWidget(MatplotlibQWidget):
         self.ax.relim()
         self.ax.autoscale_view()
         self.figure.canvas.draw()
+
+    def __str__(self):
+        return f'{self.__class__}'
+
+    def getSettingsDict(self):
+        print(self.objectName())

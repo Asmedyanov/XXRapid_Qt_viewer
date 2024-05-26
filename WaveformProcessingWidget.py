@@ -31,22 +31,20 @@ class WaveformProcessingWidget(QTabWidget):
             self.WaveformTimingQWidget.changed.connect(self.OnWaveformTimingQWidget)
             self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
         except Exception as ex:
-            print(ex)
-
+            print(f'WaveformTimingQWidget {ex}')
         try:
-            try:
-                default_settings = settings_dict['Waveform_physical']
-            except:
-                default_settings = None
+            settings = settings_dict['Waveform_physical']
+        except:
+            settings = None
+        try:
             self.WaveformPhysicalValuesQWidget = WaveformPhysicalValuesQWidget(
                 self.WaveformChannelsTab.PhysicalDFDict, timeshift=self.WaveformTimingQWidget.t_start,
-                settings_dict=default_settings)
+                settings_dict=settings)
             self.WaveformPhysicalValuesQWidget.changed.connect(self.OnWaveformPhysicalValuesQWidget)
             self.SettingsDict['Waveform_physical'] = self.WaveformPhysicalValuesQWidget.SettingsDict
+            self.addTab(self.WaveformPhysicalValuesQWidget, 'Waveform_physical')
         except Exception as ex:
-            print(ex)
-            return
-        self.addTab(self.WaveformPhysicalValuesQWidget, 'Waveform_physical')
+            print(f'WaveformPhysicalValuesQWidget {ex}')
 
     def OnWaveformPhysicalValuesQWidget(self):
         self.SettingsDict['Waveform_physical'] = self.WaveformPhysicalValuesQWidget.SettingsDict
@@ -63,18 +61,38 @@ class WaveformProcessingWidget(QTabWidget):
         try:
             self.WaveformTimingQWidget.set_data(self.WaveformChannelsTab.PhysicalDFDict)
         except Exception as ex:
-            print(ex)
+            print(f'WaveformTimingQWidget.set_data {ex}')
+            try:
+                settings = self.SettingsDict['Waveform_timing']
+            except:
+                settings = None
             try:
                 self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict,
-                                                                   self.SettingsDict['Waveform_timing'])
-            except:
+                                                                   settings_dict=settings)
+
+                self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
+                self.WaveformTimingQWidget.changed.connect(self.OnWaveformTimingQWidget)
+                self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
+            except Exception as ex:
+                print(f'WaveformTimingQWidget {ex}')
+            try:
+                self.WaveformPhysicalValuesQWidget.set_data(self.WaveformChannelsTab.PhysicalDFDict,
+                                                                timeshift=self.WaveformTimingQWidget.t_start)
+            except Exception as ex:
+                print(f'WaveformPhysicalValuesQWidget.set_data {ex}')
                 try:
-                    self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict)
-                    self.SettingsDict['Waveform_timing'] = self.WaveformTimingQWidget.SettingsDict
-                    self.WaveformTimingQWidget.changed.connect(self.OnWaveformTimingQWidget)
-                    self.addTab(self.WaveformTimingQWidget, 'Waveform_timing')
+                    settings = self.SettingsDict['Waveform_physical']
+                except:
+                    settings = None
+                try:
+                    self.WaveformPhysicalValuesQWidget = WaveformPhysicalValuesQWidget(
+                        self.WaveformChannelsTab.PhysicalDFDict, timeshift=self.WaveformTimingQWidget.t_start,
+                        settings_dict=settings)
+                    self.WaveformPhysicalValuesQWidget.changed.connect(self.OnWaveformPhysicalValuesQWidget)
+                    self.SettingsDict['Waveform_physical'] = self.WaveformPhysicalValuesQWidget.SettingsDict
+                    self.addTab(self.WaveformPhysicalValuesQWidget, 'Waveform_physical')
                 except Exception as ex:
-                    print(ex)
+                    print(f'WaveformPhysicalValuesQWidget {ex}')
 
         self.changed.emit()
 

@@ -15,44 +15,58 @@ class ExperimentQWidget(QTabWidget):
         self.folder_list = os.listdir(folder_name)
         if 'QtTraceFolder' not in self.folder_list:
             os.makedirs(f'{folder_name}/QtTraceFolder')
-        self.SettingsDict = self.OpenSettings('SettingsFile.xml')
-
-        self.WaveformOriginalQWidget = WaveformOriginalQWidget(self.getWaveformFileName())
+        settings_dict = self.OpenSettings('SettingsFile.xml')
+        self.SettingsDict = dict()
+        WaveformFileName=self.getWaveformFileName()
+        pass
+        self.WaveformOriginalQWidget = WaveformOriginalQWidget(WaveformFileName)
         self.addTab(self.WaveformOriginalQWidget, 'Waveform Original')
-        if 'Waveform_processing_settings' not in self.SettingsDict['Experiment_settings'].keys():
-            self.WaveformProcessingWidget = WaveformProcessingWidget(self.WaveformOriginalQWidget.ChannelDFDict)
-            self.SettingsDict['Experiment_settings'][
-                'Waveform_processing_settings'] = self.WaveformProcessingWidget.SettingsDict
-        else:
+        try:
+            settings = settings_dict['Waveform_processing_settings']
+        except:
+            settings = None
+        try:
             self.WaveformProcessingWidget = WaveformProcessingWidget(self.WaveformOriginalQWidget.ChannelDFDict,
-                                                                     self.SettingsDict['Experiment_settings'][
-                                                                         'Waveform_processing_settings'])
-        self.addTab(self.WaveformProcessingWidget, 'Waveform Processing')
-        self.WaveformProcessingWidget.changed.connect(self.OnWaveformProcessingWidgetChanged)
+                                                                     settings_dict=settings)
+            self.addTab(self.WaveformProcessingWidget, 'Waveform Processing')
+            self.WaveformProcessingWidget.changed.connect(self.OnWaveformProcessingWidgetChanged)
+            self.SettingsDict['Waveform_processing_settings'] = self.WaveformProcessingWidget.SettingsDict
+        except Exception as ex:
+            print(f'WaveformProcessingWidget {ex}')
 
     def OnWaveformProcessingWidgetChanged(self):
-        self.SettingsDict['Experiment_settings'][
+        self.SettingsDict[
             'Waveform_processing_settings'] = self.WaveformProcessingWidget.SettingsDict
         self.changed.emit()
 
     def SaveSettings(self, filename='SettingsFile.xml'):
         SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'w')
-        SettingsFile.write(dict2xml(self.SettingsDict))
+        SettingsFile.write(dict2xml({'Experiment_settings': self.SettingsDict}))
         SettingsFile.close()
 
     def SaveTrace(self, ):
-        self.WaveformOriginalQWidget.Save_Raport(f'{self.folder_name}/QtTraceFolder')
-        self.WaveformProcessingWidget.Save_Raport(f'{self.folder_name}/QtTraceFolder')
+        try:
+            self.WaveformOriginalQWidget.Save_Report(f'{self.folder_name}/QtTraceFolder')
+        except Exception as ex:
+            print(f'WaveformOriginalQWidget.Save_Report {ex}')
+        try:
+            self.WaveformProcessingWidget.Save_Raport(f'{self.folder_name}/QtTraceFolder')
+        except Exception as ex:
+            print(f'WaveformProcessingWidget.Save_Report {ex}')
 
     def OpenSettings(self, filename='Default_shot/QtTraceFolder/SettingsFile.xml'):
         try:
             SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'r')
         except Exception as ex:
-            print(ex)
+            print(f'OpenSettings {ex}')
             SettingsFile = open('Default_shot/QtTraceFolder/SettingsFile.xml', 'r')
             print('Default settings')
-        SettingsDict = {'Experiment_settings': xmltodict.parse(SettingsFile.read())['Experiment_settings']}
-        return SettingsDict
+        try:
+            SettingsDict = xmltodict.parse(SettingsFile.read())['Experiment_settings']
+            return SettingsDict
+        except Exception as ex:
+            print(f'xmltodict {ex}')
+            return None
 
     def getWaveformFileName(self):
         waveform_files_list = [name for name in self.folder_list if

@@ -9,7 +9,11 @@ class WaveformTimingSettingsQWidget(QTabWidget):
     def __init__(self, settings_dict=None):
         super().__init__()
         self.SettingsDict = dict()
-        self.PulseStartTimeTab = WaveformTimingPointSettingsQWidget(settings_dict['Pulse_start'])
+        try:
+            settings = settings_dict['Pulse_start']
+        except:
+            settings = None
+        self.PulseStartTimeTab = WaveformTimingPointSettingsQWidget(settings_dict=settings)
         self.SettingsDict['Pulse_start'] = self.PulseStartTimeTab.SettingsDict
         self.PulseStartTimeTab.changed.connect(self.OnPulseStartTimeTab)
         self.addTab(self.PulseStartTimeTab, 'Pulse_start')

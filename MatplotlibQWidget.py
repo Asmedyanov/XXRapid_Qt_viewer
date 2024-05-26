@@ -8,8 +8,11 @@ from PyQt5.QtCore import pyqtSignal
 class MatplotlibQWidget(QWidget):
     changed = pyqtSignal()
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        try:
+            super().__init__()
+        except:
+            super().__init__()
         self.layout = QVBoxLayout()
         self.figure = plt.figure()
         self.figure.set_layout_engine(layout='tight')

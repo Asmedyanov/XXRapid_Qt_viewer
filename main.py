@@ -1,10 +1,6 @@
 import sys
 import qdarktheme
-import matplotlib.pyplot as plt
-
-
-
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QVBoxLayout, QWidget, QAction, QFileDialog, QShortcut
+from PyQt5.QtWidgets import QApplication
 
 from Main_Window import MainWindow
 
