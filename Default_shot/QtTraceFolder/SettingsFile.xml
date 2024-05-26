@@ -1,4 +1,34 @@
 <Experiment_settings>
+  <Overlapped_images>
+    <Camera_1>
+      <Scale>45.0</Scale>
+      <Sigma_before>5.0</Sigma_before>
+      <Sigma_overlapped>1.0</Sigma_overlapped>
+      <Sigma_shot>1.0</Sigma_shot>
+      <User_comment>User_comment</User_comment>
+    </Camera_1>
+    <Camera_2>
+      <Scale>45.0</Scale>
+      <Sigma_before>5.0</Sigma_before>
+      <Sigma_overlapped>1.0</Sigma_overlapped>
+      <Sigma_shot>1.0</Sigma_shot>
+      <User_comment>User_comment</User_comment>
+    </Camera_2>
+    <Camera_3>
+      <Scale>45.0</Scale>
+      <Sigma_before>5.0</Sigma_before>
+      <Sigma_overlapped>1.0</Sigma_overlapped>
+      <Sigma_shot>1.0</Sigma_shot>
+      <User_comment>User_comment</User_comment>
+    </Camera_3>
+    <Camera_4>
+      <Scale>45.0</Scale>
+      <Sigma_before>5.0</Sigma_before>
+      <Sigma_overlapped>1.0</Sigma_overlapped>
+      <Sigma_shot>1.0</Sigma_shot>
+      <User_comment>User_comment</User_comment>
+    </Camera_4>
+  </Overlapped_images>
   <Waveform_processing_settings>
     <Waveform_channels>
       <Channel_1>

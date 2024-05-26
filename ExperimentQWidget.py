@@ -3,6 +3,7 @@ from WaveformProcessingWidget import *
 from dict2xml import dict2xml
 import xmltodict
 from XXRapidOriginalQWidget import *
+from XXRapidOverlappedQWidget import *
 
 
 class ExperimentQWidget(QTabWidget):
@@ -38,6 +39,22 @@ class ExperimentQWidget(QTabWidget):
             shot_name=shot_name
         )
         self.addTab(self.XXRapidOriginalQWidget, 'XXRapid_Camera_original')
+        try:
+            settings = settings_dict['Overlapped_images']
+        except:
+            settings = None
+        try:
+            self.XXRapidOverlappedQWidget = XXRapidOverlappedQWidget(self.XXRapidOriginalQWidget.CameraDataDict,
+                                                                     settings)
+            self.addTab(self.XXRapidOverlappedQWidget, 'Overlapped_images')
+            self.XXRapidOverlappedQWidget.changed.connect(self.OnXXRapidOverlappedQWidget)
+            self.SettingsDict['Overlapped_images'] = self.XXRapidOverlappedQWidget.SettingsDict
+        except Exception as ex:
+            print(f'XXRapidOverlappedQWidget {ex}')
+
+    def OnXXRapidOverlappedQWidget(self):
+        self.SettingsDict['Overlapped_images'] = self.XXRapidOverlappedQWidget.SettingsDict
+        self.changed.emit()
 
     def get_before_name(self):
         before_files_list = [name for name in self.folder_list if
@@ -73,6 +90,10 @@ class ExperimentQWidget(QTabWidget):
             self.XXRapidOriginalQWidget.Save_Report(f'{self.folder_name}/QtTraceFolder')
         except Exception as ex:
             print(f'XXRapidOriginalQWidget.Save_Report {ex}')
+        try:
+            self.XXRapidOverlappedQWidget.Save_Report(f'{self.folder_name}/QtTraceFolder')
+        except Exception as ex:
+            print(f'XXRapidOverlappedQWidget.Save_Report {ex}')
 
     def OpenSettings(self, filename='Default_shot/QtTraceFolder/SettingsFile.xml'):
         try:

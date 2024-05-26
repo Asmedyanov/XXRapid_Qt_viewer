@@ -38,7 +38,7 @@ class Four_overlapped_frames(MatplotlibQWidget):
             before_image = gaussian_filter(before_image_array[i], sigma=sigma)
             shot_image = gaussian_filter(shot_image_array[i], sigma=sigma)
             overlapped = np.where(shot_image > before_image, 1, shot_image / before_image)
-            mask = np.where(before_image <= before_image.mean(), 0, 1)
+            mask = np.where(before_image < before_image.mean(), 0, 1)
             overlapped = overlapped * mask
             overlapped = gaussian_filter(overlapped, sigma=sigma)
             overlapped_list.append(overlapped)
