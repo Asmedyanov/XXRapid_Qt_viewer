@@ -20,6 +20,21 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         self.ScaleSettingLine.changed.connect(self.OnSettingsLineChanged)
 
         try:
+            default = settings_dict['Mask_threshold']
+        except:
+            default = 2
+        self.MaskThresholdSettingLine = SettingsLineQWidget(
+            name='Mask_threshold',
+            default=default,
+            limit=[0.1, 10],
+            step=0.01,
+            comment='x Median'
+        )
+        self.QVBoxLayout.addWidget(self.MaskThresholdSettingLine)
+        self.SettingsDict['Mask_threshold'] = self.MaskThresholdSettingLine.value
+        self.MaskThresholdSettingLine.changed.connect(self.OnSettingsLineChanged)
+
+        try:
             default = settings_dict['Sigma_before']
         except:
             default = 1
@@ -70,5 +85,6 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         self.SettingsDict['Sigma_before'] = self.SigmaBeforeLine.value
         self.SettingsDict['Sigma_shot'] = self.SigmaShotLine.value
         self.SettingsDict['Sigma_overlapped'] = self.SigmaOverlappedLine.value
+        self.SettingsDict['Mask_threshold'] = self.MaskThresholdSettingLine.value
 
         self.changed.emit()

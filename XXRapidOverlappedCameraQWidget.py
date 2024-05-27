@@ -24,6 +24,7 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         self.sigma_before = self.XXRapidOverlappedCameraSettingsQWidget.SigmaBeforeLine.value
         self.sigma_shot = self.XXRapidOverlappedCameraSettingsQWidget.SigmaShotLine.value
         self.sigma_overlapped = self.XXRapidOverlappedCameraSettingsQWidget.SigmaOverlappedLine.value
+        self.mask_threshold = self.XXRapidOverlappedCameraSettingsQWidget.MaskThresholdSettingLine.value
         self.OverlappedImage = self.getOverlappedImage()
         extent = [-self.OverlappedImage.shape[1] * self.dx // 2,
                   self.OverlappedImage.shape[1] * self.dx // 2,
@@ -37,7 +38,7 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         shadow_image = np.where(shot_image < before_image + before_image.std(),
                                 shot_image,
                                 before_image + before_image.std())
-        mask = np.where(before_image > np.median(before_image) * 2, 1, 0)
+        mask = np.where(before_image > np.median(before_image) * self.mask_threshold, 1, 0)
         overlapped_image = np.where(before_image <= 0, 0,
                                     shadow_image / before_image) * mask
         overlapped_image = gaussian_filter(overlapped_image, sigma=self.sigma_overlapped)
@@ -49,6 +50,7 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         self.sigma_before = self.XXRapidOverlappedCameraSettingsQWidget.SigmaBeforeLine.value
         self.sigma_shot = self.XXRapidOverlappedCameraSettingsQWidget.SigmaShotLine.value
         self.sigma_overlapped = self.XXRapidOverlappedCameraSettingsQWidget.SigmaOverlappedLine.value
+        self.mask_threshold = self.XXRapidOverlappedCameraSettingsQWidget.MaskThresholdSettingLine.value
         self.OverlappedImage = self.getOverlappedImage()
         extent = [-self.OverlappedImage.shape[1] * self.dx // 2,
                   self.OverlappedImage.shape[1] * self.dx // 2,

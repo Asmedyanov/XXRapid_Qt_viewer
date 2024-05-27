@@ -1,27 +1,31 @@
 <Experiment_settings>
   <Overlapped_images>
     <Camera_1>
+      <Mask_threshold>1.4</Mask_threshold>
       <Scale>45.0</Scale>
-      <Sigma_before>5.0</Sigma_before>
+      <Sigma_before>4.0</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_1>
     <Camera_2>
+      <Mask_threshold>1.35</Mask_threshold>
       <Scale>45.0</Scale>
-      <Sigma_before>5.0</Sigma_before>
+      <Sigma_before>4.0</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_2>
     <Camera_3>
+      <Mask_threshold>1.8</Mask_threshold>
       <Scale>45.0</Scale>
-      <Sigma_before>5.0</Sigma_before>
+      <Sigma_before>3.0</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_3>
     <Camera_4>
+      <Mask_threshold>1.9</Mask_threshold>
       <Scale>45.0</Scale>
       <Sigma_before>5.0</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
