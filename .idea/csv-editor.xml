@@ -38,6 +38,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_1\Systron.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_2\Systron.csv">
           <value>
             <Attribute>

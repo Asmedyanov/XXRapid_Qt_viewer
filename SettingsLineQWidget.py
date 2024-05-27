@@ -29,7 +29,8 @@ class SettingsLineQWidget(QWidget):
             self.QSpinBox.setValue(float(default))
             self.QSpinBox.setSingleStep(float(step))
             self.value = self.QSpinBox.value()
-            self.QSpinBox.editingFinished.connect(self.OnQSpinBoxChanged)
+            #self.QSpinBox.editingFinished.connect(self.OnQSpinBoxChanged)
+            self.QSpinBox.valueChanged.connect(self.OnQSpinBoxChanged)
 
         else:
             self.QLineEdit = QLineEdit(f'{default}')

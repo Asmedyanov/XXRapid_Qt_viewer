@@ -1,4 +1,6 @@
 import numpy as np
+
+
 def open_rtv(fname):
     """
     the function read the binary file of the fast-frame xrapid camera
@@ -16,5 +18,6 @@ def open_rtv(fname):
     file_array[1::2, :, 1360 // 2:] = ar_right
 
     image_array = np.copy(file_array)
+    image_array = np.nan_to_num(image_array)
     file.close()
     return image_array

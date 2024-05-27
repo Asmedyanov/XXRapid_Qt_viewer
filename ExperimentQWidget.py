@@ -4,6 +4,7 @@ from dict2xml import dict2xml
 import xmltodict
 from XXRapidOriginalQWidget import *
 from XXRapidOverlappedQWidget import *
+from XXRapidFrontingQWidget import *
 
 
 class ExperimentQWidget(QTabWidget):
@@ -51,6 +52,22 @@ class ExperimentQWidget(QTabWidget):
             self.SettingsDict['Overlapped_images'] = self.XXRapidOverlappedQWidget.SettingsDict
         except Exception as ex:
             print(f'XXRapidOverlappedQWidget {ex}')
+        try:
+            settings = settings_dict['Fronting']
+        except:
+            settings = None
+        try:
+            self.XXRapidFrontingQTabWidget = XXRapidFrontingQWidget(self.XXRapidOriginalQWidget.CameraDataDict,
+                                                                    settings)
+            self.addTab(self.XXRapidFrontingQTabWidget, 'Fronting')
+            self.XXRapidFrontingQTabWidget.changed.connect(self.OnXXRapidFrontingQTabWidget)
+            self.SettingsDict['Fronting'] = self.XXRapidFrontingQTabWidget.SettingsDict
+        except Exception as ex:
+            print(f'XXRapidFrontingQTabWidget {ex}')
+
+    def OnXXRapidFrontingQTabWidget(self):
+        self.SettingsDict['Fronting'] = self.XXRapidFrontingQTabWidget.SettingsDict
+        self.changed.emit()
 
     def OnXXRapidOverlappedQWidget(self):
         self.SettingsDict['Overlapped_images'] = self.XXRapidOverlappedQWidget.SettingsDict
