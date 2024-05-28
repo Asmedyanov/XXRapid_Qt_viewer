@@ -9,14 +9,16 @@ from PyQt5.QtCore import pyqtSignal
 class ChannelQWidget(QWidget):
     changed = pyqtSignal()
 
-    def __init__(self, my_key, df, settings_dict=dict()):
+    def __init__(self, my_key, df, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.my_key = my_key
         self.df_original = df
         self.MainQHBoxLayout = QHBoxLayout()
         self.setLayout(self.MainQHBoxLayout)
         self.MainMatplotlibQWidget = MatplotlibQWidget()
-        self.MainQHBoxLayout.addWidget(self.MainMatplotlibQWidget)
+        self.MainQHBoxLayout.addWidget(self.MainMatplotlibQWidget,stretch=1)
         self.ChannelSettingsQWidget = ChannelSettingsQWidget(settings_dict)
         self.SettingsDict = self.ChannelSettingsQWidget.SettingsDict
         self.ChannelSettingsQWidget.changed.connect(self.OnChannelSettingsQWidgetChanged)
@@ -85,3 +87,7 @@ class ChannelQWidget(QWidget):
     def Save_Raport(self, folder_name):
         self.MainMatplotlibQWidget.figure.savefig(f'{folder_name}/{self.ChannelSettingsQWidget.Diagnostics}.png')
         self.df_smoothed.to_csv(f'{folder_name}/{self.ChannelSettingsQWidget.Diagnostics}.csv')
+
+    def set_settings(self, settings_dict=None):
+        self.ChannelSettingsQWidget.set_settings(settings_dict)
+        self.SettingsDict = self.ChannelSettingsQWidget.SettingsDict

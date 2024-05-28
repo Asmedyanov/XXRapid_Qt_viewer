@@ -7,7 +7,9 @@ import os
 class WaveformChannelsTab(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, channel_df_dict, settings_dict=dict()):
+    def __init__(self, channel_df_dict, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.setTabPosition(QTabWidget.TabPosition.West)
         self.ChannelQWidgetDict = dict()
@@ -52,3 +54,18 @@ class WaveformChannelsTab(QTabWidget):
             if mykey not in os.listdir(f'{folder_name}/Waveform_channels'):
                 os.makedirs(f'{folder_name}/Waveform_channels/{mykey}')
             mychannel.Save_Raport(f'{folder_name}/Waveform_channels/{mykey}')
+
+    def set_settings(self, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
+        self.SettingsDict = settings_dict
+        for my_key, my_channel_widget in self.ChannelQWidgetDict.items():
+            try:
+                settings = settings_dict[my_key]
+            except:
+                settings = dict()
+            try:
+                my_channel_widget.set_settings(settings)
+                self.SettingsDict[my_key] = my_channel_widget.SettingsDict
+            except Exception as ex:
+                print(f'ChannelQWidgetDict[{my_key}].set_settings {ex}')

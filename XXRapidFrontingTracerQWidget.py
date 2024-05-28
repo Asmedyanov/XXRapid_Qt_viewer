@@ -15,7 +15,7 @@ class XXRapidFrontingTracerQWidget(QWidget):
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()
-        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget)
+        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget, stretch=1)
         self.XXRapidFrontingTracerSettingsQWidget = XXRapidFrontingTracerSettingsQWidget(self, settings_dict)
         self.XXRapidFrontingTracerSettingsQWidget.changed.connect(self.OnXXRapidFrontingTracerSettingsQWidget)
         self.QHBoxLayout.addWidget(self.XXRapidFrontingTracerSettingsQWidget)

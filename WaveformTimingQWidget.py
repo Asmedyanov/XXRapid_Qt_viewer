@@ -9,12 +9,12 @@ from WaveformTimingSettingsQWidget import *
 class WaveformTimingQWidget(QWidget):
     changed = pyqtSignal()
 
-    def __init__(self, physical_df_dict=dict(), settings_dict=dict()):
+    def __init__(self, physical_df_dict=dict(), settings_dict=None):
         super().__init__()
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
         self.MatplotlibQWidget = MatplotlibQWidget()
-        self.QHBoxLayout.addWidget(self.MatplotlibQWidget)
+        self.QHBoxLayout.addWidget(self.MatplotlibQWidget, stretch=1)
         self.WaveformTimingSettingsQWidget = WaveformTimingSettingsQWidget(settings_dict)
         self.SettingsDict = self.WaveformTimingSettingsQWidget.SettingsDict
         self.WaveformTimingSettingsQWidget.changed.connect(self.OnWaveformTimingSettingsQWidget)

@@ -92,3 +92,16 @@ class ChannelSettingsQWidget(SettingsBoxQWidget):
         self.Coefficient = self.CoefficientSettingsQWidget.value
         self.SettingsDict['Coefficient'] = self.CoefficientSettingsQWidget.value
         self.changed.emit()
+
+    def set_settings(self, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
+        self.SettingsDict = settings_dict
+        try:
+            default = settings_dict['Diagnostics']
+        except:
+            default = 'Systron'
+        self.DiagnosticsSettingsQWidget.QComboBox.setCurrentText(default)
+        self.SettingsDict['Diagnostics'] = self.DiagnosticsSettingsQWidget.value
+
+

@@ -17,7 +17,7 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         self.setLayout(self.QHBoxLayout)
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()
         self.MatplotlibSingeAxQWidget.ax.set(title='Overlapped image', xlabel='x,mm', ylabel='y,mm')
-        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget)
+        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget,stretch=1)
         self.XXRapidOverlappedCameraSettingsQWidget = XXRapidOverlappedCameraSettingsQWidget(settings_dict)
         self.SettingsDict = self.XXRapidOverlappedCameraSettingsQWidget.SettingsDict
         self.QHBoxLayout.addWidget(self.XXRapidOverlappedCameraSettingsQWidget)

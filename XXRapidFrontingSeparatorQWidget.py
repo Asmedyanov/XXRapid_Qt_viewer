@@ -17,7 +17,7 @@ class XXRapidFrontingSeparatorQWidget(QWidget):
         self.setLayout(self.QHBoxLayout)
         self.camera_data = camera_data
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()
-        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget)
+        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget,stretch=1)
         self.XXRapidFrontingSeparatorSettingsQWidget = XXRapidFrontingSeparatorSettingsQWidget(settings_dict)
         self.QHBoxLayout.addWidget(self.XXRapidFrontingSeparatorSettingsQWidget)
         self.XXRapidFrontingSeparatorSettingsQWidget.changed.connect(self.OnXXRapidFrontingSeparatorSettingsQWidget)

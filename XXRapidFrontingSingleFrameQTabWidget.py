@@ -4,6 +4,7 @@ from XXRapidFrontingQuartQTabWidget import *
 
 class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
     changed = pyqtSignal()
+    currentQuartChanged = pyqtSignal()
 
     def __init__(self, camera_data, settings_dict=None):
         if settings_dict is None:
@@ -25,6 +26,7 @@ class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
             return
         self.XXRapidFrontingQuartQTabWidgetDict = dict()
         self.expansion_dict = dict()
+        self.tabBarDoubleClicked.connect(self.on_tab_bar)
         for my_key, my_camera_data in self.XXRapidFrontingSeparatorQWidget.quarts_dict.items():
             try:
                 settings = settings_dict[my_key]
@@ -36,9 +38,16 @@ class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
                 self.SettingsDict[my_key] = self.XXRapidFrontingQuartQTabWidgetDict[my_key].SettingsDict
                 self.expansion_dict[my_key] = self.XXRapidFrontingQuartQTabWidgetDict[my_key].get_expansion()
                 self.addTab(self.XXRapidFrontingQuartQTabWidgetDict[my_key], my_key)
+                self.currentQuart = self.currentIndex()
                 self.XXRapidFrontingQuartQTabWidgetDict[my_key].changed.connect(self.OnXXRapidFrontingQuartQTabWidget)
             except Exception as ex:
                 print(f'XXRapidFrontingQuartQTabWidgetDict[{my_key}] {ex}')
+
+    def on_tab_bar(self):
+        index = self.currentIndex()
+        if index > 0:
+            self.currentQuart = index
+            self.currentQuartChanged.emit()
 
     def OnXXRapidFrontingQuartQTabWidget(self):
         for mykey, myQuartQWidget in self.XXRapidFrontingQuartQTabWidgetDict.items():

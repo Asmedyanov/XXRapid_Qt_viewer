@@ -18,7 +18,7 @@ class XXRapidFrontingFrontQWidget(QWidget):
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()
-        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget)
+        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget,stretch=1)
         self.XXRapidFrontingFrontSettingsQWidget = XXRapidFrontingFrontSettingsQWidget(settings_dict)
         self.XXRapidFrontingFrontSettingsQWidget.changed.connect(self.OnXXRapidFrontingFrontSettingsQWidget)
         self.SettingsDict = self.XXRapidFrontingFrontSettingsQWidget.SettingsDict

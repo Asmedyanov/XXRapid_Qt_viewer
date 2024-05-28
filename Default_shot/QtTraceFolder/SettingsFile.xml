@@ -39,12 +39,12 @@
             <User_comment>User_comment</User_comment>
           </Front_1>
           <Front_2>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_2>
           <Front_3>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_3>
@@ -67,12 +67,12 @@
             <User_comment>User_comment</User_comment>
           </Front_1>
           <Front_2>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_2>
           <Front_3>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_3>
@@ -95,12 +95,12 @@
             <User_comment>User_comment</User_comment>
           </Front_1>
           <Front_2>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_2>
           <Front_3>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_3>
@@ -167,8 +167,8 @@
             <User_comment>User_comment</User_comment>
           </Front_2>
           <Front_3>
-            <Approximation>line</Approximation>
-            <Threshold>10.0</Threshold>
+            <Approximation>curve</Approximation>
+            <Threshold>68.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_3>
           <Tracer>
@@ -190,12 +190,12 @@
             <User_comment>User_comment</User_comment>
           </Front_1>
           <Front_2>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_2>
           <Front_3>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_3>
@@ -218,12 +218,12 @@
             <User_comment>User_comment</User_comment>
           </Front_1>
           <Front_2>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_2>
           <Front_3>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_3>
@@ -473,12 +473,12 @@
             <User_comment>User_comment</User_comment>
           </Front_1>
           <Front_2>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_2>
           <Front_3>
-            <Approximation>line</Approximation>
+            <Approximation>curve</Approximation>
             <Threshold>10.0</Threshold>
             <User_comment>User_comment</User_comment>
           </Front_3>
