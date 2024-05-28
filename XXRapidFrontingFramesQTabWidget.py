@@ -11,7 +11,8 @@ class XXRapidFrontingFramesQTabWidget(QTabWidget):
         self.camera_data_dict = camera_data_dict
         self.SettingsDict = dict()
         self.XXRapidFrontingSingleFrameQTabWidgetDict = dict()
-        for mykey, mycameradata, in self.camera_data_dict.items():
+        self.expansion_dict = dict()
+        for mykey, mycameradata in self.camera_data_dict.items():
             try:
                 settings = settings_dict[mykey]
             except:
@@ -20,8 +21,9 @@ class XXRapidFrontingFramesQTabWidget(QTabWidget):
                 self.XXRapidFrontingSingleFrameQTabWidgetDict[mykey] = XXRapidFrontingSingleFrameQTabWidget(
                     mycameradata,
                     settings)
-                self.addTab(self.XXRapidFrontingSingleFrameQTabWidgetDict[mykey],mykey)
+                self.addTab(self.XXRapidFrontingSingleFrameQTabWidgetDict[mykey], mykey)
                 self.SettingsDict[mykey] = self.XXRapidFrontingSingleFrameQTabWidgetDict[mykey].SettingsDict
+                self.expansion_dict[mykey] = self.XXRapidFrontingSingleFrameQTabWidgetDict[mykey].expansion_dict
                 self.XXRapidFrontingSingleFrameQTabWidgetDict[mykey].changed.connect(
                     self.OnXXRapidFrontingSingleFrameQTabWidgetDict)
             except Exception as ex:
@@ -30,6 +32,7 @@ class XXRapidFrontingFramesQTabWidget(QTabWidget):
     def OnXXRapidFrontingSingleFrameQTabWidgetDict(self):
         for mykey, mycamera, in self.XXRapidFrontingSingleFrameQTabWidgetDict.items():
             self.SettingsDict[mykey] = mycamera.SettingsDict
+            self.expansion_dict[mykey] = mycamera.expansion_dict
         self.changed.emit()
 
     def set_data(self, camera_data_dict):

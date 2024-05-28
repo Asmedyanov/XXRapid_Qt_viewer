@@ -2,6 +2,7 @@ from XXRapidOverlappedCameraSettingsQWidget import *
 from MatplotlibSingeAxQWidget import *
 import numpy as np
 from scipy.ndimage import gaussian_filter
+from scipy.signal import correlate2d
 
 
 class XXRapidOverlappedCameraQWidget(QWidget):
@@ -35,9 +36,9 @@ class XXRapidOverlappedCameraQWidget(QWidget):
     def getOverlappedImage(self):
         before_image = gaussian_filter(self.camera_data['before'], sigma=self.sigma_before)
         shot_image = gaussian_filter(self.camera_data['shot'], sigma=self.sigma_shot)
-        shadow_image = np.where(shot_image < before_image + before_image.std(),
+        shadow_image = np.where(shot_image < before_image,  # + before_image.std(),
                                 shot_image,
-                                before_image + before_image.std())
+                                before_image)  # + before_image.std())
         mask = np.where(before_image > np.median(before_image) * self.mask_threshold, 1, 0)
         overlapped_image = np.where(before_image <= 0, 0,
                                     shadow_image / before_image) * mask

@@ -24,6 +24,7 @@ class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
             print(f'XXRapidFrontingSeparatorQWidget {ex}')
             return
         self.XXRapidFrontingQuartQTabWidgetDict = dict()
+        self.expansion_dict = dict()
         for mykey, mycameradata in self.XXRapidFrontingSeparatorQWidget.quarts_dict.items():
             try:
                 settings = settings_dict[mykey]
@@ -32,6 +33,7 @@ class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
             try:
                 self.XXRapidFrontingQuartQTabWidgetDict[mykey] = XXRapidFrontingQuartQTabWidget(mycameradata, settings)
                 self.SettingsDict[mykey] = self.XXRapidFrontingQuartQTabWidgetDict[mykey].SettingsDict
+                self.expansion_dict[mykey] = self.XXRapidFrontingQuartQTabWidgetDict[mykey].get_expansion()
                 self.addTab(self.XXRapidFrontingQuartQTabWidgetDict[mykey], mykey)
                 self.XXRapidFrontingQuartQTabWidgetDict[mykey].changed.connect(self.OnXXRapidFrontingQuartQTabWidget)
             except Exception as ex:
@@ -40,6 +42,7 @@ class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
     def OnXXRapidFrontingQuartQTabWidget(self):
         for mykey, myQuartQWidget in self.XXRapidFrontingQuartQTabWidgetDict.items():
             self.SettingsDict[mykey] = myQuartQWidget.SettingsDict
+            self.expansion_dict[mykey] = myQuartQWidget.get_expansion()
         self.changed.emit()
 
     def OnXXRapidFrontingSeparatorQWidget(self):

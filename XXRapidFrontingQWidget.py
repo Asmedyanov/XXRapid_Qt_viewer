@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout
 from PyQt5.QtCore import pyqtSignal
 from XXRapidFrontingFramesQTabWidget import *
+from XXRapidFrontingExpansionQTabWidget import *
 
 
 class XXRapidFrontingQWidget(QWidget):
@@ -23,9 +24,17 @@ class XXRapidFrontingQWidget(QWidget):
             self.XXRapidFrontingFramesQTabWidget.changed.connect(self.OnXXRapidFrontingFramesQTabWidget)
         except Exception as ex:
             print(f'XXRapidFrontingFramesQTabWidget {ex}')
+        try:
+            self.XXRapidFrontingExpansionQTabWidget = XXRapidFrontingExpansionQTabWidget(
+                self.XXRapidFrontingFramesQTabWidget.expansion_dict)
+            self.QHBoxLayout.addWidget(self.XXRapidFrontingExpansionQTabWidget)
+        except Exception as ex:
+            print(f'XXRapidFrontingExpansionQTabWidget {ex}')
 
     def OnXXRapidFrontingFramesQTabWidget(self):
         self.SettingsDict['Fronting_frames'] = self.XXRapidFrontingFramesQTabWidget.SettingsDict
+        self.XXRapidFrontingExpansionQTabWidget.set_data(self.XXRapidFrontingFramesQTabWidget.expansion_dict)
+
     def set_data(self, camera_data_dict):
         self.camera_data_dict = camera_data_dict
         self.changed.emit()

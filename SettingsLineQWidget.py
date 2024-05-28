@@ -29,7 +29,7 @@ class SettingsLineQWidget(QWidget):
             self.QSpinBox.setValue(float(default))
             self.QSpinBox.setSingleStep(float(step))
             self.value = self.QSpinBox.value()
-            #self.QSpinBox.editingFinished.connect(self.OnQSpinBoxChanged)
+            # self.QSpinBox.editingFinished.connect(self.OnQSpinBoxChanged)
             self.QSpinBox.valueChanged.connect(self.OnQSpinBoxChanged)
 
         else:
@@ -61,3 +61,6 @@ class SettingsLineQWidget(QWidget):
     def OnQComboBoxChanged(self):
         self.value = self.QComboBox.currentText()
         self.changed.emit()
+
+    def setValue(self, value):
+        self.QSpinBox.setValue(value)

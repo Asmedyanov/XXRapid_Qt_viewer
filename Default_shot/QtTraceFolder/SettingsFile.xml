@@ -3,177 +3,464 @@
     <Fronting_frames>
       <Camera_1>
         <Quart_1>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
-            <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
+            <Mask_threshold>2.7</Mask_threshold>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
-            <Sigma_shot>1.0</Sigma_shot>
+            <Sigma_shot>3.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>2.0</X_max>
+            <X_min>444.0</X_min>
+            <Y_max>606.0</Y_max>
+            <Y_min>108.0</Y_min>
           </Tracer>
         </Quart_1>
         <Quart_2>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
-            <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
+            <Mask_threshold>2.2</Mask_threshold>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>2.0</X_max>
+            <X_min>315.0</X_min>
+            <Y_max>605.0</Y_max>
+            <Y_min>257.0</Y_min>
           </Tracer>
         </Quart_2>
         <Quart_3>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>289.0</X_max>
+            <X_min>10.0</X_min>
+            <Y_max>237.0</Y_max>
+            <Y_min>609.0</Y_min>
           </Tracer>
         </Quart_3>
         <Quart_4>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>373.0</X_max>
+            <X_min>3.0</X_min>
+            <Y_max>116.0</Y_max>
+            <Y_min>604.0</Y_min>
           </Tracer>
         </Quart_4>
-        <Separator>
-          <Rotation>90</Rotation>
-          <User_comment>User_comment</User_comment>
-          <X_center>500.0</X_center>
-          <Y_center>500.0</Y_center>
-        </Separator>
+        <Separator></Separator>
       </Camera_1>
       <Camera_2>
         <Quart_1>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>5.0</X_max>
+            <X_min>444.0</X_min>
+            <Y_max>611.0</Y_max>
+            <Y_min>131.0</Y_min>
           </Tracer>
         </Quart_1>
         <Quart_2>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>321.0</X_max>
+            <X_min>3.0</X_min>
+            <Y_max>241.0</Y_max>
+            <Y_min>616.0</Y_min>
           </Tracer>
         </Quart_2>
         <Quart_3>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
-            <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
+            <Mask_threshold>1.2</Mask_threshold>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>12.0</X_max>
+            <X_min>304.0</X_min>
+            <Y_max>605.0</Y_max>
+            <Y_min>245.0</Y_min>
           </Tracer>
         </Quart_3>
         <Quart_4>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>7.0</X_max>
+            <X_min>270.0</X_min>
+            <Y_max>599.0</Y_max>
+            <Y_min>202.0</Y_min>
           </Tracer>
         </Quart_4>
         <Separator></Separator>
       </Camera_2>
       <Camera_3>
         <Quart_1>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>9.0</X_max>
+            <X_min>435.0</X_min>
+            <Y_max>616.0</Y_max>
+            <Y_min>107.0</Y_min>
           </Tracer>
         </Quart_1>
         <Quart_2>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>324.0</X_max>
+            <X_min>5.0</X_min>
+            <Y_max>259.0</Y_max>
+            <Y_min>613.0</Y_min>
           </Tracer>
         </Quart_2>
         <Quart_3>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>275.0</X_max>
+            <X_min>4.0</X_min>
+            <Y_max>223.0</Y_max>
+            <Y_min>598.0</Y_min>
           </Tracer>
         </Quart_3>
         <Quart_4>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>397.0</X_max>
+            <X_min>10.0</X_min>
+            <Y_max>91.0</Y_max>
+            <Y_min>595.0</Y_min>
           </Tracer>
         </Quart_4>
         <Separator></Separator>
       </Camera_3>
       <Camera_4>
         <Quart_1>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Mask_threshold>38.0</Mask_threshold>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Mask_threshold>65.0</Mask_threshold>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>7.0</X_max>
+            <X_min>474.0</X_min>
+            <Y_max>595.0</Y_max>
+            <Y_min>117.0</Y_min>
           </Tracer>
         </Quart_1>
         <Quart_2>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>curve</Approximation>
+            <Mask_threshold>10.0</Mask_threshold>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>curve</Approximation>
+            <Mask_threshold>10.0</Mask_threshold>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>0.0</X_max>
+            <X_min>345.0</X_min>
+            <Y_max>602.0</Y_max>
+            <Y_min>180.0</Y_min>
           </Tracer>
         </Quart_2>
         <Quart_3>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>294.0</X_max>
+            <X_min>3.0</X_min>
+            <Y_max>251.0</Y_max>
+            <Y_min>619.0</Y_min>
           </Tracer>
         </Quart_3>
         <Quart_4>
+          <Front_1>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_1>
+          <Front_2>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_2>
+          <Front_3>
+            <Approximation>line</Approximation>
+            <Threshold>10.0</Threshold>
+            <User_comment>User_comment</User_comment>
+          </Front_3>
           <Tracer>
             <Mask_threshold>2.0</Mask_threshold>
-            <Scale>50.0</Scale>
             <Sigma_before>1.0</Sigma_before>
             <Sigma_overlapped>1.0</Sigma_overlapped>
             <Sigma_shot>1.0</Sigma_shot>
             <User_comment>User_comment</User_comment>
+            <X_max>376.0</X_max>
+            <X_min>2.0</X_min>
+            <Y_max>70.0</Y_max>
+            <Y_min>626.0</Y_min>
           </Tracer>
         </Quart_4>
         <Separator></Separator>
@@ -198,17 +485,17 @@
       <User_comment>User_comment</User_comment>
     </Camera_2>
     <Camera_3>
-      <Mask_threshold>1.8</Mask_threshold>
+      <Mask_threshold>1.49</Mask_threshold>
       <Scale>45.0</Scale>
-      <Sigma_before>3.0</Sigma_before>
+      <Sigma_before>6.8</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_3>
     <Camera_4>
-      <Mask_threshold>1.9</Mask_threshold>
+      <Mask_threshold>1.84</Mask_threshold>
       <Scale>45.0</Scale>
-      <Sigma_before>5.0</Sigma_before>
+      <Sigma_before>5.65</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
