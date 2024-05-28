@@ -8,7 +8,7 @@ from WaveformIdotSettingsQWidget import *
 class WaveformIdotQWidget(QWidget):
     changed = pyqtSignal()
 
-    def __init__(self, df_current, settings_dict=None, timeshift=0):
+    def __init__(self, df_current, settings_dict=dict(), timeshift=0):
         super().__init__()
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
@@ -22,6 +22,7 @@ class WaveformIdotQWidget(QWidget):
 
         )
         self.WaveformIdotSettingsQWidget = WaveformIdotSettingsQWidget(settings_dict)
+        self.SettingsDict = self.WaveformIdotSettingsQWidget.SettingsDict
         self.QHBoxLayout.addWidget(self.WaveformIdotSettingsQWidget)
         self.WaveformIdotSettingsQWidget.changed.connect(self.OnSettings)
         self.df_idot = pd.DataFrame({
@@ -34,7 +35,7 @@ class WaveformIdotQWidget(QWidget):
         self.df_idot_smoothed_to_plot = self.df_idot_smoothed.loc[self.df_idot_smoothed['time'] > 0]
         self.IdotPlot, = self.ax.plot(self.df_idot_smoothed_to_plot['time'] * 1e6,
                                       self.df_idot_smoothed_to_plot['Units'] * 1e-12)
-        self.SettingsDict = self.WaveformIdotSettingsQWidget.SettingsDict
+
 
         self.Peak_time = self.WaveformIdotSettingsQWidget.PeakSettingsLine.value * 1e-9
 

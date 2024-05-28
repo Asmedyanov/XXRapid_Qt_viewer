@@ -17,14 +17,14 @@ class ExperimentQWidget(QTabWidget):
         if 'QtTraceFolder' not in self.folder_list:
             os.makedirs(f'{folder_name}/QtTraceFolder')
         settings_dict = self.OpenSettings('SettingsFile.xml')
-        self.SettingsDict = dict()
+        self.SettingsDict = settings_dict
         WaveformFileName = self.getWaveformFileName()
         self.WaveformOriginalQWidget = WaveformOriginalQWidget(WaveformFileName)
         self.addTab(self.WaveformOriginalQWidget, 'Waveform Original')
         try:
             settings = settings_dict['Waveform_processing_settings']
         except:
-            settings = None
+            settings = dict()
         try:
             self.WaveformProcessingWidget = WaveformProcessingWidget(self.WaveformOriginalQWidget.ChannelDFDict,
                                                                      settings_dict=settings)
@@ -43,7 +43,7 @@ class ExperimentQWidget(QTabWidget):
         try:
             settings = settings_dict['Overlapped_images']
         except:
-            settings = None
+            settings = dict()
         try:
             self.XXRapidOverlappedQWidget = XXRapidOverlappedQWidget(self.XXRapidOriginalQWidget.CameraDataDict,
                                                                      settings)
@@ -55,7 +55,7 @@ class ExperimentQWidget(QTabWidget):
         try:
             settings = settings_dict['Fronting']
         except:
-            settings = None
+            settings = dict()
         try:
             self.XXRapidFrontingQTabWidget = XXRapidFrontingQWidget(self.XXRapidOriginalQWidget.CameraDataDict,
                                                                     settings)
@@ -124,7 +124,7 @@ class ExperimentQWidget(QTabWidget):
             return SettingsDict
         except Exception as ex:
             print(f'xmltodict {ex}')
-            return None
+            return dict()
 
     def getWaveformFileName(self):
         waveform_files_list = [name for name in self.folder_list if

@@ -1,18 +1,17 @@
 from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtCore import pyqtSignal
 from WaveformTimingShutterSettingsQWidget import *
 
 
 class WaveformTimingSettingsQWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, settings_dict=None):
+    def __init__(self, settings_dict=dict()):
         super().__init__()
         self.SettingsDict = dict()
         try:
             settings = settings_dict['Pulse_start']
         except:
-            settings = None
+            settings = dict()
         self.PulseStartTimeTab = WaveformTimingPointSettingsQWidget(settings_dict=settings)
         self.SettingsDict['Pulse_start'] = self.PulseStartTimeTab.SettingsDict
         self.PulseStartTimeTab.changed.connect(self.OnPulseStartTimeTab)
@@ -24,7 +23,7 @@ class WaveformTimingSettingsQWidget(QTabWidget):
             try:
                 settings = settings_dict[key]
             except:
-                settings = None
+                settings = dict()
             self.ShutterTabDict[key] = WaveformTimingShutterSettingsQWidget(settings)
             self.addTab(self.ShutterTabDict[key], key)
             self.SettingsDict[key] = self.ShutterTabDict[key].SettingsDict

@@ -7,17 +7,17 @@ import os
 class WaveformChannelsTab(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, channel_df_dict, settings_dict=None):
+    def __init__(self, channel_df_dict, settings_dict=dict()):
         super().__init__()
         self.setTabPosition(QTabWidget.TabPosition.West)
         self.ChannelQWidgetDict = dict()
         self.PhysicalDFDict = dict()
-        self.SettingsDict = dict()
+        self.SettingsDict = settings_dict
         for my_key, my_df in channel_df_dict.items():
             try:
                 settings = settings_dict[my_key]
             except:
-                settings = None
+                settings = dict()
             self.ChannelQWidgetDict[my_key] = ChannelQWidget(my_key, my_df, settings)
             self.SettingsDict[my_key] = self.ChannelQWidgetDict[my_key].SettingsDict
             self.addTab(self.ChannelQWidgetDict[my_key], my_key)

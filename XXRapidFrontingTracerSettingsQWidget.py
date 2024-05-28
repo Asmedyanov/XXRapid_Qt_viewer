@@ -2,7 +2,7 @@ from SettingsBoxQWidget import *
 
 
 class XXRapidFrontingTracerSettingsQWidget(SettingsBoxQWidget):
-    def __init__(self, settings_dict=None):
+    def __init__(self, parent, settings_dict=None):
         super().__init__(settings_dict)
         try:
             default = settings_dict['Mask_threshold']
@@ -15,6 +15,7 @@ class XXRapidFrontingTracerSettingsQWidget(SettingsBoxQWidget):
             step=0.01,
             comment='x Median'
         )
+
         self.QVBoxLayout.addWidget(self.MaskThresholdSettingLine)
         self.SettingsDict['Mask_threshold'] = self.MaskThresholdSettingLine.value
         self.MaskThresholdSettingLine.changed.connect(self.OnSettingsLineChanged)
@@ -64,6 +65,9 @@ class XXRapidFrontingTracerSettingsQWidget(SettingsBoxQWidget):
         self.SettingsDict['Sigma_overlapped'] = self.SigmaOverlappedLine.value
         self.SigmaOverlappedLine.changed.connect(self.OnSettingsLineChanged)
 
+        x_max = parent.camera_data['before'].shape[1]
+        y_max = parent.camera_data['before'].shape[0]
+
         try:
             default = settings_dict['X_min']
         except:
@@ -71,7 +75,7 @@ class XXRapidFrontingTracerSettingsQWidget(SettingsBoxQWidget):
         self.XMinLine = SettingsLineQWidget(
             name='X_min',
             default=default,
-            limit=[0, 2e3],
+            limit=[0, x_max],
             step=1,
             comment='pix'
         )
@@ -86,7 +90,7 @@ class XXRapidFrontingTracerSettingsQWidget(SettingsBoxQWidget):
         self.YMinLine = SettingsLineQWidget(
             name='Y_min',
             default=default,
-            limit=[0, 2e3],
+            limit=[0, y_max],
             step=1,
             comment='pix'
         )
@@ -97,11 +101,11 @@ class XXRapidFrontingTracerSettingsQWidget(SettingsBoxQWidget):
         try:
             default = settings_dict['X_max']
         except:
-            default = 10
+            default = x_max
         self.XMaxLine = SettingsLineQWidget(
             name='X_max',
             default=default,
-            limit=[0, 2e3],
+            limit=[0, x_max],
             step=1,
             comment='pix'
         )
@@ -112,11 +116,11 @@ class XXRapidFrontingTracerSettingsQWidget(SettingsBoxQWidget):
         try:
             default = settings_dict['Y_max']
         except:
-            default = 10
+            default = y_max
         self.YMaxLine = SettingsLineQWidget(
             name='Y_max',
             default=default,
-            limit=[0, 2e3],
+            limit=[0, y_max],
             step=1,
             comment='pix'
         )

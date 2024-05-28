@@ -6,9 +6,11 @@ from scipy.signal import correlate2d
 
 
 class XXRapidOverlappedCameraQWidget(QWidget):
-    chandeg = pyqtSignal()
+    changed = pyqtSignal()
 
     def __init__(self, camera_data, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.camera_data = camera_data
         self.QHBoxLayout = QHBoxLayout()
@@ -17,8 +19,9 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         self.MatplotlibSingeAxQWidget.ax.set(title='Overlapped image', xlabel='x,mm', ylabel='y,mm')
         self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget)
         self.XXRapidOverlappedCameraSettingsQWidget = XXRapidOverlappedCameraSettingsQWidget(settings_dict)
-        self.QHBoxLayout.addWidget(self.XXRapidOverlappedCameraSettingsQWidget)
         self.SettingsDict = self.XXRapidOverlappedCameraSettingsQWidget.SettingsDict
+        self.QHBoxLayout.addWidget(self.XXRapidOverlappedCameraSettingsQWidget)
+
         self.XXRapidOverlappedCameraSettingsQWidget.changed.connect(self.OnXXRapidOverlappedCameraSettingsQWidget)
 
         self.dx = 1.0 / self.XXRapidOverlappedCameraSettingsQWidget.ScaleSettingLine.value
@@ -27,11 +30,15 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         self.sigma_overlapped = self.XXRapidOverlappedCameraSettingsQWidget.SigmaOverlappedLine.value
         self.mask_threshold = self.XXRapidOverlappedCameraSettingsQWidget.MaskThresholdSettingLine.value
         self.OverlappedImage = self.getOverlappedImage()
+
+        self.imshow = self.MatplotlibSingeAxQWidget.ax.imshow(self.OverlappedImage, extent=self.get_extent())
+
+    def get_extent(self):
         extent = [-self.OverlappedImage.shape[1] * self.dx // 2,
                   self.OverlappedImage.shape[1] * self.dx // 2,
                   self.OverlappedImage.shape[0] * self.dx // 2,
                   -self.OverlappedImage.shape[0] * self.dx // 2]
-        self.imshow = self.MatplotlibSingeAxQWidget.ax.imshow(self.OverlappedImage, extent=extent)
+        return extent
 
     def getOverlappedImage(self):
         before_image = gaussian_filter(self.camera_data['before'], sigma=self.sigma_before)
@@ -53,11 +60,7 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         self.sigma_overlapped = self.XXRapidOverlappedCameraSettingsQWidget.SigmaOverlappedLine.value
         self.mask_threshold = self.XXRapidOverlappedCameraSettingsQWidget.MaskThresholdSettingLine.value
         self.OverlappedImage = self.getOverlappedImage()
-        extent = [-self.OverlappedImage.shape[1] * self.dx // 2,
-                  self.OverlappedImage.shape[1] * self.dx // 2,
-                  self.OverlappedImage.shape[0] * self.dx // 2,
-                  -self.OverlappedImage.shape[0] * self.dx // 2]
-        self.imshow.set_extent(extent)
+        self.imshow.set_extent(self.get_extent())
         self.imshow.set_data(self.OverlappedImage)
         self.MatplotlibSingeAxQWidget.changed.emit()
-        self.chandeg.emit()
+        self.changed.emit()

@@ -2,7 +2,7 @@ from SettingsBoxQWidget import *
 
 
 class XXRapidFrontingSeparatorSettingsQWidget(SettingsBoxQWidget):
-    def __init__(self, settings_dict):
+    def __init__(self, settings_dict=None):
         super().__init__(settings_dict)
         try:
             default = settings_dict['Rotation']

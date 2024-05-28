@@ -10,6 +10,8 @@ class XXRapidFrontingFrontQWidget(QWidget):
     chandeg = pyqtSignal()
 
     def __init__(self, parent, traced_image, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.parent = parent
         self.traced_image = traced_image
@@ -18,9 +20,10 @@ class XXRapidFrontingFrontQWidget(QWidget):
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()
         self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget)
         self.XXRapidFrontingFrontSettingsQWidget = XXRapidFrontingFrontSettingsQWidget(settings_dict)
+        self.XXRapidFrontingFrontSettingsQWidget.changed.connect(self.OnXXRapidFrontingFrontSettingsQWidget)
         self.SettingsDict = self.XXRapidFrontingFrontSettingsQWidget.SettingsDict
         self.QHBoxLayout.addWidget(self.XXRapidFrontingFrontSettingsQWidget)
-        self.XXRapidFrontingFrontSettingsQWidget.changed.connect(self.OnXXRapidFrontingFrontSettingsQWidget)
+
         self.approximation_type = self.XXRapidFrontingFrontSettingsQWidget.ApproximationSettingLine.value
         self.threshold = self.XXRapidFrontingFrontSettingsQWidget.ThresholdSettingLine.value
         self.raw_point_x, self.raw_point_y = self.get_raw_points()

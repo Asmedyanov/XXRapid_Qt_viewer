@@ -1,5 +1,3 @@
-from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtCore import pyqtSignal
 from XXRapidFrontingSeparatorQWidget import *
 from XXRapidFrontingQuartQTabWidget import *
 
@@ -8,13 +6,15 @@ class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
     changed = pyqtSignal()
 
     def __init__(self, camera_data, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.camera_data = camera_data
-        self.SettingsDict = dict()
+        self.SettingsDict = settings_dict
         try:
             settings = settings_dict['Separator']
         except:
-            settings = None
+            settings = dict()
         try:
             self.XXRapidFrontingSeparatorQWidget = XXRapidFrontingSeparatorQWidget(self.camera_data, settings)
             self.addTab(self.XXRapidFrontingSeparatorQWidget, 'Separator')
@@ -25,19 +25,20 @@ class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
             return
         self.XXRapidFrontingQuartQTabWidgetDict = dict()
         self.expansion_dict = dict()
-        for mykey, mycameradata in self.XXRapidFrontingSeparatorQWidget.quarts_dict.items():
+        for my_key, my_camera_data in self.XXRapidFrontingSeparatorQWidget.quarts_dict.items():
             try:
-                settings = settings_dict[mykey]
+                settings = settings_dict[my_key]
             except:
-                settings = None
+                settings = dict()
             try:
-                self.XXRapidFrontingQuartQTabWidgetDict[mykey] = XXRapidFrontingQuartQTabWidget(mycameradata, settings)
-                self.SettingsDict[mykey] = self.XXRapidFrontingQuartQTabWidgetDict[mykey].SettingsDict
-                self.expansion_dict[mykey] = self.XXRapidFrontingQuartQTabWidgetDict[mykey].get_expansion()
-                self.addTab(self.XXRapidFrontingQuartQTabWidgetDict[mykey], mykey)
-                self.XXRapidFrontingQuartQTabWidgetDict[mykey].changed.connect(self.OnXXRapidFrontingQuartQTabWidget)
+                self.XXRapidFrontingQuartQTabWidgetDict[my_key] = XXRapidFrontingQuartQTabWidget(my_camera_data,
+                                                                                                 settings)
+                self.SettingsDict[my_key] = self.XXRapidFrontingQuartQTabWidgetDict[my_key].SettingsDict
+                self.expansion_dict[my_key] = self.XXRapidFrontingQuartQTabWidgetDict[my_key].get_expansion()
+                self.addTab(self.XXRapidFrontingQuartQTabWidgetDict[my_key], my_key)
+                self.XXRapidFrontingQuartQTabWidgetDict[my_key].changed.connect(self.OnXXRapidFrontingQuartQTabWidget)
             except Exception as ex:
-                print(f'XXRapidFrontingQuartQTabWidgetDict[{mykey}] {ex}')
+                print(f'XXRapidFrontingQuartQTabWidgetDict[{my_key}] {ex}')
 
     def OnXXRapidFrontingQuartQTabWidget(self):
         for mykey, myQuartQWidget in self.XXRapidFrontingQuartQTabWidgetDict.items():
@@ -47,8 +48,15 @@ class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):
 
     def OnXXRapidFrontingSeparatorQWidget(self):
         self.SettingsDict['Separator'] = self.XXRapidFrontingSeparatorQWidget.SettingsDict
-        for mykey, myQuartQWidget in self.XXRapidFrontingQuartQTabWidgetDict.items():
-            myQuartQWidget.set_data(self.XXRapidFrontingSeparatorQWidget.quarts_dict[mykey])
+        try:
+            for mykey, myQuartQWidget in self.XXRapidFrontingQuartQTabWidgetDict.items():
+                try:
+                    myQuartQWidget.set_data(self.XXRapidFrontingSeparatorQWidget.quarts_dict[mykey])
+                except Exception as ex:
+                    print(f'{mykey}')
+        except Exception as ex:
+            print(f'XXRapidFrontingQuartQTabWidgetDict {ex}')
+
         # self.changed.emit()
 
     def set_data(self, camera_data):

@@ -9,9 +9,11 @@ class XXRapidFrontingSeparatorQWidget(QWidget):
     changed = pyqtSignal()
 
     def __init__(self, camera_data, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.QHBoxLayout = QHBoxLayout()
-        self.SettingsDict = dict()
+        self.SettingsDict = settings_dict
         self.setLayout(self.QHBoxLayout)
         self.camera_data = camera_data
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()

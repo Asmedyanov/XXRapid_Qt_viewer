@@ -38,7 +38,7 @@ class XXRapidFrontingFrontSettingsQWidget(SettingsBoxQWidget):
 
     def OnSettingsLineChanged(self):
         super().OnSettingsLineChanged()
-        self.SettingsDict['Mask_threshold'] = self.ThresholdSettingLine.value
+        self.SettingsDict['Threshold'] = self.ThresholdSettingLine.value
         self.SettingsDict['Approximation'] = self.ApproximationSettingLine.value
 
         self.changed.emit()

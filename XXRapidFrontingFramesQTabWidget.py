@@ -7,16 +7,18 @@ class XXRapidFrontingFramesQTabWidget(QTabWidget):
     changed = pyqtSignal()
 
     def __init__(self, camera_data_dict, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.camera_data_dict = camera_data_dict
-        self.SettingsDict = dict()
+        self.SettingsDict = settings_dict
         self.XXRapidFrontingSingleFrameQTabWidgetDict = dict()
         self.expansion_dict = dict()
         for mykey, mycameradata in self.camera_data_dict.items():
             try:
                 settings = settings_dict[mykey]
             except:
-                settings = None
+                settings = dict()
             try:
                 self.XXRapidFrontingSingleFrameQTabWidgetDict[mykey] = XXRapidFrontingSingleFrameQTabWidget(
                     mycameradata,

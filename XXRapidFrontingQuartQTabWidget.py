@@ -8,13 +8,15 @@ class XXRapidFrontingQuartQTabWidget(QTabWidget):
     changed = pyqtSignal()
 
     def __init__(self, camera_data, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.camera_data = camera_data
-        self.SettingsDict = dict()
+        self.SettingsDict = settings_dict
         try:
             settings = settings_dict['Tracer']
         except:
-            settings = None
+            settings = dict()
         try:
             self.XXRapidFrontingTracerQWidget = XXRapidFrontingTracerQWidget(self.camera_data, settings)
             self.addTab(self.XXRapidFrontingTracerQWidget, 'Tracer')
@@ -31,7 +33,7 @@ class XXRapidFrontingQuartQTabWidget(QTabWidget):
             try:
                 settings = settings_dict[key]
             except:
-                settings = None
+                settings = dict()
             try:
                 self.XXRapidFrontingFrontQWidgetDict[key] = XXRapidFrontingFrontQWidget(self,
                                                                                         self.XXRapidFrontingTracerQWidget.traced_image,
@@ -77,11 +79,11 @@ class XXRapidFrontingQuartQTabWidget(QTabWidget):
             expansion_dict = {
                 'Expansion_1': {
                     'x': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx,
-                    'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx*0
+                    'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx * 0
                 },
                 'Expansion_2': {
                     'x': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx,
-                    'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx*0
+                    'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx * 0
                 }
             }
         return expansion_dict

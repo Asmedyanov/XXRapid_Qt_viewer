@@ -8,13 +8,15 @@ class XXRapidFrontingTracerQWidget(QWidget):
     chandeg = pyqtSignal()
 
     def __init__(self, camera_data, settings_dict=None):
+        if settings_dict is None:
+            settings_dict = dict()
         super().__init__()
         self.camera_data = camera_data
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()
         self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget)
-        self.XXRapidFrontingTracerSettingsQWidget = XXRapidFrontingTracerSettingsQWidget(settings_dict)
+        self.XXRapidFrontingTracerSettingsQWidget = XXRapidFrontingTracerSettingsQWidget(self, settings_dict)
         self.XXRapidFrontingTracerSettingsQWidget.changed.connect(self.OnXXRapidFrontingTracerSettingsQWidget)
         self.QHBoxLayout.addWidget(self.XXRapidFrontingTracerSettingsQWidget)
         self.SettingsDict = self.XXRapidFrontingTracerSettingsQWidget.SettingsDict

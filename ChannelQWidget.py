@@ -9,7 +9,7 @@ from PyQt5.QtCore import pyqtSignal
 class ChannelQWidget(QWidget):
     changed = pyqtSignal()
 
-    def __init__(self, my_key, df, settings_dict=None):
+    def __init__(self, my_key, df, settings_dict=dict()):
         super().__init__()
         self.my_key = my_key
         self.df_original = df
@@ -45,7 +45,7 @@ class ChannelQWidget(QWidget):
         self.ax.grid(ls=':')
 
     def OnChannelSettingsQWidgetChanged(self):
-        nsmooth = int(self.ChannelSettingsQWidget.TauSmooth / self.dt)+1
+        nsmooth = int(self.ChannelSettingsQWidget.TauSmooth / self.dt) + 1
         self.df_scaled['Units'] = self.df_original[
                                       'Volts'] * self.ChannelSettingsQWidget.Coefficient + self.ChannelSettingsQWidget.Shift
         self.df_smoothed = self.df_scaled.rolling(nsmooth, min_periods=1).mean()
@@ -71,7 +71,7 @@ class ChannelQWidget(QWidget):
             self.df_original['Volts'],
         )
         self.dt = np.mean(np.gradient(self.df_original['time']))
-        self.NSmooth = int(self.TauSmooth / self.dt)+1
+        self.NSmooth = int(self.TauSmooth / self.dt) + 1
 
         self.df_smoothed = self.df_original.rolling(self.NSmooth, min_periods=1).mean()
 

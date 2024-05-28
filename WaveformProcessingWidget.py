@@ -7,14 +7,14 @@ import os
 class WaveformProcessingWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, channel_df_dict, settings_dict=None):
+    def __init__(self, channel_df_dict, settings_dict=dict()):
         super().__init__()
         self.ChannelDFDict = channel_df_dict
-        self.SettingsDict = dict()
+        self.SettingsDict = settings_dict
         try:
             settings = settings_dict['Waveform_channels']
         except:
-            settings = None
+            settings = dict()
         self.WaveformChannelsTab = WaveformChannelsTab(self.ChannelDFDict, settings_dict=settings)
         self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
         self.WaveformChannelsTab.changed.connect(self.OnWaveformChannelsTabChanged)
@@ -22,7 +22,7 @@ class WaveformProcessingWidget(QTabWidget):
         try:
             settings = settings_dict['Waveform_timing']
         except:
-            settings = None
+            settings = dict()
         try:
             self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict,
                                                                settings_dict=settings)
@@ -35,7 +35,7 @@ class WaveformProcessingWidget(QTabWidget):
         try:
             settings = settings_dict['Waveform_physical']
         except:
-            settings = None
+            settings = dict()
         try:
             self.WaveformPhysicalValuesQWidget = WaveformPhysicalValuesQWidget(
                 self.WaveformChannelsTab.PhysicalDFDict, timeshift=self.WaveformTimingQWidget.t_start,
@@ -65,7 +65,7 @@ class WaveformProcessingWidget(QTabWidget):
             try:
                 settings = self.SettingsDict['Waveform_timing']
             except:
-                settings = None
+                settings = dict()
             try:
                 self.WaveformTimingQWidget = WaveformTimingQWidget(self.WaveformChannelsTab.PhysicalDFDict,
                                                                    settings_dict=settings)
@@ -77,13 +77,13 @@ class WaveformProcessingWidget(QTabWidget):
                 print(f'WaveformTimingQWidget {ex}')
             try:
                 self.WaveformPhysicalValuesQWidget.set_data(self.WaveformChannelsTab.PhysicalDFDict,
-                                                                timeshift=self.WaveformTimingQWidget.t_start)
+                                                            timeshift=self.WaveformTimingQWidget.t_start)
             except Exception as ex:
                 print(f'WaveformPhysicalValuesQWidget.set_data {ex}')
                 try:
                     settings = self.SettingsDict['Waveform_physical']
                 except:
-                    settings = None
+                    settings = dict()
                 try:
                     self.WaveformPhysicalValuesQWidget = WaveformPhysicalValuesQWidget(
                         self.WaveformChannelsTab.PhysicalDFDict, timeshift=self.WaveformTimingQWidget.t_start,
@@ -111,8 +111,8 @@ class WaveformProcessingWidget(QTabWidget):
         try:
             self.WaveformTimingQWidget.Save_Raport(f'{folder_name}/Waveform_processing')
         except Exception as ex:
-            print(ex)
+            print(f'WaveformTimingQWidget.Save_Raport {ex}')
         try:
             self.WaveformPhysicalValuesQWidget.Save_Raport(f'{folder_name}/Waveform_processing')
         except Exception as ex:
-            print(ex)
+            print(f'WaveformPhysicalValuesQWidget.Save_Raport {ex}')

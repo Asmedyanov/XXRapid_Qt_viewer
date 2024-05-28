@@ -9,7 +9,7 @@ from WaveformTimingSettingsQWidget import *
 class WaveformTimingQWidget(QWidget):
     changed = pyqtSignal()
 
-    def __init__(self, physical_df_dict=None, settings_dict=None):
+    def __init__(self, physical_df_dict=dict(), settings_dict=dict()):
         super().__init__()
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)

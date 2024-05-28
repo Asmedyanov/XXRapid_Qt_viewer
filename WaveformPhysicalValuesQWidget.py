@@ -12,12 +12,12 @@ import os
 class WaveformPhysicalValuesQWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, physical_df_dict=None, settings_dict=None, timeshift=0):
+    def __init__(self, physical_df_dict=dict(), settings_dict=dict(), timeshift=0):
         super().__init__()
         self.setTabPosition(QTabWidget.TabPosition.West)
         self.physical_df_dict = physical_df_dict
         self.timeshift = timeshift
-        self.SettingsDict = dict()
+        self.SettingsDict = settings_dict
         try:
             self.WaveformCurrentQWidget = WaveformCurrentQWidget(physical_df_dict['Current'], timeshift)
             self.WaveformCurrentQWidget.changed.connect(self.OnWaveformCurrentQWidget)
@@ -35,7 +35,7 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
             try:
                 settings = settings_dict['I_dot']
             except:
-                settings = None
+                settings = dict()
             self.WaveformIdotQWidget = WaveformIdotQWidget(df_current=physical_df_dict['Current'], timeshift=timeshift,
                                                            settings_dict=settings)
             self.SettingsDict['I_dot'] = self.WaveformIdotQWidget.SettingsDict
