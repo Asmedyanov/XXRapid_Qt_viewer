@@ -65,11 +65,13 @@ class XXRapidFrontingQuartQTabWidget(QTabWidget):
         try:
             expansion_dict = {
                 'Expansion_1': {
+                    'shutter': self.XXRapidFrontingFrontQWidgetDict['Front_2'].shutter_order,
                     'x': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx,
                     'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].y_approx -
                                  self.XXRapidFrontingFrontQWidgetDict['Front_2'].y_approx
                 },
                 'Expansion_2': {
+                    'shutter': self.XXRapidFrontingFrontQWidgetDict['Front_3'].shutter_order,
                     'x': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx,
                     'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].y_approx -
                                  self.XXRapidFrontingFrontQWidgetDict['Front_3'].y_approx

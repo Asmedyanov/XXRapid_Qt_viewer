@@ -17,7 +17,7 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         self.setLayout(self.QHBoxLayout)
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()
         self.MatplotlibSingeAxQWidget.ax.set(title='Overlapped image', xlabel='x,mm', ylabel='y,mm')
-        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget,stretch=1)
+        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget, stretch=1)
         self.XXRapidOverlappedCameraSettingsQWidget = XXRapidOverlappedCameraSettingsQWidget(settings_dict)
         self.SettingsDict = self.XXRapidOverlappedCameraSettingsQWidget.SettingsDict
         self.QHBoxLayout.addWidget(self.XXRapidOverlappedCameraSettingsQWidget)
@@ -42,7 +42,9 @@ class XXRapidOverlappedCameraQWidget(QWidget):
 
     def getOverlappedImage(self):
         before_image = gaussian_filter(self.camera_data['before'], sigma=self.sigma_before)
+        before_image = before_image / before_image.max()
         shot_image = gaussian_filter(self.camera_data['shot'], sigma=self.sigma_shot)
+        shot_image = shot_image / shot_image.max()
         shadow_image = np.where(shot_image < before_image,  # + before_image.std(),
                                 shot_image,
                                 before_image)  # + before_image.std())

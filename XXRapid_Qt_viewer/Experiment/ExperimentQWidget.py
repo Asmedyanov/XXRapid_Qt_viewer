@@ -90,10 +90,16 @@ class ExperimentQWidget(QTabWidget):
             print(f'XXRapidTOFQTabWidget {ex}')
 
     def OnXXRapidTOFQTabWidget(self):
+        self.SettingsDict['TOF'] = self.XXRapidTOFQTabWidget.SettingsDict
         pass
 
     def OnXXRapidFrontingQTabWidget(self):
         self.SettingsDict['Fronting'] = self.XXRapidFrontingQTabWidget.SettingsDict
+        try:
+            self.XXRapidTOFQTabWidget.set_data(timing_dict=self.WaveformProcessingWidget.get_timing_dict(),
+                expansion_dict=self.XXRapidFrontingQTabWidget.get_expansion_dict())
+        except Exception as ex:
+            print(f'XXRapidTOFQTabWidget.set_data {ex}')
         self.changed.emit()
 
     def OnXXRapidOverlappedQWidget(self):

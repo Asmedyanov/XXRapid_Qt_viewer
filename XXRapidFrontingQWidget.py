@@ -49,4 +49,5 @@ class XXRapidFrontingQWidget(QWidget):
         self.changed.emit()
 
     def get_expansion_dict(self):
-        return self.XXRapidFrontingFramesQTabWidget.expansion_dict
+        #return self.XXRapidFrontingFramesQTabWidget.expansion_dict
+        return self.XXRapidFrontingExpansionQTabWidget.expansion_by_quart_dict

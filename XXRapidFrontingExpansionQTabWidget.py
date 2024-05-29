@@ -9,6 +9,7 @@ class XXRapidFrontingExpansionQTabWidget(QTabWidget):
     def __init__(self, expansion_dict):
         super().__init__()
         self.XXRapidFrontingExpansionQWidgetDict = dict()
+        self.expansion_by_quart_dict = dict()
         for i in range(4):
             key = f'Quart_{i + 1}'
             try:
@@ -17,10 +18,12 @@ class XXRapidFrontingExpansionQTabWidget(QTabWidget):
                     expansion_list.append(frame[key]['Expansion_1'])
                     expansion_list.append(frame[key]['Expansion_2'])
                 self.XXRapidFrontingExpansionQWidgetDict[key] = XXRapidFrontingExpansionQWidget(expansion_list)
+                self.expansion_by_quart_dict[key] = expansion_list
                 self.addTab(self.XXRapidFrontingExpansionQWidgetDict[key], key)
             except Exception as ex:
                 print(f'self.XXRapidFrontingExpansionQWidgetDict[{key}] {ex}')
-    def set_data(self,expansion_dict):
+
+    def set_data(self, expansion_dict):
         for i in range(4):
             key = f'Quart_{i + 1}'
             try:
@@ -31,3 +34,4 @@ class XXRapidFrontingExpansionQTabWidget(QTabWidget):
                 self.XXRapidFrontingExpansionQWidgetDict[key].set_data(expansion_list)
             except Exception as ex:
                 print(f'self.XXRapidFrontingExpansionQWidgetDict[{key}] {ex}')
+

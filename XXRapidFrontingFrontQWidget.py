@@ -18,7 +18,7 @@ class XXRapidFrontingFrontQWidget(QWidget):
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
         self.MatplotlibSingeAxQWidget = MatplotlibSingeAxQWidget()
-        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget,stretch=1)
+        self.QHBoxLayout.addWidget(self.MatplotlibSingeAxQWidget, stretch=1)
         self.XXRapidFrontingFrontSettingsQWidget = XXRapidFrontingFrontSettingsQWidget(settings_dict)
         self.XXRapidFrontingFrontSettingsQWidget.changed.connect(self.OnXXRapidFrontingFrontSettingsQWidget)
         self.SettingsDict = self.XXRapidFrontingFrontSettingsQWidget.SettingsDict
@@ -26,6 +26,7 @@ class XXRapidFrontingFrontQWidget(QWidget):
 
         self.approximation_type = self.XXRapidFrontingFrontSettingsQWidget.ApproximationSettingLine.value
         self.threshold = self.XXRapidFrontingFrontSettingsQWidget.ThresholdSettingLine.value
+        self.shutter_order = self.XXRapidFrontingFrontSettingsQWidget.ShutterSettingLine.value
         self.raw_point_x, self.raw_point_y = self.get_raw_points()
         try:
             self.x_approx, self.y_approx = self.get_approx_points()
@@ -48,7 +49,7 @@ class XXRapidFrontingFrontQWidget(QWidget):
             y_approx = line_poly_func(x_approx)
         elif self.approximation_type == 'curve':
             bounds = ([-self.traced_image.shape[0], -self.traced_image.shape[1], 0, 0],
-                      [0, 0, self.traced_image.shape[0], self.traced_image.shape[1]])
+                      [0, 0, self.traced_image.shape[0], self.traced_image.shape[1] * 2])
 
             def f_free_style_local(t, db_v, x0, x_p, dxt):
                 return f_free_style_full(t, self.parent.a, self.parent.b, db_v, x0, x_p, dxt)
@@ -64,7 +65,7 @@ class XXRapidFrontingFrontQWidget(QWidget):
         for i in range(self.traced_image.shape[1]):
             line = self.traced_image[:, i]
             try:
-                index = np.argwhere(line > 1.0e-2 * self.threshold * line.max()).max()
+                index = np.argwhere(line > 1.0e-2 * self.threshold * np.mean(line[np.nonzero(line)])).max()
                 raw_point_x_list.append(i)
                 raw_point_y_list.append(index)
             except:
@@ -88,6 +89,7 @@ class XXRapidFrontingFrontQWidget(QWidget):
         self.SettingsDict = self.XXRapidFrontingFrontSettingsQWidget.SettingsDict
         self.approximation_type = self.XXRapidFrontingFrontSettingsQWidget.ApproximationSettingLine.value
         self.threshold = self.XXRapidFrontingFrontSettingsQWidget.ThresholdSettingLine.value
+        self.shutter_order = self.XXRapidFrontingFrontSettingsQWidget.ShutterSettingLine.value
         self.raw_point_x, self.raw_point_y = self.get_raw_points()
         try:
             self.x_approx, self.y_approx = self.get_approx_points()
@@ -104,6 +106,7 @@ class XXRapidFrontingFrontQWidget(QWidget):
 
     def get_front_dict(self):
         ret_dict = {
+            'shutter': self.shutter_order,
             'x': self.x_approx,
             'y': self.y_approx,
         }
