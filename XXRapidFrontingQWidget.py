@@ -46,6 +46,7 @@ class XXRapidFrontingQWidget(QWidget):
         pass
 
     def OnXXRapidFrontingExpansionQTabWidget(self):
+
         self.changed.emit()
 
     def get_expansion_dict(self):

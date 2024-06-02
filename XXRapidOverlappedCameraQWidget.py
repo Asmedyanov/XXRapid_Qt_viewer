@@ -41,16 +41,18 @@ class XXRapidOverlappedCameraQWidget(QWidget):
         return extent
 
     def getOverlappedImage(self):
-        before_image = gaussian_filter(self.camera_data['before'], sigma=self.sigma_before)
-        before_image = before_image / before_image.max()
-        shot_image = gaussian_filter(self.camera_data['shot'], sigma=self.sigma_shot)
-        shot_image = shot_image / shot_image.max()
+        before_image = gaussian_filter(self.camera_data['before'],
+                                       sigma=self.sigma_before)
+        # before_image = before_image / before_image.max()
+        shot_image = gaussian_filter(self.camera_data['shot'],
+                                     sigma=self.sigma_shot)
+        # shot_image = shot_image / shot_image.max()
         shadow_image = np.where(shot_image < before_image,  # + before_image.std(),
                                 shot_image,
                                 before_image)  # + before_image.std())
-        mask = np.where(before_image > np.median(before_image) * self.mask_threshold, 1, 0)
+        mask = np.where(before_image > np.median(before_image[np.nonzero(before_image)]) * self.mask_threshold, 1, 0)
         overlapped_image = np.where(before_image <= 0, 0,
-                                    shadow_image / before_image) * mask
+                                          shadow_image / before_image) * mask
         overlapped_image = gaussian_filter(overlapped_image, sigma=self.sigma_overlapped)
         return overlapped_image
 

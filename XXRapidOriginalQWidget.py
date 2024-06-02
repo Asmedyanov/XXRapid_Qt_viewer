@@ -23,7 +23,7 @@ class XXRapidOriginalQWidget(QTabWidget):
             )
             self.addTab(self.XXRapidOriginalCameraQWidgetDict[my_key], my_key)
 
-    def Save_Report(self, folder_name):
+    def save_report(self, folder_name):
         if 'XXRapid_original' not in os.listdir(folder_name):
             os.makedirs(f'{folder_name}/XXRapid_original')
         for mykey, myXXRapidOriginalCameraQWidget in self.XXRapidOriginalCameraQWidgetDict.items():

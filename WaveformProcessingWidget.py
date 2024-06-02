@@ -105,7 +105,7 @@ class WaveformProcessingWidget(QTabWidget):
         self.WaveformChannelsTab.set_data(ChannelDFDict)
         pass
 
-    def Save_Raport(self, folder_name='Default_shot/QtTraceFolder'):
+    def save_report(self, folder_name='Default_shot/QtTraceFolder'):
         if 'Waveform_processing' not in os.listdir(folder_name):
             os.makedirs(f'{folder_name}/Waveform_processing')
         self.WaveformChannelsTab.Save_Raport(f'{folder_name}/Waveform_processing')

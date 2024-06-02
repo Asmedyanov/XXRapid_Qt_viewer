@@ -66,6 +66,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\QtTraceFolder\XXRapid_TOF\XXRapid_velocity_and_onset\Quart_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\SW_onset_Quart_1.csv">
           <value>
             <Attribute>

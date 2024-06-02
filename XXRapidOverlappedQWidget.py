@@ -31,7 +31,7 @@ class XXRapidOverlappedQWidget(QTabWidget):
             self.SettingsDict[my_key] = self.OverlappedCameraQWidgetDict[my_key].SettingsDict
         self.changed.emit()
 
-    def Save_Report(self, folder_name):
+    def save_report(self, folder_name):
         if 'XXRapid_overlapped' not in os.listdir(folder_name):
             os.makedirs(f'{folder_name}/XXRapid_overlapped')
         for mykey, myOverlappedCameraQWidget in self.OverlappedCameraQWidgetDict.items():

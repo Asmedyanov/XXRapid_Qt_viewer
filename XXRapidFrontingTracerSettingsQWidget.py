@@ -1,4 +1,4 @@
-from SettingsBoxQWidget import *
+from XXRapid_Qt_viewer.utility.SettingsBoxQWidget import *
 
 
 class XXRapidFrontingTracerSettingsQWidget(SettingsBoxQWidget):

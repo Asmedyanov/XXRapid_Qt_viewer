@@ -28,7 +28,7 @@ class ExperimentQWidget(QTabWidget):
         try:
             self.WaveformProcessingWidget = WaveformProcessingWidget(self.WaveformOriginalQWidget.ChannelDFDict,
                                                                      settings_dict=settings)
-            self.addTab(self.WaveformProcessingWidget, 'Waveform Processing')
+            self.addTab(self.WaveformProcessingWidget, 'Waveform WaveformProcessingQTabWidget')
             self.WaveformProcessingWidget.changed.connect(self.OnWaveformProcessingWidgetChanged)
             self.SettingsDict['Waveform_processing_settings'] = self.WaveformProcessingWidget.SettingsDict
         except Exception as ex:
@@ -96,19 +96,19 @@ class ExperimentQWidget(QTabWidget):
 
     def SaveTrace(self, ):
         try:
-            self.WaveformOriginalQWidget.Save_Report(f'{self.folder_name}/QtTraceFolder')
+            self.WaveformOriginalQWidget.save_report(f'{self.folder_name}/QtTraceFolder')
         except Exception as ex:
             print(f'WaveformOriginalQWidget.Save_Report {ex}')
         try:
-            self.WaveformProcessingWidget.Save_Raport(f'{self.folder_name}/QtTraceFolder')
+            self.WaveformProcessingWidget.save_report(f'{self.folder_name}/QtTraceFolder')
         except Exception as ex:
             print(f'WaveformProcessingWidget.Save_Report {ex}')
         try:
-            self.XXRapidOriginalQWidget.Save_Report(f'{self.folder_name}/QtTraceFolder')
+            self.XXRapidOriginalQWidget.save_report(f'{self.folder_name}/QtTraceFolder')
         except Exception as ex:
             print(f'XXRapidOriginalQWidget.Save_Report {ex}')
         try:
-            self.XXRapidOverlappedQWidget.Save_Report(f'{self.folder_name}/QtTraceFolder')
+            self.XXRapidOverlappedQWidget.save_report(f'{self.folder_name}/QtTraceFolder')
         except Exception as ex:
             print(f'XXRapidOverlappedQWidget.Save_Report {ex}')
 

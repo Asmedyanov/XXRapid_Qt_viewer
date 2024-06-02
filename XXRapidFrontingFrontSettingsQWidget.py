@@ -1,4 +1,4 @@
-from SettingsBoxQWidget import *
+from XXRapid_Qt_viewer.utility.SettingsBoxQWidget import *
 
 
 class XXRapidFrontingFrontSettingsQWidget(SettingsBoxQWidget):
@@ -29,9 +29,12 @@ class XXRapidFrontingFrontSettingsQWidget(SettingsBoxQWidget):
             name=key,
             default=default,
             options_list=[
-                'horizont',
                 'line',
-                'curve'
+                'curve',
+                '1st_order',
+                '2nd_order',
+                '0_order',
+                'rest',
             ]
         )
         self.QVBoxLayout.addWidget(self.ApproximationSettingLine)

@@ -1,4 +1,4 @@
-from SettingsBoxQWidget import *
+from XXRapid_Qt_viewer.utility.SettingsBoxQWidget import *
 
 
 class XXRapidFrontingSeparatorSettingsQWidget(SettingsBoxQWidget):
@@ -50,8 +50,8 @@ class XXRapidFrontingSeparatorSettingsQWidget(SettingsBoxQWidget):
         self.YCenterSettingLine.changed.connect(self.OnSettingsLineChanged)
 
     def set_center(self, x, y):
-        self.XCenterSettingLine.QSpinBox.setValue(x)
-        self.YCenterSettingLine.QSpinBox.setValue(y)
+        self.XCenterSettingLine.setValue(x)
+        self.YCenterSettingLine.setValue(y)
         self.OnSettingsLineChanged()
 
     def OnSettingsLineChanged(self):
