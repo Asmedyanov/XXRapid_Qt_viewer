@@ -2,7 +2,9 @@ from .XXRapidOverlappedCameraSettingsQWidget import *
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 import numpy as np
-from scipy.ndimage import gaussian_filter
+from scipy.ndimage import binary_fill_holes
+from skimage import filters, morphology, segmentation
+import skimage
 
 
 class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
@@ -30,20 +32,21 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         return extent
 
     def getOverlappedImage(self):
-        before_image = gaussian_filter(self.camera_data['before'],
-                                       sigma=self.sigma_before)
-        # before_image = before_image / before_image.max()
-        shot_image = gaussian_filter(self.camera_data['shot'],
-                                     sigma=self.sigma_shot)
-        # shot_image = shot_image / shot_image.max()
+        before_image = filters.gaussian(self.camera_data['before'],
+                                        sigma=self.sigma_before)
+        thresh_value = filters.threshold_otsu(before_image)
+        thresh = np.where(before_image > 1e-2 * np.max(before_image[np.nonzero(before_image)]) * self.mask_threshold, 1,
+                          0)  # before_image > thresh_value
+        fill = binary_fill_holes(thresh)
+        shot_image = filters.gaussian(self.camera_data['shot'],
+                                      sigma=self.sigma_shot)
         shadow_image = np.where(shot_image < before_image,  # + before_image.std(),
                                 shot_image,
                                 before_image)  # + before_image.std())
-        mask = np.where(before_image > 1e-2 * np.max(before_image[np.nonzero(before_image)]) * self.mask_threshold, 1,
-                        0)
+
         overlapped_image = np.where(before_image <= 0, 0,
-                                    shadow_image / before_image) * mask
-        overlapped_image = gaussian_filter(overlapped_image, sigma=self.sigma_overlapped)
+                                    shadow_image / before_image) * fill
+        overlapped_image = filters.gaussian(overlapped_image, sigma=self.sigma_overlapped)
         return overlapped_image
 
     def on_settings_box(self):
