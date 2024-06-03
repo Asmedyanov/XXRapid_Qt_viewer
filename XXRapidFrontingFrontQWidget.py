@@ -1,8 +1,8 @@
-from MatplotlibSingeAxQWidget import *
+from Old_interface.MatplotlibSingeAxQWidget import *
 
 from XXRapidFrontingFrontSettingsQWidget import *
 import numpy as np
-from Approx_functions import f_free_style_full
+from Old_interface.Approx_functions import f_free_style_full
 from scipy.optimize import curve_fit
 
 

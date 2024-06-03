@@ -553,32 +553,32 @@
   </Fronting>
   <Overlapped_images>
     <Camera_1>
-      <Mask_threshold>1.5</Mask_threshold>
-      <Scale>45.0</Scale>
+      <Mask_threshold>10</Mask_threshold>
+      <Scale>45</Scale>
       <Sigma_before>0.5</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_1>
     <Camera_2>
-      <Mask_threshold>1.35</Mask_threshold>
-      <Scale>45.0</Scale>
+      <Mask_threshold>10</Mask_threshold>
+      <Scale>45</Scale>
       <Sigma_before>0.5</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_2>
     <Camera_3>
-      <Mask_threshold>1.49</Mask_threshold>
-      <Scale>45.0</Scale>
+      <Mask_threshold>1</Mask_threshold>
+      <Scale>45</Scale>
       <Sigma_before>0.5</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_3>
     <Camera_4>
-      <Mask_threshold>2.33</Mask_threshold>
-      <Scale>45.0</Scale>
+      <Mask_threshold>2</Mask_threshold>
+      <Scale>45</Scale>
       <Sigma_before>1.0</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
       <Sigma_shot>1.0</Sigma_shot>

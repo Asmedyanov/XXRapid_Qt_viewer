@@ -1,4 +1,4 @@
-from MatplotlibSingeAxQWidget import *
+from Old_interface.MatplotlibSingeAxQWidget import *
 import numpy as np
 from scipy.ndimage import gaussian_filter
 from XXRapidFrontingTracerSettingsQWidget import *

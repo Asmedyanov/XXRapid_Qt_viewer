@@ -1,4 +1,4 @@
-from MatplotlibSingeAxQWidget import *
+from MPLQWidgets.MatplotlibSingeAxQWidget import *
 
 
 class WaveformFullVoltageQWidget(MatplotlibSingeAxQWidget):

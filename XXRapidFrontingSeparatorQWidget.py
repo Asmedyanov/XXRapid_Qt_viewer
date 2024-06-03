@@ -1,6 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QHBoxLayout
-from PyQt5.QtCore import pyqtSignal
-from MatplotlibSingeAxQWidget import *
+from Old_interface.MatplotlibSingeAxQWidget import *
 from XXRapidFrontingSeparatorSettingsQWidget import *
 import numpy as np
 

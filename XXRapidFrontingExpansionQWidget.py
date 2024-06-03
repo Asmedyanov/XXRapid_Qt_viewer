@@ -1,4 +1,4 @@
-from MatplotlibSingeAxQWidget import *
+from Old_interface.MatplotlibSingeAxQWidget import *
 
 
 class XXRapidFrontingExpansionQWidget(MatplotlibSingeAxQWidget):

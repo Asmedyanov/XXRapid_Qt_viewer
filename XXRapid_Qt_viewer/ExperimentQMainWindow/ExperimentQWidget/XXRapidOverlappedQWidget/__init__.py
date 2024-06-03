@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QTabWidget
-from XXRapidOverlappedCameraQWidget import *
+from .XXRapidOverlappedCameraQWidget import *
 
 
 class XXRapidOverlappedQWidget(QTabWidget):

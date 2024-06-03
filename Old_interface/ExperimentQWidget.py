@@ -117,7 +117,7 @@ class ExperimentQWidget(QTabWidget):
             SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'r')
         except Exception as ex:
             print(f'OpenSettings {ex}')
-            SettingsFile = open('Default_shot/QtTraceFolder/SettingsFile.xml', 'r')
+            SettingsFile = open('../Default_shot/QtTraceFolder/SettingsFile.xml', 'r')
             print('Default settings')
         try:
             SettingsDict = xmltodict.parse(SettingsFile.read())['Experiment_settings']

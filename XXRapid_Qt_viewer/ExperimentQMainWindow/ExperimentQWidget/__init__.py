@@ -2,9 +2,9 @@ from .Waveform import *
 from .Waveform.WaveformProcessingQTabWidget import *
 from dict2xml import dict2xml
 import xmltodict
-from XXRapidOriginalQWidget import *
-from XXRapidOverlappedQWidget import *
-from XXRapidFrontingQWidget import *
+from .XXRapidOriginalQWidget import *
+from .XXRapidOverlappedQWidget import *
+#from XXRapidFrontingQWidget import *
 from PyQt5.QtWidgets import QMessageBox
 
 
@@ -46,26 +46,30 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(f'WaveformProcessingWidget {ex}')
 
-        '''before_name = self.get_before_name()
+        before_name = self.get_before_name()
         shot_name = self.get_shot_name()
-        self.XXRapidOriginalQWidget = XXRapidOriginalQWidget(
-            before_name=before_name,
-            shot_name=shot_name
-        )
-        self.addTab(self.XXRapidOriginalQWidget, 'XXRapid_Camera_original')
         try:
-            settings = settings_dict['Overlapped_images']
-        except:
-            settings = dict()
+            self.XXRapidOriginalQWidget = XXRapidOriginalQWidget(
+                before_name=before_name,
+                shot_name=shot_name
+            )
+        except Exception as ex:
+            print(f'XXRapidOriginalQWidget {ex}')
+        self.addTab(self.XXRapidOriginalQWidget, 'XXRapid_Camera_original')
+        key = 'Overlapped_images'
+        settings = dict()
+        if key in settings_dict.keys():
+            settings = settings_dict[key]
         try:
             self.XXRapidOverlappedQWidget = XXRapidOverlappedQWidget(self.XXRapidOriginalQWidget.CameraDataDict,
                                                                      settings)
-            self.addTab(self.XXRapidOverlappedQWidget, 'Overlapped_images')
+            self.addTab(self.XXRapidOverlappedQWidget, key)
             self.XXRapidOverlappedQWidget.changed.connect(self.OnXXRapidOverlappedQWidget)
-            self.SettingsDict['Overlapped_images'] = self.XXRapidOverlappedQWidget.SettingsDict
+            self.SettingsDict[key] = self.XXRapidOverlappedQWidget.SettingsDict
         except Exception as ex:
             print(f'XXRapidOverlappedQWidget {ex}')
-        try:
+
+        '''try:
             settings = settings_dict['Fronting']
         except:
             settings = dict()

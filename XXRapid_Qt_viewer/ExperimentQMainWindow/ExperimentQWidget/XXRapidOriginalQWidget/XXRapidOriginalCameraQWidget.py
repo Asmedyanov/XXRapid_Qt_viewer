@@ -1,5 +1,4 @@
-from MatplotlibQWidget import *
-import os
+from MPLQWidgets.MatplotlibQWidget import *
 
 
 class XXRapidOriginalCameraQWidget(MatplotlibQWidget):
@@ -11,4 +10,3 @@ class XXRapidOriginalCameraQWidget(MatplotlibQWidget):
         self.ax[1].set(title='Shot', xlabel='pix', ylabel='pix')
         self.imshow_before = self.ax[0].imshow(image_before)
         self.imshow_short = self.ax[1].imshow(image_shot)
-

@@ -78,14 +78,14 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
         except Exception as ex:
             print(ex)
 
-        try:
+        '''try:
             self.WaveformEnergyQWidget = WaveformEnergyQWidget(
                 df_current=self.WaveformCurrentQWidget.current_df_to_plot,
                 df_power=self.WaveformPowerQWidget.df_power
             )
             self.addTab(self.WaveformEnergyQWidget, 'Energy')
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
     def OnWaveformUresQWidget(self):
         try:

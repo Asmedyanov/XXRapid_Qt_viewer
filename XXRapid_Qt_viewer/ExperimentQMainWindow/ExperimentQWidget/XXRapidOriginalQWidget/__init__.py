@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QTabWidget
-from rtv_reader import *
-from XXRapidOriginalCameraQWidget import *
+from XXRapid_Qt_viewer.utility.rtv_reader import *
+from .XXRapidOriginalCameraQWidget import *
+import os
 
 
 class XXRapidOriginalQWidget(QTabWidget):
