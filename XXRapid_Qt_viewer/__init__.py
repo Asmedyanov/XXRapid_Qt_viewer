@@ -1,4 +1,4 @@
-from XXRapid_Qt_viewer.ExperimentQWidget import *
+from XXRapid_Qt_viewer.ExperimentQMainWindow import *
 
 
 class MainWindow(ExperimentQMainWindow):

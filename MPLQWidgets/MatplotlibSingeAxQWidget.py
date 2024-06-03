@@ -1,5 +1,7 @@
-from MatplotlibQWidget import *
+from .MatplotlibQWidget import *
 import os
+import numpy as np
+import pandas as pd
 
 
 class MatplotlibSingeAxQWidget(MatplotlibQWidget):

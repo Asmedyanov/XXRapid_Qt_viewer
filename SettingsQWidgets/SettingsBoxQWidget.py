@@ -1,4 +1,4 @@
-from XXRapid_Qt_viewer.utility.SettingsLineQWidget import *
+from SettingsQWidgets.SettingsLineQWidget import *
 from PyQt5.QtWidgets import QVBoxLayout
 
 

@@ -1,4 +1,4 @@
-from XXRapid_Qt_viewer.utility.SettingsBoxQWidget import *
+from SettingsQWidgets.SettingsBoxQWidget import *
 
 
 class XXRapidFrontingSeparatorSettingsQWidget(SettingsBoxQWidget):
