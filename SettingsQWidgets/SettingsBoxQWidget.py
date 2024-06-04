@@ -9,17 +9,26 @@ class SettingsBoxQWidget(QWidget):
         if settings_dict is None:
             settings_dict = dict()
         super().__init__()
+        self.SettingsDict = settings_dict
         self.QVBoxLayout = QVBoxLayout()
         self.setLayout(self.QVBoxLayout)
-        try:
-            self.User_comment = SettingsLineQWidget(name='User_comment', default=settings_dict['User_comment'])
-        except Exception as ex:
-            print(ex)
-            self.User_comment = SettingsLineQWidget(name='User_comment', default='User_comment')
+        key = 'User_comment'
+        default = self.test_key(key, key)
+        self.User_comment = SettingsLineQWidget(name='User_comment', default=default)
+        self.SettingsDict['User_comment'] = self.User_comment.value
         self.User_comment.changed.connect(self.OnSettingsLineChanged)
         self.QVBoxLayout.addWidget(self.User_comment)
-        self.SettingsDict = settings_dict
-        self.SettingsDict['User_comment'] = self.User_comment.value
+
+    def test_key(self, key_line, default_line='default'):
+        default = default_line
+        if key_line in self.SettingsDict.keys():
+            default = self.SettingsDict[key_line]
+            if type(default_line) in [float, int]:
+                default = float(default)
+                if type(default_line) is float:
+                    return default
+                return int(default)
+        return default
 
     def OnSettingsLineChanged(self):
         self.SettingsDict['User_comment'] = self.User_comment.value

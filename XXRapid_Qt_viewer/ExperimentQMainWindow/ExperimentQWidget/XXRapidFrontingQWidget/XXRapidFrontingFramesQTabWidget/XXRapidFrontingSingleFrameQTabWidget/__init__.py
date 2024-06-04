@@ -1,5 +1,5 @@
-from XXRapidFrontingSeparatorQWidget import *
-from XXRapidFrontingQuartQTabWidget import *
+from .XXRapidFrontingSeparatorQWidget import *
+from .XXRapidFrontingQuartQTabWidget import *
 
 
 class XXRapidFrontingSingleFrameQTabWidget(QTabWidget):

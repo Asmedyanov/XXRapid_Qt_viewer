@@ -6,8 +6,7 @@ class ChannelSettingsQWidget(SettingsBoxQWidget):
         super().__init__(settings_dict)
         default = 'Systron'  # Systron donner starting pulse generator
         key = 'Diagnostics'
-        if key in settings_dict.keys():
-            default = settings_dict[key]
+        default = self.test_key(key, 'Systron')  # Systron donner starting pulse generator
         self.DiagnosticsSettingsQWidget = SettingsLineQWidget(
             name=key,
             options_list=['Rogowski_coil',
@@ -18,8 +17,8 @@ class ChannelSettingsQWidget(SettingsBoxQWidget):
         )
         self.SettingsDict[key] = self.DiagnosticsSettingsQWidget.value
 
-        default = 5  # ns
         key = 'Smoothing'
+        default = self.test_key(key, 5)  # ns
         if key in settings_dict.keys():
             default = int(float(settings_dict[key]))
         self.SmoothingSettingsQWidget = SettingsLineQWidget(
@@ -31,8 +30,8 @@ class ChannelSettingsQWidget(SettingsBoxQWidget):
         )
         self.SettingsDict[key] = self.SmoothingSettingsQWidget.value
 
-        default = 1.0
         key = 'Coefficient'
+        default = self.test_key(key, 5)
         if key in settings_dict.keys():
             default = float(settings_dict[key])
         self.CoefficientSettingsQWidget = SettingsLineQWidget(

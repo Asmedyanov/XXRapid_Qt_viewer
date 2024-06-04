@@ -79,7 +79,12 @@ class SettingsLineQWidget(QWidget):
         self.changed.emit()
 
     def setValue(self, value):
-        self.QSpinBox.setValue(value)
+        my_value = value
+        if type(self.QSpinBox) in [QSpinBox, QDoubleSpinBox]:
+            my_value = float(my_value)
+            if type(self.QSpinBox) is QSpinBox:
+                my_value = int(my_value)
+        self.QSpinBox.setValue(my_value)
         self.value = float(self.QSpinBox.value())
 
         # self.OnQSpinBoxChanged()

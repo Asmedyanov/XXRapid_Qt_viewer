@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtCore import pyqtSignal
-from XXRapidFrontingTracerQWidget import *
-from XXRapidFrontingFrontQWidget import *
+from .XXRapidFrontingTracerQWidget import *
+from .XXRapidFrontingFrontQWidget import *
 
 
 class XXRapidFrontingQuartQTabWidget(QTabWidget):
@@ -13,15 +12,15 @@ class XXRapidFrontingQuartQTabWidget(QTabWidget):
         super().__init__()
         self.camera_data = camera_data
         self.SettingsDict = settings_dict
-        try:
-            settings = settings_dict['Tracer']
-        except:
-            settings = dict()
+        key = 'Tracer'
+        settings = dict()
+        if key in settings_dict.keys():
+            settings = settings_dict[key]
         try:
             self.XXRapidFrontingTracerQWidget = XXRapidFrontingTracerQWidget(self.camera_data, settings)
-            self.addTab(self.XXRapidFrontingTracerQWidget, 'Tracer')
+            self.addTab(self.XXRapidFrontingTracerQWidget, key)
             self.SettingsDict['Tracer'] = self.XXRapidFrontingTracerQWidget.SettingsDict
-            self.XXRapidFrontingTracerQWidget.chandeg.connect(self.OnXXRapidFrontingTracerQWidget)
+            self.XXRapidFrontingTracerQWidget.changed.connect(self.OnXXRapidFrontingTracerQWidget)
         except Exception as ex:
             print(f'XXRapidFrontingTracerQWidget {ex}')
             return
@@ -30,18 +29,18 @@ class XXRapidFrontingQuartQTabWidget(QTabWidget):
         self.front_dict = dict()
         for i in range(3):
             key = f'Front_{i + 1}'
-            try:
+            settings = dict()
+            if key in settings_dict.keys():
                 settings = settings_dict[key]
-            except:
-                settings = dict()
             try:
-                self.XXRapidFrontingFrontQWidgetDict[key] = XXRapidFrontingFrontQWidget(self,
-                                                                                        self.XXRapidFrontingTracerQWidget.traced_image,
-                                                                                        settings)
+                self.XXRapidFrontingFrontQWidgetDict[key] = XXRapidFrontingFrontQWidget(
+                    self,
+                    self.XXRapidFrontingTracerQWidget.traced_image,
+                    settings)
                 self.SettingsDict[key] = self.XXRapidFrontingFrontQWidgetDict[key].SettingsDict
                 self.front_dict[key] = self.XXRapidFrontingFrontQWidgetDict[key].get_front_dict()
                 self.addTab(self.XXRapidFrontingFrontQWidgetDict[key], key)
-                self.XXRapidFrontingFrontQWidgetDict[key].chandeg.connect(self.OnXXRapidFrontingFrontQWidget)
+                self.XXRapidFrontingFrontQWidgetDict[key].changed.connect(self.OnXXRapidFrontingFrontQWidget)
             except Exception as ex:
                 print(f'XXRapidFrontingFrontQWidgetDict[{key}] {ex}')
 

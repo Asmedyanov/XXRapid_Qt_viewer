@@ -4,7 +4,7 @@ from dict2xml import dict2xml
 import xmltodict
 from .XXRapidOriginalQWidget import *
 from .XXRapidOverlappedQWidget import *
-#from XXRapidFrontingQWidget import *
+from .XXRapidFrontingQWidget import *
 from PyQt5.QtWidgets import QMessageBox
 
 
@@ -56,6 +56,7 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(f'XXRapidOriginalQWidget {ex}')
         self.addTab(self.XXRapidOriginalQWidget, 'XXRapid_Camera_original')
+
         key = 'Overlapped_images'
         settings = dict()
         if key in settings_dict.keys():
@@ -69,20 +70,20 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(f'XXRapidOverlappedQWidget {ex}')
 
-        '''try:
-            settings = settings_dict['Fronting']
-        except:
-            settings = dict()
+        key = 'Fronting'
+        settings = dict()
+        if key in settings_dict.keys():
+            settings = settings_dict[key]
         try:
             self.XXRapidFrontingQTabWidget = XXRapidFrontingQWidget(self.XXRapidOriginalQWidget.CameraDataDict,
                                                                     settings)
-            self.addTab(self.XXRapidFrontingQTabWidget, 'Fronting')
+            self.addTab(self.XXRapidFrontingQTabWidget, key)
             self.XXRapidFrontingQTabWidget.changed.connect(self.OnXXRapidFrontingQTabWidget)
             self.tabBarDoubleClicked.connect(self.on_tab_bar_double_click)
-            self.SettingsDict['Fronting'] = self.XXRapidFrontingQTabWidget.SettingsDict
+            self.SettingsDict[key] = self.XXRapidFrontingQTabWidget.SettingsDict
         except Exception as ex:
             print(f'XXRapidFrontingQTabWidget {ex}')
-        try:
+        '''try:
             settings = settings_dict['TOF']
         except:
             settings = dict()

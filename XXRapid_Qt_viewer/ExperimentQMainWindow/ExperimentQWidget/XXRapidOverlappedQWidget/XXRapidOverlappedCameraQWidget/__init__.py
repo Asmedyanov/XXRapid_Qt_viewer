@@ -50,7 +50,6 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         return overlapped_image
 
     def on_settings_box(self):
-        self.SettingsDict = self.SettingsBox.SettingsDict
         self.dx = 1.0 / self.SettingsBox.ScaleSettingLine.value
         self.sigma_before = self.SettingsBox.SigmaBeforeLine.value
         self.sigma_shot = self.SettingsBox.SigmaShotLine.value

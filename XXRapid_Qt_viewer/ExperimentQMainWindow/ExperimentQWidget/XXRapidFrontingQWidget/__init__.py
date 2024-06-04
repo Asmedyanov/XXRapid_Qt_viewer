@@ -1,5 +1,5 @@
-from XXRapidFrontingFramesQTabWidget import *
-from XXRapidFrontingExpansionQTabWidget import *
+from .XXRapidFrontingFramesQTabWidget import *
+from .XXRapidFrontingExpansionQTabWidget import *
 
 
 class XXRapidFrontingQWidget(QWidget):

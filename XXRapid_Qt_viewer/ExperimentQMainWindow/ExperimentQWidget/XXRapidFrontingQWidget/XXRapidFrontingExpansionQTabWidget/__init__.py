@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QTabWidget
-from XXRapidFrontingExpansionQWidget import *
+from .XXRapidFrontingExpansionQWidget import *
 
 
 class XXRapidFrontingExpansionQTabWidget(QTabWidget):
@@ -27,7 +27,7 @@ class XXRapidFrontingExpansionQTabWidget(QTabWidget):
 
     def on_XXRapidFrontingExpansionQWidgetDict(self):
         pass
-        #self.changed.emit()
+        # self.changed.emit()
 
     def set_data(self, expansion_dict):
         for i in range(4):
