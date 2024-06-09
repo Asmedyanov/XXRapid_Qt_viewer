@@ -34,7 +34,6 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
     def getOverlappedImage(self):
         before_image = filters.gaussian(self.camera_data['before'],
                                         sigma=self.sigma_before)
-        thresh_value = filters.threshold_otsu(before_image)
         thresh = np.where(before_image > 1e-2 * np.max(before_image[np.nonzero(before_image)]) * self.mask_threshold, 1,
                           0)  # before_image > thresh_value
         fill = binary_fill_holes(thresh)

@@ -5,7 +5,9 @@ import xmltodict
 from .XXRapidOriginalQWidget import *
 from .XXRapidOverlappedQWidget import *
 from .XXRapidFrontingQWidget import *
+from .TOF import *
 from PyQt5.QtWidgets import QMessageBox
+from .ComsolSimulationQTabWidget import *
 
 
 class ExperimentQWidget(QTabWidget):
@@ -83,7 +85,7 @@ class ExperimentQWidget(QTabWidget):
             self.SettingsDict[key] = self.XXRapidFrontingQTabWidget.SettingsDict
         except Exception as ex:
             print(f'XXRapidFrontingQTabWidget {ex}')
-        '''try:
+        try:
             settings = settings_dict['TOF']
         except:
             settings = dict()
@@ -96,7 +98,19 @@ class ExperimentQWidget(QTabWidget):
             self.XXRapidTOFQTabWidget.changed.connect(self.OnXXRapidTOFQTabWidget)
             self.SettingsDict['TOF'] = self.XXRapidTOFQTabWidget.SettingsDict
         except Exception as ex:
-            print(f'XXRapidTOFQTabWidget {ex}')'''
+            print(f'XXRapidTOFQTabWidget {ex}')
+        try:
+            comsol_simulation_filename = self.get_comsol_simulation_filename()
+            self.ComsolSimulation = ComsolSimulationQWidget(self, comsol_simulation_filename)
+            self.addTab(self.ComsolSimulation, 'Comsol')
+        except Exception as ex:
+            print(ex)
+
+    def get_comsol_simulation_filename(self):
+        comsol_files_list = [name for name in self.folder_list if
+                             name.startswith('Jmax') and name.endswith('csv')]
+        # print(f'Folder contains waveform files\n{waveform_files_list}\nI took the last one')
+        return f'{self.folder_name}/{comsol_files_list[-1]}'
 
     def OnXXRapidTOFQTabWidget(self):
         self.SettingsDict['TOF'] = self.XXRapidTOFQTabWidget.SettingsDict

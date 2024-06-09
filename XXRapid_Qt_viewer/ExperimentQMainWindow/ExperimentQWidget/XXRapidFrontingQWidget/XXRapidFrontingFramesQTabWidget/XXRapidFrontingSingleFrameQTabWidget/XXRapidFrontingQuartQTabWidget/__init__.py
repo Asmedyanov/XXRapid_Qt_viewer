@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QTabWidget
 from .XXRapidFrontingTracerQWidget import *
 from .XXRapidFrontingFrontQWidget import *
+from .SkimageOverlappedQWidget import *
 
 
 class XXRapidFrontingQuartQTabWidget(QTabWidget):
@@ -43,6 +44,19 @@ class XXRapidFrontingQuartQTabWidget(QTabWidget):
                 self.XXRapidFrontingFrontQWidgetDict[key].changed.connect(self.OnXXRapidFrontingFrontQWidget)
             except Exception as ex:
                 print(f'XXRapidFrontingFrontQWidgetDict[{key}] {ex}')
+
+        key = 'skimage_overlapped'
+        settings = dict()
+        if key in settings_dict.keys():
+            settings = settings_dict[key]
+        try:
+            self.SkimageQWidget = SkimageOverlappedQWidget(self.camera_data, settings)
+            self.addTab(self.SkimageQWidget, key)
+            self.SettingsDict[key] = self.SkimageQWidget.SettingsDict
+            # self.XXRapidFrontingTracerQWidget.changed.connect(self.OnXXRapidFrontingTracerQWidget)
+        except Exception as ex:
+            print(f'SkimageQWidget {ex}')
+            return
 
     def OnXXRapidFrontingFrontQWidget(self):
         for mykey, myfront in self.XXRapidFrontingFrontQWidgetDict.items():

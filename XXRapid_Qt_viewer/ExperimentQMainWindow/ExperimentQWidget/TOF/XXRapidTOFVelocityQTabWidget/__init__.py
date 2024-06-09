@@ -1,7 +1,5 @@
-import pandas as pd
 from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtCore import pyqtSignal
-import os
+from .XXRapidTOFVelocityQWidget import *
 
 
 class XXRapidTOFVelocityQTabWidget(QTabWidget):

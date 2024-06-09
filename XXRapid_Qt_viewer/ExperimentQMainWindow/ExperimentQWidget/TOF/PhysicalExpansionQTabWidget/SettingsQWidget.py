@@ -1,15 +1,11 @@
-from XXRapid_Qt_viewer.utility.SettingsBoxQWidget import *
+from SettingsQWidgets.SettingsBoxQWidget import *
 
 
 class SettingsQWidget(SettingsBoxQWidget):
     def __init__(self, settings_dict=None):
         super().__init__(settings_dict)
         key = 'Scale'
-        try:
-            default = settings_dict[key]
-        except:
-            default = 50
-
+        default = self.test_key(key, 50)
         self.ScaleSettingLine = SettingsLineQWidget(
             name=key,
             default=default,
@@ -21,11 +17,7 @@ class SettingsQWidget(SettingsBoxQWidget):
         self.ScaleSettingLine.changed.connect(self.OnSettingsLineChanged)
 
         key = 'Foil_width'
-        try:
-            default = settings_dict[key]
-        except:
-            default = 50
-
+        default = self.test_key(key, 50)
         self.WidthSettingLine = SettingsLineQWidget(
             name=key,
             default=default,
@@ -37,11 +29,7 @@ class SettingsQWidget(SettingsBoxQWidget):
         self.WidthSettingLine.changed.connect(self.OnSettingsLineChanged)
 
         key = 'Foil_length'
-        try:
-            default = settings_dict[key]
-        except:
-            default = 40
-
+        default = self.test_key(key, 40)
         self.LengthSettingLine = SettingsLineQWidget(
             name=key,
             default=default,
@@ -53,10 +41,7 @@ class SettingsQWidget(SettingsBoxQWidget):
         self.LengthSettingLine.changed.connect(self.OnSettingsLineChanged)
 
         key = 'Foil_waist'
-        try:
-            default = settings_dict[key]
-        except:
-            default = 3
+        default = self.test_key(key, 3.0)
 
         self.WaistSettingLine = SettingsLineQWidget(
             name=key,

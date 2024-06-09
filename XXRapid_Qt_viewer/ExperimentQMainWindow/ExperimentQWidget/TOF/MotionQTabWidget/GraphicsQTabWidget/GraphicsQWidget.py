@@ -1,4 +1,4 @@
-from Old_interface.MatplotlibSingeAxQWidget import *
+from MPLQWidgets.MatplotlibSingeAxQWidget import *
 
 
 class GraphicsQWidget(MatplotlibSingeAxQWidget):

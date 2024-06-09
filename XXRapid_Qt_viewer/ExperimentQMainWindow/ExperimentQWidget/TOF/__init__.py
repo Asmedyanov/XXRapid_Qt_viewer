@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtCore import pyqtSignal
+from .XXRapidTOFVelocityQTabWidget import *
+from .MotionQTabWidget import *
+from .PhysicalExpansionQTabWidget import *
 
 
 class XXRapidTOFQTabWidget(QTabWidget):
@@ -52,6 +53,14 @@ class XXRapidTOFQTabWidget(QTabWidget):
         except Exception as ex:
             print(f'XXRapidTOFVelocityQTabWidget {ex}')
 
+    def get_explosion_time(self, width=5.0, quart=1):
+        approximation_data = self.XXRapidTOFVelocityQTabWidget.get_velocity_dict()
+        approximation_data_quart = approximation_data[f'Quart_{quart}']
+        index = np.max(np.where(approximation_data_quart['width'] < width))
+        t_exp = approximation_data_quart['onset_time'][index]
+        return t_exp
+        pass
+
     def on_XXRapidTOFPhysicalExpansionQTabWidget(self):
         try:
             self.XXRapidTOFMotionQWidget.set_data(self.XXRapidTOFPhysicalExpansionQTabWidget.get_motion_dict())
@@ -88,5 +97,3 @@ class XXRapidTOFQTabWidget(QTabWidget):
             self.XXRapidTOFVelocityQTabWidget.save_report(f'{folder_name}/XXRapid_TOF')
         except Exception as ex:
             print(f'XXRapidTOFVelocityQTabWidget.save_report {ex}')
-
-

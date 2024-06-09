@@ -1,14 +1,11 @@
-from XXRapid_Qt_viewer.utility.SettingsBoxQWidget import *
+from SettingsQWidgets.SettingsBoxQWidget import *
 
 
 class SettingsQWidget(SettingsBoxQWidget):
     def __init__(self, settings_dict=None):
         super().__init__(settings_dict)
         key = 'Cross_section_1'
-        try:
-            default = settings_dict[key]
-        except:
-            default = 3
+        default = self.test_key(key, 3)
 
         self.CrossSection1SettingLine = SettingsLineQWidget(
             name=key,
@@ -21,10 +18,7 @@ class SettingsQWidget(SettingsBoxQWidget):
         self.CrossSection1SettingLine.changed.connect(self.OnSettingsLineChanged)
 
         key = 'Cross_section_2'
-        try:
-            default = settings_dict[key]
-        except:
-            default = 10
+        default = self.test_key(key, 10)
 
         self.CrossSection2SettingLine = SettingsLineQWidget(
             name=key,
