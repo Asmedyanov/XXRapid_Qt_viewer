@@ -101,7 +101,7 @@ class ExperimentQWidget(QTabWidget):
             print(f'XXRapidTOFQTabWidget {ex}')
         try:
             comsol_simulation_filename = self.get_comsol_simulation_filename()
-            self.ComsolSimulation = ComsolSimulationQWidget(self, comsol_simulation_filename)
+            self.ComsolSimulation = ComsolSimulationQTabWidget(self, comsol_simulation_filename)
             self.addTab(self.ComsolSimulation, 'Comsol')
         except Exception as ex:
             print(ex)
