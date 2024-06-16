@@ -26,21 +26,35 @@ class ComsolSimulationQWidget(SettingsMPLQWidget):
         try:
             quart = int(self.SettingsBox.Quart_line.value)
             self.t_exp_array = np.arange(len(self.width_list_number))
+            self.j_exp_array = np.arange(len(self.width_list_number))
+            self.h_exp_array = np.arange(len(self.width_list_number))
+            df_list = list(self.comsol_current_density_dict.values())
             for i, width in enumerate(self.width_list_number):
                 self.t_exp_array[i] = self.parent.XXRapidTOFQTabWidget.get_explosion_time(
                     width=width,
                     quart=quart)
+                j_df = df_list[i]
+                j_df = j_df.loc[j_df['time'] * 1e9 < self.t_exp_array[i]]
+                self.j_exp_array[i] = j_df['density'].values[-1]
+                self.h_exp_array[i] = j_df['action'].values.sum()
+
                 self.t_exp_plot_dict[width] = self.MPLQWidget.ax.axvline(self.t_exp_array[i], linestyle=':', c='r')
         except Exception as ex:
             print(ex)
+
     def on_settings_box(self):
         try:
             quart = int(self.SettingsBox.Quart_line.value)
-            self.t_exp_array = np.arange(len(self.width_list_number))
+            #self.t_exp_array = np.arange(len(self.width_list_number))
+            df_list = list(self.comsol_current_density_dict.values())
             for i, width in enumerate(self.width_list_number):
                 self.t_exp_array[i] = self.parent.XXRapidTOFQTabWidget.get_explosion_time(
                     width=width,
                     quart=quart)
+                j_df = df_list[i]
+                j_df = j_df.loc[j_df['time'] * 1e9 < self.t_exp_array[i]]
+                self.j_exp_array[i] = j_df['density'].values[-1]
+                self.h_exp_array[i] = j_df['action'].values.sum()
                 self.t_exp_plot_dict[width].set_xdata(self.t_exp_array[i])
         except Exception as ex:
             print(ex)
@@ -58,7 +72,8 @@ class ComsolSimulationQWidget(SettingsMPLQWidget):
             j_data = j_data[~np.isnan(j_data)]
             df = pd.DataFrame({
                 'time': t_data,
-                'density': j_data
+                'density': j_data,
+                'action': j_data ** 2 * np.gradient(t_data)
             })
             try:
                 width_list_number[i] = float(name.split(' ')[0])
