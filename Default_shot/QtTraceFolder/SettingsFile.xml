@@ -1,4 +1,8 @@
 <Experiment_settings>
+  <Comsol>
+    <Quart>2</Quart>
+    <User_comment>User_comment</User_comment>
+  </Comsol>
   <Fronting>
     <Fronting_frames>
       <Camera_1>

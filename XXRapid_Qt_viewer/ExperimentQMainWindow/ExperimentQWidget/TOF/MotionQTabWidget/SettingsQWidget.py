@@ -15,7 +15,7 @@ class SettingsQWidget(SettingsBoxQWidget):
             step=1
         )
         self.QVBoxLayout.addWidget(self.CrossSection1SettingLine)
-        self.CrossSection1SettingLine.changed.connect(self.OnSettingsLineChanged)
+        self.CrossSection1SettingLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Cross_section_2'
         default = self.test_key(key, 10)
@@ -28,10 +28,9 @@ class SettingsQWidget(SettingsBoxQWidget):
             step=1
         )
         self.QVBoxLayout.addWidget(self.CrossSection2SettingLine)
-        self.CrossSection2SettingLine.changed.connect(self.OnSettingsLineChanged)
+        self.CrossSection2SettingLine.changed.connect(self.on_settings_line_changed)
 
-    def OnSettingsLineChanged(self):
-        super().OnSettingsLineChanged()
+    def on_settings_line_changed(self):
         self.SettingsDict['Cross_section_1'] = self.CrossSection1SettingLine.value
         self.SettingsDict['Cross_section_2'] = self.CrossSection2SettingLine.value
-        self.changed.emit()
+        super().on_settings_line_changed()

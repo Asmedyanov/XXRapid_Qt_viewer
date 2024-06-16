@@ -17,8 +17,8 @@ class WaveformIdotSettingsQWidget(SettingsBoxQWidget):
         )
         self.QVBoxLayout.addWidget(self.SmoothingSettingsLine)
         self.SettingsDict[key] = self.SmoothingSettingsLine.value
-        self.SmoothingSettingsLine.changed.connect(self.OnSettingsLineChanged)
+        self.SmoothingSettingsLine.changed.connect(self.on_settings_line_changed)
 
-    def OnSettingsLineChanged(self):
+    def on_settings_line_changed(self):
         self.SettingsDict['Smoothing'] = self.SmoothingSettingsLine.value
-        super().OnSettingsLineChanged()
+        super().on_settings_line_changed()

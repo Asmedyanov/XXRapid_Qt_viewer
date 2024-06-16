@@ -1,29 +1,30 @@
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
-from SettingsQWidgets.SettingsBoxQWidget import *
+from .SettingsBox import *
 import pandas as pd
 
 
 class ComsolSimulationQWidget(SettingsMPLQWidget):
-    def __init__(self, parent, filename='Default_shot/Jmax.csv'):
+    def __init__(self, parent, filename='Default_shot/Jmax.csv', settings_dict=None):
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=SettingsBoxQWidget()
+            settings_box=SettingsBox(settings_dict)
         )
         self.parent = parent
         self.filename = filename
         self.df = pd.read_csv(self.filename)
         self.width_list_number, self.comsol_current_density_dict = self.get_comsol_current_density_dict()
         self.MPLQWidget.ax.set(xlabel='t, ns',
-                    ylabel='J$_{edge}, \\times 10^{8} A/cm^2$'
-                    )
+                               ylabel='J$_{edge}, \\times 10^8 A/cm^2$'
+                               )
         self.j_plot_dict = dict()
         for my_key, my_value in self.comsol_current_density_dict.items():
-            self.j_plot_dict[my_key], = self.MPLQWidget.ax.plot(my_value['time'] * 1e9, my_value['density'] * 1e-8, label=my_key)
+            self.j_plot_dict[my_key], = self.MPLQWidget.ax.plot(my_value['time'] * 1e9, my_value['density'] * 1e-8,
+                                                                label=my_key)
         self.MPLQWidget.ax.legend()
         self.t_exp_plot_dict = dict()
         try:
-            quart = 2
+            quart = int(self.SettingsBox.Quart_line.value)
             self.t_exp_array = np.arange(len(self.width_list_number))
             for i, width in enumerate(self.width_list_number):
                 self.t_exp_array[i] = self.parent.XXRapidTOFQTabWidget.get_explosion_time(
@@ -32,6 +33,18 @@ class ComsolSimulationQWidget(SettingsMPLQWidget):
                 self.t_exp_plot_dict[width] = self.MPLQWidget.ax.axvline(self.t_exp_array[i], linestyle=':', c='r')
         except Exception as ex:
             print(ex)
+    def on_settings_box(self):
+        try:
+            quart = int(self.SettingsBox.Quart_line.value)
+            self.t_exp_array = np.arange(len(self.width_list_number))
+            for i, width in enumerate(self.width_list_number):
+                self.t_exp_array[i] = self.parent.XXRapidTOFQTabWidget.get_explosion_time(
+                    width=width,
+                    quart=quart)
+                self.t_exp_plot_dict[width].set_xdata(self.t_exp_array[i])
+        except Exception as ex:
+            print(ex)
+        super().on_settings_box()
 
     def get_comsol_current_density_dict(self):
         comsol_current_density_dict = dict()

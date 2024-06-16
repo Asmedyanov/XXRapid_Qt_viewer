@@ -17,8 +17,8 @@ class WaveformResistiveVoltageSettingsQWidget(SettingsBoxQWidget):
         )
         self.QVBoxLayout.addWidget(self.PeakSettingsLine)
         self.SettingsDict[key] = self.PeakSettingsLine.value
-        self.PeakSettingsLine.changed.connect(self.OnSettingsLineChanged)
+        self.PeakSettingsLine.changed.connect(self.on_settings_line_changed)
 
-    def OnSettingsLineChanged(self):
+    def on_settings_line_changed(self):
         self.SettingsDict['Peak'] = self.PeakSettingsLine.value
-        super().OnSettingsLineChanged()
+        super().on_settings_line_changed()

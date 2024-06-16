@@ -17,7 +17,7 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         )
         self.QVBoxLayout.addWidget(self.ScaleSettingLine)
         self.SettingsDict[key] = self.ScaleSettingLine.value
-        self.ScaleSettingLine.changed.connect(self.OnSettingsLineChanged)
+        self.ScaleSettingLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Mask_threshold'
         default = 50
@@ -32,7 +32,7 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         )
         self.QVBoxLayout.addWidget(self.MaskThresholdSettingLine)
         self.SettingsDict[key] = self.MaskThresholdSettingLine.value
-        self.MaskThresholdSettingLine.changed.connect(self.OnSettingsLineChanged)
+        self.MaskThresholdSettingLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Sigma_before'
         default = 1.0
@@ -47,7 +47,7 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         )
         self.QVBoxLayout.addWidget(self.SigmaBeforeLine)
         self.SettingsDict[key] = self.SigmaBeforeLine.value
-        self.SigmaBeforeLine.changed.connect(self.OnSettingsLineChanged)
+        self.SigmaBeforeLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Sigma_shot'
         default = 1.0
@@ -62,7 +62,7 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         )
         self.QVBoxLayout.addWidget(self.SigmaShotLine)
         self.SettingsDict[key] = self.SigmaShotLine.value
-        self.SigmaShotLine.changed.connect(self.OnSettingsLineChanged)
+        self.SigmaShotLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Sigma_overlapped'
         default = 1.0
@@ -77,10 +77,10 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         )
         self.QVBoxLayout.addWidget(self.SigmaOverlappedLine)
         self.SettingsDict[key] = self.SigmaOverlappedLine.value
-        self.SigmaOverlappedLine.changed.connect(self.OnSettingsLineChanged)
+        self.SigmaOverlappedLine.changed.connect(self.on_settings_line_changed)
 
-    def OnSettingsLineChanged(self):
-        super().OnSettingsLineChanged()
+    def on_settings_line_changed(self):
+        super().on_settings_line_changed()
         self.SettingsDict['Scale'] = self.ScaleSettingLine.value
         self.SettingsDict['Sigma_before'] = self.SigmaBeforeLine.value
         self.SettingsDict['Sigma_shot'] = self.SigmaShotLine.value

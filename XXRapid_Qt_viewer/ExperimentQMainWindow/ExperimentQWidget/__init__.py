@@ -99,12 +99,22 @@ class ExperimentQWidget(QTabWidget):
             self.SettingsDict['TOF'] = self.XXRapidTOFQTabWidget.SettingsDict
         except Exception as ex:
             print(f'XXRapidTOFQTabWidget {ex}')
+        key = 'Comsol'
+        try:
+            settings = settings_dict[key]
+        except:
+            settings = dict()
         try:
             comsol_simulation_filename = self.get_comsol_simulation_filename()
-            self.ComsolSimulation = ComsolSimulationQTabWidget(self, comsol_simulation_filename)
-            self.addTab(self.ComsolSimulation, 'Comsol')
+            self.ComsolSimulation = ComsolSimulationQTabWidget(self, comsol_simulation_filename, settings)
+            self.SettingsDict[key] = self.ComsolSimulation.SettingsDict
+            self.ComsolSimulation.changed.connect(self.on_comsol_simulation)
+            self.addTab(self.ComsolSimulation, key)
         except Exception as ex:
             print(ex)
+
+    def on_comsol_simulation(self):
+        self.SettingsDict['Comsol'] = self.ComsolSimulation.SettingsDict
 
     def get_comsol_simulation_filename(self):
         comsol_files_list = [name for name in self.folder_list if

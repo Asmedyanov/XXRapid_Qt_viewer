@@ -14,7 +14,7 @@ class SettingsQWidget(SettingsBoxQWidget):
             step=1
         )
         self.QVBoxLayout.addWidget(self.ScaleSettingLine)
-        self.ScaleSettingLine.changed.connect(self.OnSettingsLineChanged)
+        self.ScaleSettingLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Foil_width'
         default = self.test_key(key, 50)
@@ -26,7 +26,7 @@ class SettingsQWidget(SettingsBoxQWidget):
             step=1
         )
         self.QVBoxLayout.addWidget(self.WidthSettingLine)
-        self.WidthSettingLine.changed.connect(self.OnSettingsLineChanged)
+        self.WidthSettingLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Foil_length'
         default = self.test_key(key, 40)
@@ -38,7 +38,7 @@ class SettingsQWidget(SettingsBoxQWidget):
             step=1
         )
         self.QVBoxLayout.addWidget(self.LengthSettingLine)
-        self.LengthSettingLine.changed.connect(self.OnSettingsLineChanged)
+        self.LengthSettingLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Foil_waist'
         default = self.test_key(key, 3.0)
@@ -51,12 +51,11 @@ class SettingsQWidget(SettingsBoxQWidget):
             step=1
         )
         self.QVBoxLayout.addWidget(self.WaistSettingLine)
-        self.WaistSettingLine.changed.connect(self.OnSettingsLineChanged)
+        self.WaistSettingLine.changed.connect(self.on_settings_line_changed)
 
-    def OnSettingsLineChanged(self):
-        super().OnSettingsLineChanged()
+    def on_settings_line_changed(self):
         self.SettingsDict['Scale'] = self.ScaleSettingLine.value
         self.SettingsDict['Foil_width'] = self.WidthSettingLine.value
         self.SettingsDict['Foil_length'] = self.LengthSettingLine.value
         self.SettingsDict['Foil_waist'] = self.WaistSettingLine.value
-        self.changed.emit()
+        super().on_settings_line_changed()

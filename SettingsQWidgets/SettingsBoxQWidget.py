@@ -1,4 +1,4 @@
-from SettingsQWidgets.SettingsLineQWidget import *
+from .SettingsLineQWidget import *
 from PyQt5.QtWidgets import QVBoxLayout
 
 
@@ -14,9 +14,9 @@ class SettingsBoxQWidget(QWidget):
         self.setLayout(self.QVBoxLayout)
         key = 'User_comment'
         default = self.test_key(key, key)
-        self.User_comment = SettingsLineQWidget(name='User_comment', default=default)
-        self.SettingsDict['User_comment'] = self.User_comment.value
-        self.User_comment.changed.connect(self.OnSettingsLineChanged)
+        self.User_comment = SettingsLineQWidget(name=key, default=default)
+        self.SettingsDict[key] = self.User_comment.value
+        self.User_comment.changed.connect(self.on_settings_line_changed)
         self.QVBoxLayout.addWidget(self.User_comment)
 
     def test_key(self, key_line, default_line='default'):
@@ -30,6 +30,6 @@ class SettingsBoxQWidget(QWidget):
                 return int(default)
         return default
 
-    def OnSettingsLineChanged(self):
+    def on_settings_line_changed(self):
         self.SettingsDict['User_comment'] = self.User_comment.value
         self.changed.emit()
