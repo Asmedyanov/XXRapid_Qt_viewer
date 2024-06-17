@@ -1,6 +1,7 @@
 import pandas as pd
 from PyQt5.QtWidgets import QTabWidget
 from .CAIExplosionCurrentQTabWidget import *
+from .ExplosionCurrentDensityQWidget import *
 
 
 class CAIQTabWidget(QTabWidget):
@@ -14,6 +15,12 @@ class CAIQTabWidget(QTabWidget):
         try:
             self.CAIExplosionCurrentQTabWidget = CAIExplosionCurrentQTabWidget(self)
             self.addTab(self.CAIExplosionCurrentQTabWidget, 'Explosion_current')
+        except Exception as ex:
+            print(ex)
+        try:
+            self.ExplosionCurrentDensityQWidget = ExplosionCurrentDensityQWidget(self)
+            self.addTab(self.ExplosionCurrentDensityQWidget,
+                        'Explosion current density')
         except Exception as ex:
             print(ex)
 
