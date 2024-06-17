@@ -8,6 +8,7 @@ from .XXRapidFrontingQWidget import *
 from .TOF import *
 from PyQt5.QtWidgets import QMessageBox
 from .ComsolSimulationQTabWidget import *
+from .CAIQTabWidget import *
 
 
 class ExperimentQWidget(QTabWidget):
@@ -110,6 +111,11 @@ class ExperimentQWidget(QTabWidget):
             self.SettingsDict[key] = self.ComsolSimulation.SettingsDict
             self.ComsolSimulation.changed.connect(self.on_comsol_simulation)
             self.addTab(self.ComsolSimulation, key)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.CAIQTabWidget = CAIQTabWidget(self)
+            self.addTab(self.CAIQTabWidget, 'CAI_experimental')
         except Exception as ex:
             print(ex)
 
