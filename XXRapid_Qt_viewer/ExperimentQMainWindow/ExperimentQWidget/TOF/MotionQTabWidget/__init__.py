@@ -51,7 +51,7 @@ class XXRapidTOFMotionQWidget(QWidget):
                     expansion_data.append(x_data_0[k])
                 if len(t_data) < 4:
                     continue
-                w = np.arange(len(t_data)) + 0.5 * len(t_data)
+                w = np.arange(len(t_data)) + 0.05 * len(t_data)
                 # w = np.ones(len(t_data))
                 w = w / np.sum(w)
                 line_poly_coef, res, _, _, _ = np.polyfit(t_data, expansion_data, 1, full=True, w=w)
