@@ -37,6 +37,14 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
             self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
             self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e9, linestyle=':',
                                                                       c='r')
+    def update(self):
+        self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
+        self.max_time = self.get_max_time()
+        self.Normed_df_dict = self.get_normed_dict()
+        for mykey, mydf in self.Normed_df_dict.items():
+            df_to_plot = mydf.loc[((mydf['time'] > 0) & (mydf['time'] < self.max_time))]
+            self.Normed_plots_dict[mykey].set_data(df_to_plot['time'] * 1e9, df_to_plot['Units'])
+        self.on_settings_box()
 
     def on_settings_box(self):
         self.t_start = self.SettingsBox.StartLine.value * 1e-9

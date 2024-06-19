@@ -12,20 +12,22 @@ import os
 class WaveformPhysicalValuesQWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, physical_df_dict, settings_dict=None, timeshift=0):
-        if settings_dict is None:
-            settings_dict = dict()
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = 'Physical_values'
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.WaveformTimingQWidget = self.parent.WaveformTimingQWidget
+        self.timeshift = self.WaveformTimingQWidget.t_start
+        self.physical_df_dict = self.WaveformTimingQWidget.physical_df_dict
         super().__init__()
-        self.physical_df_dict = physical_df_dict
-        self.timeshift = timeshift
-        self.SettingsDict = settings_dict
         try:
-            self.WaveformCurrentQWidget = WaveformCurrentQWidget(physical_df_dict['Current'], timeshift)
-            self.WaveformCurrentQWidget.changed.connect(self.OnWaveformCurrentQWidget)
-            self.addTab(self.WaveformCurrentQWidget, 'Waveform_current')
+            self.WaveformCurrentQWidget = WaveformCurrentQWidget(self)
+            # self.WaveformCurrentQWidget.changed.connect(self.OnWaveformCurrentQWidget)
+            self.addTab(self.WaveformCurrentQWidget, self.WaveformCurrentQWidget.settings_key)
         except Exception as ex:
             print(f'WaveformCurrentQWidget {ex}')
-        try:
+        '''try:
             self.WaveformFullVoltageQWidget = WaveformFullVoltageQWidget(physical_df_dict['Voltage'], timeshift)
             self.WaveformFullVoltageQWidget.changed.connect(self.OnWaveformFullVoltageQWidget)
             self.addTab(self.WaveformFullVoltageQWidget, 'Full voltage')
@@ -76,7 +78,7 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
             )
             self.addTab(self.WaveformResistanceQWidget, 'Resistance')
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
         '''try:
             self.WaveformEnergyQWidget = WaveformEnergyQWidget(
@@ -184,3 +186,7 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
         except Exception as ex:
             print(f'WaveformFullVoltageQWidget.set_data {ex}')
         self.changed.emit()
+
+    def test_settings_key(self, key_line):
+        if key_line not in self.SettingsDict.keys():
+            self.SettingsDict[key_line] = dict()
