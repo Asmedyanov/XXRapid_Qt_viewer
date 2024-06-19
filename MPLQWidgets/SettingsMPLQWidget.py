@@ -28,8 +28,7 @@ class SettingsMPLQWidget(QWidget):
         self.SettingsDict = self.SettingsBox.SettingsDict
 
     def on_settings_box(self):
-        self.SettingsDict = self.SettingsBox.SettingsDict
-        self.MPLQWidget.figure.canvas.draw()
+        self.MPLQWidget.changed.emit()
         self.changed.emit()
 
     def set_data(self, *args, **kwargs):

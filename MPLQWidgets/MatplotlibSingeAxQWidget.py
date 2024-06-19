@@ -9,13 +9,13 @@ class MatplotlibSingeAxQWidget(MatplotlibQWidget):
         super().__init__()
         self.png_name = png_name
         self.ax = self.figure.add_subplot(111)
-        self.changed.connect(self.OnChanged)
+        self.changed.connect(self.on_changed)
         self.ax.grid(ls=':')
 
-    def OnChanged(self):
+    def on_changed(self):
         self.ax.relim()
         self.ax.autoscale_view()
-        self.figure.canvas.draw()
+        super().on_changed()
 
     def save_report(self, folder_name=None):
         if folder_name is None:

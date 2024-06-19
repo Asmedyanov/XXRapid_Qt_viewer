@@ -5,9 +5,10 @@ from .WaveformTimingShutterSettingsQWidget import *
 class WaveformTimingSettingsQWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, settings_dict=dict()):
+    def __init__(self, parent):
+        self.parent = parent
+        self.SettingsDict = self.parent.SettingsDict
         super().__init__()
-        self.SettingsDict = dict()
         key = 'Pulse_start'
         settings = dict()
         if key in settings_dict.keys():
@@ -27,6 +28,10 @@ class WaveformTimingSettingsQWidget(QTabWidget):
             self.addTab(self.ShutterTabDict[key], key)
             self.SettingsDict[key] = self.ShutterTabDict[key].SettingsDict
             self.ShutterTabDict[key].changed.connect(self.OnShutterTab)
+
+    def test_settings_key(self, key_line):
+        if key_line not in self.SettingsDict.keys():
+            self.SettingsDict[key_line] = dict()
 
     def OnPulseStartTimeTab(self):
         self.SettingsDict['Pulse_start'] = self.PulseStartTimeTab.SettingsDict

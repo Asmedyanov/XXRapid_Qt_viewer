@@ -1,17 +1,22 @@
-import numpy as np
-import pandas as pd
 from .WaveformTimingSettingsQWidget import *
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 
 
 class WaveformTimingQWidget(SettingsMPLQWidget):
-    def __init__(self, physical_df_dict, settings_dict=None):
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = 'Timing'
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.folder_path = self.parent.folder_path
+        self.folder_list = self.parent.folder_list
+        self.WaveformChannelsQTabWidget = self.parent.WaveformChannelsQTabWidget
+        self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=WaveformTimingSettingsQWidget(settings_dict)
+            settings_box=WaveformTimingSettingsQWidget(self)
         )
-        self.physical_df_dict = physical_df_dict
         self.max_time = self.get_max_time()
         self.Normed_df_dict = self.get_normed_dict()
         self.MPLQWidget.ax.set(
@@ -31,7 +36,8 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.ShutterLineDict = dict()
         for my_key, my_shutter in self.SettingsBox.ShutterTabDict.items():
             self.t_shutter_dict[my_key] = my_shutter.TimeSettingsQWidget.value * 1e-9
-            self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e6, linestyle=':', c='r')
+            self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e6, linestyle=':',
+                                                                      c='r')
 
     def on_settings_box(self):
         self.t_start = self.SettingsBox.PulseStartTimeTab.TimeSettingsQWidget.value * 1e-9
@@ -39,8 +45,6 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         for my_key, my_shutter in self.SettingsBox.ShutterTabDict.items():
             self.t_shutter_dict[my_key] = my_shutter.TimeSettingsQWidget.value * 1e-9
             self.ShutterLineDict[my_key].set_xdata(self.t_shutter_dict[my_key] * 1e6)
-        self.MPLQWidget.ax.relim()
-        self.MPLQWidget.ax.autoscale_view()
         super().on_settings_box()
 
     def get_max_time(self):

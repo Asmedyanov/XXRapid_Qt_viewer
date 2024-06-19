@@ -16,23 +16,18 @@ class WaveformChannelsQTabWidget(QTabWidget):
         self.WaveformOriginalQWidget = self.parent.WaveformOriginalQWidget
         self.ChannelDFDict = self.WaveformOriginalQWidget.ChannelDFDict
         self.ChannelQWidgetDict = dict()
-        self.PhysicalDFDict = dict()
+
         super().__init__()
-        for my_key in self.ChannelDFDict.keys():
+        for my_key, my_df in self.ChannelDFDict.items():
             try:
+                self.focused_key = my_key
+                self.focused_df = my_df
                 self.ChannelQWidgetDict[my_key] = ChannelQWidget(self)
+                self.ChannelQWidgetDict[my_key].changed.connect(self.on_channel)
+                self.addTab(self.ChannelQWidgetDict[my_key], self.ChannelQWidgetDict[my_key].settings_key)
             except Exception as ex:
                 print(ex)
-
-        '''for my_key, my_df in self.ChannelDFDict.items():
-            try:
-                self.ChannelQWidgetDict[my_key] = ChannelQWidget(my_df, settings)
-                self.SettingsDict[my_key] = self.ChannelQWidgetDict[my_key].SettingsDict
-                self.addTab(self.ChannelQWidgetDict[my_key], my_key)
-                self.ChannelQWidgetDict[my_key].changed.connect(self.OnChannelChanged)
-            except Exception as ex:
-                print(f'self.ChannelQWidgetDict[{my_key}] {ex}')
-            self.PhysicalDFDict = self.get_physical_dict()'''
+        self.PhysicalDFDict = self.get_physical_dict()
 
     def get_physical_dict(self):
         PhysicalDFDict = dict()
@@ -45,7 +40,7 @@ class WaveformChannelsQTabWidget(QTabWidget):
                 PhysicalDFDict['Trigger'] = my_channel.df_smoothed
         return PhysicalDFDict
 
-    def OnChannelChanged(self):
+    def on_channel(self):
         self.PhysicalDFDict = self.get_physical_dict()
         self.changed.emit()
 
@@ -77,3 +72,7 @@ class WaveformChannelsQTabWidget(QTabWidget):
                 self.SettingsDict[my_key] = my_channel_widget.SettingsDict
             except Exception as ex:
                 print(f'ChannelQWidgetDict[{my_key}].set_settings {ex}')
+
+    def test_settings_key(self, key_line):
+        if key_line not in self.SettingsDict.keys():
+            self.SettingsDict[key_line] = dict()

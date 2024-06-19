@@ -23,6 +23,13 @@ class WaveformProcessingQTabWidget(QTabWidget):
             self.addTab(self.WaveformChannelsQTabWidget, self.WaveformChannelsQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
+            return
+        try:
+            self.WaveformTimingQWidget = WaveformTimingQWidget(self)
+            self.addTab(self.WaveformTimingQWidget, self.WaveformTimingQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+            return
 
         '''key = 'Waveform_channels'
         settings = dict()
@@ -150,3 +157,7 @@ class WaveformProcessingQTabWidget(QTabWidget):
 
     def get_timing_dict(self):
         return self.SettingsDict['Waveform_timing']
+
+    def test_settings_key(self, key_line):
+        if key_line not in self.SettingsDict.keys():
+            self.SettingsDict[key_line] = dict()

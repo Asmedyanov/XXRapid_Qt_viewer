@@ -5,11 +5,10 @@ from PyQt5.QtWidgets import QVBoxLayout
 class SettingsBoxQWidget(QWidget):
     changed = pyqtSignal()
 
-    def __init__(self, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
+    def __init__(self, parent):
         super().__init__()
-        self.SettingsDict = settings_dict
+        self.parent = parent
+        self.SettingsDict = self.parent.SettingsDict
         self.QVBoxLayout = QVBoxLayout()
         self.setLayout(self.QVBoxLayout)
         key = 'User_comment'

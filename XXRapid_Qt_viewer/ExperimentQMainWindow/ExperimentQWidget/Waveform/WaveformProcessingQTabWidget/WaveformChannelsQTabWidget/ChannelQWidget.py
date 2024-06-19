@@ -4,12 +4,17 @@ from .ChannelSettingsQWidget import *
 
 
 class ChannelQWidget(SettingsMPLQWidget):
-    def __init__(self, df, settings_dict=None):
+    def __init__(self, parent):
+        self.parent = parent
+        self.focused_df = self.parent.focused_df
+        self.settings_key = self.parent.focused_key
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=ChannelSettingsQWidget(settings_dict)
+            settings_box=ChannelSettingsQWidget(self)
         )
-        self.df_original = df
+        self.df_original = self.focused_df.copy()
         self.MPLQWidget.ax.set(
             xlabel='t, s',
             ylabel='Units'
@@ -42,8 +47,6 @@ class ChannelQWidget(SettingsMPLQWidget):
             self.df_scaled['time'],
             self.df_scaled['Units']
         )
-        self.MPLQWidget.ax.relim()
-        self.MPLQWidget.ax.autoscale_view()
         super().on_settings_box()
 
     def set_data(self, df_original):
@@ -61,8 +64,7 @@ class ChannelQWidget(SettingsMPLQWidget):
             self.df_smoothed['time'],
             self.df_smoothed['Volts']
         )
-        self.ax.relim()
-        self.ax.autoscale_view()
+        self.MPLQWidget.changed.emit()
 
     def save_report(self, folder_name):
         self.MPLQWidget.figure.savefig(f'{folder_name}/{self.SettingsBox.Diagnostics}.png')

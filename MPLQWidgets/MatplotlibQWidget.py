@@ -9,10 +9,7 @@ class MatplotlibQWidget(QWidget):
     changed = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
-        try:
-            super().__init__()
-        except:
-            super().__init__()
+        super().__init__()
         self.layout = QVBoxLayout()
         self.figure = plt.figure()
         self.figure.set_layout_engine(layout='tight')
@@ -21,6 +18,10 @@ class MatplotlibQWidget(QWidget):
         self.layout.addWidget(self.canvas)
         self.setLayout(self.layout)
         self.png_name = 'MatplotlibQWidget'
+        self.changed.connect(self.on_changed)
+
+    def on_changed(self):
+        self.figure.canvas.draw()
 
     def set_data(self, *args, **kwargs):
         pass

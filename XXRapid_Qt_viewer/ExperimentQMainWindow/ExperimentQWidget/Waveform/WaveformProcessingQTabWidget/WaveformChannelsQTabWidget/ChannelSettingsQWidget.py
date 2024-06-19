@@ -2,9 +2,8 @@ from SettingsQWidgets.SettingsBoxQWidget import *
 
 
 class ChannelSettingsQWidget(SettingsBoxQWidget):
-    def __init__(self, settings_dict=None):
-        super().__init__(settings_dict)
-        default = 'Systron'  # Systron donner starting pulse generator
+    def __init__(self, parent):
+        super().__init__(parent)
         key = 'Diagnostics'
         default = self.test_key(key, 'Systron')  # Systron donner starting pulse generator
         self.DiagnosticsSettingsQWidget = SettingsLineQWidget(
@@ -19,8 +18,6 @@ class ChannelSettingsQWidget(SettingsBoxQWidget):
 
         key = 'Smoothing'
         default = self.test_key(key, 5)  # ns
-        if key in settings_dict.keys():
-            default = int(float(settings_dict[key]))
         self.SmoothingSettingsQWidget = SettingsLineQWidget(
             name=key,
             default=default,
@@ -32,8 +29,6 @@ class ChannelSettingsQWidget(SettingsBoxQWidget):
 
         key = 'Coefficient'
         default = self.test_key(key, 5)
-        if key in settings_dict.keys():
-            default = float(settings_dict[key])
         self.CoefficientSettingsQWidget = SettingsLineQWidget(
             name=key,
             default=default,
@@ -43,10 +38,8 @@ class ChannelSettingsQWidget(SettingsBoxQWidget):
         )
         self.SettingsDict[key] = self.CoefficientSettingsQWidget.value
 
-        default = 0.0
         key = 'Shift'
-        if key in settings_dict.keys():
-            default = float(settings_dict[key])
+        default = self.test_key(key, 0.0)
         self.ShiftSettingsQWidget = SettingsLineQWidget(
             name=key,
             default=default,
