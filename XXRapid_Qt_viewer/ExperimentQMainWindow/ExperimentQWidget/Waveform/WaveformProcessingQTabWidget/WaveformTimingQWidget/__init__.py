@@ -1,4 +1,5 @@
-from .WaveformTimingSettingsQWidget import *
+from .WaveformTimingSettingsQTabWidget import *
+from .Settings import *
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 
@@ -9,42 +10,40 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.settings_key = 'Timing'
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
-        self.folder_path = self.parent.folder_path
-        self.folder_list = self.parent.folder_list
         self.WaveformChannelsQTabWidget = self.parent.WaveformChannelsQTabWidget
         self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=WaveformTimingSettingsQWidget(self)
+            settings_box=Settings(self)
         )
         self.max_time = self.get_max_time()
         self.Normed_df_dict = self.get_normed_dict()
         self.MPLQWidget.ax.set(
-            xlabel='t, us',
+            xlabel='t, ns',
             ylabel='Unit',
             title='Waveform timing'
         )
         self.Normed_plots_dict = dict()
         for my_key, mydf in self.Normed_df_dict.items():
             self.Normed_plots_dict[my_key], = self.MPLQWidget.ax.plot(
-                mydf['time'].loc[mydf['time'] < self.max_time] * 1.0e6,
+                mydf['time'].loc[mydf['time'] < self.max_time] * 1.0e9,
                 mydf['Units'].loc[mydf['time'] < self.max_time], label=my_key)
         self.MPLQWidget.ax.legend()
-        self.t_start = self.SettingsBox.PulseStartTimeTab.TimeSettingsQWidget.value * 1e-9
-        self.PulseStartLine = self.MPLQWidget.ax.axvline(self.t_start * 1e6, linestyle=':', c='r')
+        self.t_start = self.SettingsBox.StartLine.value * 1e-9
+        self.PulseStartLine = self.MPLQWidget.ax.axvline(self.t_start * 1e9, linestyle=':', c='r')
         self.t_shutter_dict = dict()
         self.ShutterLineDict = dict()
-        for my_key, my_shutter in self.SettingsBox.ShutterTabDict.items():
-            self.t_shutter_dict[my_key] = my_shutter.TimeSettingsQWidget.value * 1e-9
-            self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e6, linestyle=':',
+        for my_key, my_shutter in self.SettingsBox.shutters_line_dict.items():
+            self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
+            self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e9, linestyle=':',
                                                                       c='r')
 
     def on_settings_box(self):
-        self.t_start = self.SettingsBox.PulseStartTimeTab.TimeSettingsQWidget.value * 1e-9
-        self.PulseStartLine.set_xdata(self.t_start * 1e6)
-        for my_key, my_shutter in self.SettingsBox.ShutterTabDict.items():
-            self.t_shutter_dict[my_key] = my_shutter.TimeSettingsQWidget.value * 1e-9
-            self.ShutterLineDict[my_key].set_xdata(self.t_shutter_dict[my_key] * 1e6)
+        self.t_start = self.SettingsBox.StartLine.value * 1e-9
+        self.PulseStartLine.set_xdata(self.t_start * 1e9)
+        for my_key, my_shutter in self.SettingsBox.shutters_line_dict.items():
+            self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
+            self.ShutterLineDict[my_key].set_xdata(self.t_shutter_dict[my_key] * 1e9)
         super().on_settings_box()
 
     def get_max_time(self):
@@ -92,7 +91,7 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.Normed_df_dict = self.get_normed_dict()
         for mykey, mydf in self.Normed_df_dict.items():
             df_to_plot = mydf.loc[((mydf['time'] > 0) & (mydf['time'] < self.max_time))]
-            self.Normed_plots_dict[mykey].set_data(df_to_plot['time'] * 1e6, df_to_plot['Units'])
+            self.Normed_plots_dict[mykey].set_data(df_to_plot['time'] * 1e9, df_to_plot['Units'])
         self.MPLQWidget.ax.relim()
         self.MPLQWidget.ax.autoscale_view()
         self.on_settings_box()

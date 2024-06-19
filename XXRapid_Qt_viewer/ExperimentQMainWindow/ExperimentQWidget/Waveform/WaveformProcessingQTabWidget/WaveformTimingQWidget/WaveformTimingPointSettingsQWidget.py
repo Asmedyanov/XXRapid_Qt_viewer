@@ -2,8 +2,9 @@ from SettingsQWidgets.SettingsBoxQWidget import *
 
 
 class WaveformTimingPointSettingsQWidget(SettingsBoxQWidget):
-    def __init__(self, settings_dict=None):
-        super().__init__(settings_dict)
+    def __init__(self, parent):
+        self.parent = parent
+        super().__init__(self.parent)
         key = 'Time'
         default = 0
         if key in settings_dict.keys():

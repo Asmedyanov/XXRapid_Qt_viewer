@@ -735,6 +735,19 @@
   <Waveform>
     <Waveform_original>None</Waveform_original>
     <Waveform_processing>
+      <Timing>
+        <N_shutters>8</N_shutters>
+        <Shutter_1>882</Shutter_1>
+        <Shutter_2>987</Shutter_2>
+        <Shutter_3>1086</Shutter_3>
+        <Shutter_4>1186</Shutter_4>
+        <Shutter_5>1296</Shutter_5>
+        <Shutter_6>1398</Shutter_6>
+        <Shutter_7>1498</Shutter_7>
+        <Shutter_8>1599</Shutter_8>
+        <Start>448</Start>
+        <User_comment>User_comment</User_comment>
+      </Timing>
       <Waveform_channels>
         <Channel_1>
           <Coefficient>-1</Coefficient>

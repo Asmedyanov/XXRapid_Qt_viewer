@@ -1,15 +1,22 @@
 from PyQt5.QtWidgets import QTabWidget
 from .WaveformTimingShutterSettingsQWidget import *
+from .WaveformTimingStartSettingsQWidget import *
 
 
-class WaveformTimingSettingsQWidget(QTabWidget):
+class WaveformTimingSettingsQTabWidget(QTabWidget):
     changed = pyqtSignal()
 
     def __init__(self, parent):
         self.parent = parent
         self.SettingsDict = self.parent.SettingsDict
         super().__init__()
-        key = 'Pulse_start'
+        try:
+            self.PulseStartTimeTab = WaveformTimingStartSettingsQWidget(self)
+            self.addTab(self.PulseStartTimeTab, self.PulseStartTimeTab.settings_key)
+        except Exception as ex:
+            print(ex)
+
+        '''key = 'Pulse_start'
         settings = dict()
         if key in settings_dict.keys():
             settings = settings_dict[key]
@@ -27,7 +34,7 @@ class WaveformTimingSettingsQWidget(QTabWidget):
             self.ShutterTabDict[key] = WaveformTimingShutterSettingsQWidget(settings)
             self.addTab(self.ShutterTabDict[key], key)
             self.SettingsDict[key] = self.ShutterTabDict[key].SettingsDict
-            self.ShutterTabDict[key].changed.connect(self.OnShutterTab)
+            self.ShutterTabDict[key].changed.connect(self.OnShutterTab)'''
 
     def test_settings_key(self, key_line):
         if key_line not in self.SettingsDict.keys():
