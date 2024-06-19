@@ -6,18 +6,25 @@ import os
 class WaveformChannelsQTabWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, channel_df_dict, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
-        super().__init__()
-        self.setTabPosition(QTabWidget.TabPosition.West)
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = 'Waveform_channels'
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.folder_path = self.parent.folder_path
+        self.folder_list = self.parent.folder_list
+        self.WaveformOriginalQWidget = self.parent.WaveformOriginalQWidget
+        self.ChannelDFDict = self.WaveformOriginalQWidget.ChannelDFDict
         self.ChannelQWidgetDict = dict()
         self.PhysicalDFDict = dict()
-        self.SettingsDict = settings_dict
-        for my_key, my_df in channel_df_dict.items():
-            settings = dict()
-            if my_key in settings_dict.keys():
-                settings = settings_dict[my_key]
+        super().__init__()
+        for my_key in self.ChannelDFDict.keys():
+            try:
+                self.ChannelQWidgetDict[my_key] = ChannelQWidget(self)
+            except Exception as ex:
+                print(ex)
+
+        '''for my_key, my_df in self.ChannelDFDict.items():
             try:
                 self.ChannelQWidgetDict[my_key] = ChannelQWidget(my_df, settings)
                 self.SettingsDict[my_key] = self.ChannelQWidgetDict[my_key].SettingsDict
@@ -25,7 +32,7 @@ class WaveformChannelsQTabWidget(QTabWidget):
                 self.ChannelQWidgetDict[my_key].changed.connect(self.OnChannelChanged)
             except Exception as ex:
                 print(f'self.ChannelQWidgetDict[{my_key}] {ex}')
-            self.PhysicalDFDict = self.get_physical_dict()
+            self.PhysicalDFDict = self.get_physical_dict()'''
 
     def get_physical_dict(self):
         PhysicalDFDict = dict()

@@ -1,71 +1,29 @@
-from MPLQWidgets.MatplotlibSingeAxQWidget import *
+from .WaveformOriginalQWidget import *
+from .WaveformProcessingQTabWidget import *
 
 
-class WaveformOriginalQWidget(MatplotlibSingeAxQWidget):
-    def __init__(self, filename='Default_shot/shot57.csv'):
+class WaveformQTabWidget(QTabWidget):
+    changed = pyqtSignal()
+
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = 'Waveform'
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.folder_path = self.parent.folder_path
+        self.folder_list = self.parent.folder_list
         super().__init__()
-        self.filename = filename
-        self.ax.set(
-            xlabel='t, sec',
-            ylabel='u, V',
-            title='Waveform original'
-        )
-        self.waveform_plots_dict = dict()
-        df = pd.read_csv(self.filename)
-        self.NChannels = 0
-        self.ChannelDFDict = dict()
-        self.get_channel_dict(df)
-        for mykey, myChannelDF in self.ChannelDFDict.items():
-            self.waveform_plots_dict[mykey], = self.ax.plot(
-                myChannelDF['time'],
-                myChannelDF['Volts'],
-                label=mykey
-            )
-        self.ax.legend()
-        self.ax.grid(ls=':')
+        try:
+            self.WaveformOriginalQWidget = WaveformOriginalQWidget(self)
+            self.addTab(self.WaveformOriginalQWidget, self.WaveformOriginalQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformProcessingQTabWidget = WaveformProcessingQTabWidget(self)
+            self.addTab(self.WaveformProcessingQTabWidget, self.WaveformProcessingQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
 
-    def get_channel_dict(self, df):
-        for key in df.columns:
-            if key.startswith('s'):
-                self.ChannelDFDict[f'Channel_{self.NChannels + 1}'] = pd.DataFrame({'time': df[key]})
-            if key.startswith('Volts'):
-                self.ChannelDFDict[f'Channel_{self.NChannels + 1}']['Volts'] = df[key]
-                self.NChannels += 1
-
-    def save_report(self, folder_name='Default_shot/QtTraceFolder'):
-        if 'Waveform_original' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Waveform_original')
-        self.figure.savefig(f'{folder_name}/Waveform_original/Waveform_original.png')
-
-    def set_data(self, df):
-        self.NChannels = 0
-        self.ChannelDFDict = dict()
-        for key in df.columns:
-            if key.startswith('s'):
-                self.ChannelDFDict[f'Channel_{self.NChannels + 1}'] = pd.DataFrame({'time': df[key]})
-            if key.startswith('Volts'):
-                self.ChannelDFDict[f'Channel_{self.NChannels + 1}']['Volts'] = df[key]
-                self.NChannels += 1
-
-        for mykey, myChannelDF in self.ChannelDFDict.items():
-            try:
-                self.waveform_plots_dict[mykey].set_data(
-                    myChannelDF['time'],
-                    myChannelDF['Volts']
-                )
-            except:
-                self.waveform_plots_dict[mykey], = self.ax.plot(
-                    myChannelDF['time'],
-                    myChannelDF['Volts'],
-                    label=mykey
-                )
-                self.ax.legend()
-        self.ax.relim()
-        self.ax.autoscale_view()
-        self.figure.canvas.draw()
-
-    def __str__(self):
-        return f'{self.__class__}'
-
-    def getSettingsDict(self):
-        print(self.objectName())
+    def test_settings_key(self, key_line):
+        if key_line not in self.SettingsDict.keys():
+            self.SettingsDict[key_line] = dict()

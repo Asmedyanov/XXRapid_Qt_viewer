@@ -1,3 +1,5 @@
+import os
+
 from .Waveform import *
 from .Waveform.WaveformProcessingQTabWidget import *
 from dict2xml import dict2xml
@@ -9,30 +11,29 @@ from .TOF import *
 from PyQt5.QtWidgets import QMessageBox
 from .ComsolSimulationQTabWidget import *
 from .CAIQTabWidget import *
+import shutil
 
 
 class ExperimentQWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, parent, folder_name='Default_shot', default=False, ):
+    def __init__(self, parent):
+        self.parent = parent
         super().__init__()
-        self.folder_name = folder_name
-        self.folder_list = os.listdir(folder_name)
+        self.folder_path = self.parent.folder_path
+        self.folder_list = os.listdir(self.folder_path)
         self.parent = parent
         self.statusBar = self.parent.statusBar
-        if 'QtTraceFolder' not in self.folder_list:
-            os.makedirs(f'{folder_name}/QtTraceFolder')
-        if default:
-            settings_dict = self.OpenSettings()
-        else:
-            button_reply = QMessageBox.question(self, 'Settings message', "Do you want to use default settings?",
-                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            if button_reply == QMessageBox.Yes:
-                settings_dict = self.OpenSettings()
-            else:
-                settings_dict = self.OpenSettings('SettingsFile.xml')
-        self.SettingsDict = settings_dict
-        waveform_file_name = self.getWaveformFileName()
+        self.check_folder()
+        self.SettingsDict = self.open_settings_xml()
+        try:
+            self.WaveformQTabWidget = WaveformQTabWidget(self)
+            self.addTab(self.WaveformQTabWidget, self.WaveformQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+            return
+
+        '''waveform_file_name = self.getWaveformFileName()
         self.WaveformOriginalQWidget = WaveformOriginalQWidget(waveform_file_name)
         self.addTab(self.WaveformOriginalQWidget, 'Waveform Original')
 
@@ -117,7 +118,18 @@ class ExperimentQWidget(QTabWidget):
             self.CAIQTabWidget = CAIQTabWidget(self)
             self.addTab(self.CAIQTabWidget, 'CAI_experimental')
         except Exception as ex:
-            print(ex)
+            print(ex)'''
+
+    def test_settings_key(self, key_line):
+        if key_line not in self.SettingsDict.keys():
+            self.SettingsDict[key_line] = dict()
+
+    def check_folder(self):
+        if 'QtTraceFolder' not in self.folder_list:
+            os.makedirs(f'{self.folder_path}/QtTraceFolder')
+        if 'SettingsFile.xml' not in os.listdir(f'{self.folder_path}/QtTraceFolder'):
+            shutil.copy('Default_shot/QtTraceFolder/SettingsFile.xml',
+                        f'{self.folder_path}/QtTraceFolder')
 
     def on_comsol_simulation(self):
         self.SettingsDict['Comsol'] = self.ComsolSimulation.SettingsDict
@@ -126,7 +138,7 @@ class ExperimentQWidget(QTabWidget):
         comsol_files_list = [name for name in self.folder_list if
                              name.startswith('Jmax') and name.endswith('csv')]
         # print(f'Folder contains waveform files\n{waveform_files_list}\nI took the last one')
-        return f'{self.folder_name}/{comsol_files_list[-1]}'
+        return f'{self.folder_path}/{comsol_files_list[-1]}'
 
     def OnXXRapidTOFQTabWidget(self):
         self.SettingsDict['TOF'] = self.XXRapidTOFQTabWidget.SettingsDict
@@ -163,13 +175,13 @@ class ExperimentQWidget(QTabWidget):
     def get_before_name(self):
         before_files_list = [name for name in self.folder_list if
                              name.startswith('before') and name.endswith('rtv')]
-        return f'{self.folder_name}/{before_files_list[-1]}'
+        return f'{self.folder_path}/{before_files_list[-1]}'
 
     def get_shot_name(self):
         shot_files_list = [name for name in self.folder_list if
                            name.startswith('shot') and name.endswith('rtv')]
         # print(f'Folder contains shot files\n{shot_files_list}\nI took the last one')
-        return f'{self.folder_name}/{shot_files_list[-1]}'
+        return f'{self.folder_path}/{shot_files_list[-1]}'
 
     def OnWaveformProcessingWidgetChanged(self):
         self.SettingsDict[
@@ -177,54 +189,54 @@ class ExperimentQWidget(QTabWidget):
         self.changed.emit()
 
     def SaveSettings(self, filename='SettingsFile.xml'):
-        SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'w')
+        SettingsFile = open(f'{self.folder_path}/QtTraceFolder/{filename}', 'w')
         SettingsFile.write(dict2xml({'Experiment_settings': self.SettingsDict}))
         SettingsFile.close()
 
     def SaveTrace(self, ):
         try:
-            self.WaveformOriginalQWidget.save_report(f'{self.folder_name}/QtTraceFolder')
+            self.WaveformOriginalQWidget.save_report(f'{self.folder_path}/QtTraceFolder')
         except Exception as ex:
             print(f'WaveformOriginalQWidget.Save_Report {ex}')
         try:
-            self.WaveformProcessingWidget.save_report(f'{self.folder_name}/QtTraceFolder')
+            self.WaveformProcessingWidget.save_report(f'{self.folder_path}/QtTraceFolder')
         except Exception as ex:
             print(f'WaveformProcessingWidget.Save_Report {ex}')
         try:
-            self.XXRapidOriginalQWidget.save_report(f'{self.folder_name}/QtTraceFolder')
+            self.XXRapidOriginalQWidget.save_report(f'{self.folder_path}/QtTraceFolder')
         except Exception as ex:
             print(f'XXRapidOriginalQWidget.Save_Report {ex}')
         try:
-            self.XXRapidOverlappedQWidget.save_report(f'{self.folder_name}/QtTraceFolder')
+            self.XXRapidOverlappedQWidget.save_report(f'{self.folder_path}/QtTraceFolder')
         except Exception as ex:
             print(f'XXRapidOverlappedQWidget.Save_Report {ex}')
         try:
-            self.XXRapidTOFQTabWidget.save_report(f'{self.folder_name}/QtTraceFolder')
+            self.XXRapidTOFQTabWidget.save_report(f'{self.folder_path}/QtTraceFolder')
         except Exception as ex:
             print(f'XXRapidTOFQTabWidget.Save_Report {ex}')
 
-    def OpenSettings(self, filename='Default_shot/QtTraceFolder/SettingsFile.xml'):
+    def open_settings_xml(self):
+        settings = dict()
         try:
-            SettingsFile = open(f'{self.folder_name}/QtTraceFolder/{filename}', 'r')
+            SettingsFile = open(f'{self.folder_path}/QtTraceFolder/SettingsFile.xml', 'r')
         except Exception as ex:
             print(f'OpenSettings {ex}')
             SettingsFile = open('Default_shot/QtTraceFolder/SettingsFile.xml', 'r')
             print('Default settings')
         try:
-            SettingsDict = xmltodict.parse(SettingsFile.read())['Experiment_settings']
-            return SettingsDict
+            settings = xmltodict.parse(SettingsFile.read())['Experiment_settings']
         except Exception as ex:
             print(f'xmltodict {ex}')
-            return dict()
+        return settings
 
     def getWaveformFileName(self):
         waveform_files_list = [name for name in self.folder_list if
                                name.startswith('shot') and name.endswith('csv')]
         # print(f'Folder contains waveform files\n{waveform_files_list}\nI took the last one')
-        return f'{self.folder_name}/{waveform_files_list[-1]}'
+        return f'{self.folder_path}/{waveform_files_list[-1]}'
 
     def set_default_settings(self):
-        settings_dict = self.OpenSettings()
+        settings_dict = self.open_settings_xml()
         self.SettingsDict = settings_dict
 
         try:

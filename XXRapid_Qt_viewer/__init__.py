@@ -3,7 +3,8 @@ from XXRapid_Qt_viewer.ExperimentQMainWindow import *
 
 class MainWindow(ExperimentQMainWindow):
     def __init__(self):
-        super().__init__(default=True)
+        self.folder_path = 'Default_shot'
+        super().__init__()
         self.setWindowTitle("XXRapid_Qt_viewer (Default shot)")
         self.ExperimentQWidgetDict = dict()
 
@@ -14,10 +15,9 @@ class MainWindow(ExperimentQMainWindow):
         self.file_menu.addAction(open_folder_action)
 
     def closeEvent(self, event):
-        super().closeEvent(event)
         for experiment in self.ExperimentQWidgetDict.values():
             experiment.close()
-        pass
+        super().closeEvent(event)
 
     def open_folder_dialog(self):
         folder_path = QFileDialog.getExistingDirectory(self, "Select Folder",
@@ -28,5 +28,9 @@ class MainWindow(ExperimentQMainWindow):
             return
 
         key = folder_path.split('/')[-1]
-        self.ExperimentQWidgetDict[key] = ExperimentQMainWindow(folder_path)
-        self.ExperimentQWidgetDict[key].show()
+        self.folder_path = folder_path
+        try:
+            self.ExperimentQWidgetDict[key] = ExperimentQMainWindow(self)
+            self.ExperimentQWidgetDict[key].show()
+        except Exception as ex:
+            print(ex)

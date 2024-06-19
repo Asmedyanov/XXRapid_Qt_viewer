@@ -4,16 +4,18 @@ from PyQt5.QtGui import QKeySequence
 
 
 class ExperimentQMainWindow(QMainWindow):
-    def __init__(self, folder_path='Default_shot', default=False):
+    def __init__(self, parent=None):
+        self.parent = parent
         super().__init__()
-        self.folder_path = folder_path
-        self.title = folder_path.split('/')[-1]
+        if self.parent is not None:
+            self.folder_path = self.parent.folder_path
+        self.title = self.folder_path.split('/')[-1]
         self.setWindowTitle(f'Experiment {self.title}')
         # Create a menu bar
         self.statusBar = self.statusBar()
         self.menu_bar = self.menuBar()
 
-        self.ExperimentQWidget = ExperimentQWidget(self, folder_path, default)
+        self.ExperimentQWidget = ExperimentQWidget(self)
         self.setCentralWidget(self.ExperimentQWidget)
         self.file_menu = self.menu_bar.addMenu("File")
 

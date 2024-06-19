@@ -8,13 +8,23 @@ import os
 class WaveformProcessingQTabWidget(QTabWidget):
     changed = pyqtSignal()
 
-    def __init__(self, channel_df_dict, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = 'Waveform_processing'
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.folder_path = self.parent.folder_path
+        self.folder_list = self.parent.folder_list
+        self.WaveformOriginalQWidget = self.parent.WaveformOriginalQWidget
+        self.ChannelDFDict = self.WaveformOriginalQWidget.ChannelDFDict
         super().__init__()
-        self.ChannelDFDict = channel_df_dict
-        self.SettingsDict = settings_dict
-        key = 'Waveform_channels'
+        try:
+            self.WaveformChannelsQTabWidget = WaveformChannelsQTabWidget(self)
+            self.addTab(self.WaveformChannelsQTabWidget, self.WaveformChannelsQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+
+        '''key = 'Waveform_channels'
         settings = dict()
         if key in settings_dict.keys():
             settings = settings_dict[key]
@@ -49,7 +59,7 @@ class WaveformProcessingQTabWidget(QTabWidget):
             self.SettingsDict[key] = self.WaveformPhysicalValuesQWidget.SettingsDict
             self.addTab(self.WaveformPhysicalValuesQWidget, key)
         except Exception as ex:
-            print(f'WaveformPhysicalValuesQWidget {ex}')
+            print(f'WaveformPhysicalValuesQWidget {ex}')'''
 
     def OnWaveformPhysicalValuesQWidget(self):
         self.SettingsDict['Waveform_physical'] = self.WaveformPhysicalValuesQWidget.SettingsDict
