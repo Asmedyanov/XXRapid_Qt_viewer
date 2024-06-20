@@ -1,23 +1,14 @@
-from PyQt5.QtWidgets import QTabWidget
+from SettingsQWidgets.ChildQTabWidget import *
 from .ChannelQWidget import *
 import os
 
 
-class WaveformChannelsQTabWidget(QTabWidget):
-    changed = pyqtSignal()
-
+class WaveformChannelsQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
-        self.parent = parent
-        self.settings_key = 'Waveform_channels'
-        self.parent.test_settings_key(self.settings_key)
-        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
-        self.folder_path = self.parent.folder_path
-        self.folder_list = self.parent.folder_list
+        super().__init__(parent, 'Waveform_channels')
         self.WaveformOriginalQWidget = self.parent.WaveformOriginalQWidget
         self.ChannelDFDict = self.WaveformOriginalQWidget.ChannelDFDict
         self.ChannelQWidgetDict = dict()
-
-        super().__init__()
         for my_key, my_df in self.ChannelDFDict.items():
             try:
                 self.focused_key = my_key
@@ -72,7 +63,3 @@ class WaveformChannelsQTabWidget(QTabWidget):
                 self.SettingsDict[my_key] = my_channel_widget.SettingsDict
             except Exception as ex:
                 print(f'ChannelQWidgetDict[{my_key}].set_settings {ex}')
-
-    def test_settings_key(self, key_line):
-        if key_line not in self.SettingsDict.keys():
-            self.SettingsDict[key_line] = dict()

@@ -22,7 +22,6 @@ class ExperimentQWidget(QTabWidget):
         super().__init__()
         self.folder_path = self.parent.folder_path
         self.folder_list = os.listdir(self.folder_path)
-        self.parent = parent
         self.statusBar = self.parent.statusBar
         self.check_folder()
         self.SettingsDict = self.open_settings_xml()

@@ -23,10 +23,16 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
         super().__init__()
         try:
             self.WaveformCurrentQWidget = WaveformCurrentQWidget(self)
-            # self.WaveformCurrentQWidget.changed.connect(self.OnWaveformCurrentQWidget)
             self.addTab(self.WaveformCurrentQWidget, self.WaveformCurrentQWidget.settings_key)
+            self.WaveformCurrentQWidget.changed.connect(self.on_waveform_current_changed)
         except Exception as ex:
             print(f'WaveformCurrentQWidget {ex}')
+        try:
+            self.WaveformFullVoltageQWidget = WaveformFullVoltageQWidget(self)
+            self.addTab(self.WaveformFullVoltageQWidget, self.WaveformFullVoltageQWidget.settings_key)
+            self.WaveformFullVoltageQWidget.changed.connect(self.on_waveform_full_voltage_changed)
+        except Exception as ex:
+            print(ex)
         '''try:
             self.WaveformFullVoltageQWidget = WaveformFullVoltageQWidget(physical_df_dict['Voltage'], timeshift)
             self.WaveformFullVoltageQWidget.changed.connect(self.OnWaveformFullVoltageQWidget)
@@ -88,6 +94,28 @@ class WaveformPhysicalValuesQWidget(QTabWidget):
             self.addTab(self.WaveformEnergyQWidget, 'Energy')
         except Exception as ex:
             print(ex)'''
+
+    def update(self):
+        self.timeshift = self.WaveformTimingQWidget.t_start
+        self.physical_df_dict = self.WaveformTimingQWidget.physical_df_dict
+        try:
+            self.WaveformCurrentQWidget.update()
+        except Exception as ex:
+            print(ex)
+            try:
+                self.WaveformFullVoltageQWidget.update()
+            except Exception as ex:
+                print(ex)
+        self.changed.emit()
+
+    def on_waveform_current_changed(self):
+        try:
+            self.WaveformFullVoltageQWidget.update()
+        except Exception as ex:
+            print(ex)
+
+    def on_waveform_full_voltage_changed(self):
+        pass
 
     def OnWaveformUresQWidget(self):
         try:

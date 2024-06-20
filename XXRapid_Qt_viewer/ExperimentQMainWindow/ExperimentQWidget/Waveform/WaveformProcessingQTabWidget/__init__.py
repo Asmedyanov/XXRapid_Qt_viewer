@@ -1,23 +1,18 @@
 from .WaveformTimingQWidget import *
 from .WaveformChannelsQTabWidget import *
 from .WaveformPhysicalValuesQWidget import *
+from SettingsQWidgets.ChildQTabWidget import *
 
 import os
 
 
-class WaveformProcessingQTabWidget(QTabWidget):
-    changed = pyqtSignal()
-
+class WaveformProcessingQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
-        self.parent = parent
-        self.settings_key = 'Waveform_processing'
-        self.parent.test_settings_key(self.settings_key)
-        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        super().__init__(parent, 'Waveform_processing')
         self.folder_path = self.parent.folder_path
         self.folder_list = self.parent.folder_list
         self.WaveformOriginalQWidget = self.parent.WaveformOriginalQWidget
         self.ChannelDFDict = self.WaveformOriginalQWidget.ChannelDFDict
-        super().__init__()
         try:
             self.WaveformChannelsQTabWidget = WaveformChannelsQTabWidget(self)
             self.addTab(self.WaveformChannelsQTabWidget, self.WaveformChannelsQTabWidget.settings_key)
@@ -159,23 +154,5 @@ class WaveformProcessingQTabWidget(QTabWidget):
         except Exception as ex:
             print(f'WaveformPhysicalValuesQWidget.Save_Raport {ex}')
 
-    def set_settings(self, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
-        self.SettingsDict = settings_dict
-        try:
-            settings = settings_dict['Waveform_channels']
-        except:
-            settings = dict()
-        try:
-            self.WaveformChannelsTab.set_settings(settings)
-            self.SettingsDict['Waveform_channels'] = self.WaveformChannelsTab.SettingsDict
-        except Exception as ex:
-            print(f'WaveformChannelsTab.set_settings {ex}')
-
     def get_timing_dict(self):
         return self.SettingsDict['Waveform_timing']
-
-    def test_settings_key(self, key_line):
-        if key_line not in self.SettingsDict.keys():
-            self.SettingsDict[key_line] = dict()

@@ -736,6 +736,8 @@
     <Waveform_original>None</Waveform_original>
     <Waveform_processing>
       <Physical_values>
+        <Current></Current>
+        <Full_voltage></Full_voltage>
         <Physical_values>None</Physical_values>
       </Physical_values>
       <Timing>
@@ -748,7 +750,7 @@
         <Shutter_6>1398</Shutter_6>
         <Shutter_7>1498</Shutter_7>
         <Shutter_8>1599</Shutter_8>
-        <Start>448</Start>
+        <Start>435.0</Start>
         <User_comment>User_comment</User_comment>
       </Timing>
       <Waveform_channels>
@@ -756,7 +758,7 @@
           <Coefficient>-1</Coefficient>
           <Diagnostics>Rogowski_coil</Diagnostics>
           <Shift>0.0</Shift>
-          <Smoothing>100.0</Smoothing>
+          <Smoothing>100</Smoothing>
           <User_comment>User_comment</User_comment>
         </Channel_1>
         <Channel_2>
@@ -777,7 +779,7 @@
           <Coefficient>5</Coefficient>
           <Diagnostics>Tektronix_VD</Diagnostics>
           <Shift>0.0</Shift>
-          <Smoothing>50.0</Smoothing>
+          <Smoothing>50</Smoothing>
           <User_comment>User_comment</User_comment>
         </Channel_4>
       </Waveform_channels>

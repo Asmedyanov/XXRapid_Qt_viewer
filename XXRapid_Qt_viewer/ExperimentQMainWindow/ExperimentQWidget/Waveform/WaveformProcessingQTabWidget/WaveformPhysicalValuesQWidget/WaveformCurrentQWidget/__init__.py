@@ -4,7 +4,7 @@ from MPLQWidgets.MatplotlibSingeAxQWidget import *
 class WaveformCurrentQWidget(MatplotlibSingeAxQWidget):
     def __init__(self, parent):
         self.parent = parent
-        self.settings_key = 'Physical_values'
+        self.settings_key = 'Current'
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.timeshift = self.parent.timeshift
@@ -19,6 +19,15 @@ class WaveformCurrentQWidget(MatplotlibSingeAxQWidget):
         )
         self.current_df_to_plot = self.CurrentDF.loc[self.CurrentDF['time'] > 0]
         self.CurrentLine, = self.ax.plot(self.current_df_to_plot['time'] * 1e6, self.current_df_to_plot['Units'] * 1e-3)
+
+    def update(self):
+        self.timeshift = self.parent.timeshift
+        self.physical_df_dict = self.parent.physical_df_dict
+        self.CurrentDF = self.physical_df_dict['Current'].copy()
+        self.CurrentDF['time'] -= self.timeshift
+        self.current_df_to_plot = self.CurrentDF.loc[self.CurrentDF['time'] > 0]
+        self.CurrentLine.set_data(self.current_df_to_plot['time'] * 1e6, self.current_df_to_plot['Units'] * 1e-3)
+        self.changed.emit()
 
     def set_data(self, current_df, time_shift):
         self.CurrentDF = current_df.copy()
