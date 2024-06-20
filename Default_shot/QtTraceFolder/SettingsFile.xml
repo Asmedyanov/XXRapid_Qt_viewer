@@ -739,12 +739,13 @@
         <Current>None</Current>
         <Full_voltage>None</Full_voltage>
         <I_dot>
-          <Smoothing>50.0</Smoothing>
+          <Smoothing>50</Smoothing>
           <User_comment>User_comment</User_comment>
         </I_dot>
         <Physical_values>None</Physical_values>
+        <Power>None</Power>
         <Resistive_voltage>
-          <Peak>250</Peak>
+          <Peak>293.0</Peak>
           <User_comment>User_comment</User_comment>
         </Resistive_voltage>
       </Physical_values>

@@ -42,3 +42,7 @@ class FullVoltageQWidget(MatplotlibSingeAxQWidget):
         self.voltage_df_to_plot = self.voltageDF.loc[self.voltageDF['time'] > 0]
         self.voltageLine.set_data(self.voltage_df_to_plot['time'] * 1e6, self.voltage_df_to_plot['Units'] * 1e-3)
         self.changed.emit()
+
+    def full_voltage_function(self, time):
+        ret = np.interp(time, self.voltageDF['time'].values, self.voltageDF['Units'].values)
+        return ret

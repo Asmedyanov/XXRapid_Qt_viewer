@@ -2,7 +2,7 @@ from .CurrentQWidget import *
 from .FullVoltageQWidget import *
 from .IdotQWidget import *
 from .ResistiveVoltageQWidget import *
-from .WaveformPowerQWidget import *
+from .PowerQWidget import *
 from .WaveformResistanceQWidget import *
 from .WaveformEnergyQWidget import *
 import os
@@ -39,7 +39,13 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         try:
             self.ResistiveVoltageQWidget = ResistiveVoltageQWidget(self)
             self.addTab(self.ResistiveVoltageQWidget, self.ResistiveVoltageQWidget.settings_key)
-            self.ResistiveVoltageQWidget.changed.connect(self.on_resistive_voltage)
+            self.ResistiveVoltageQWidget.changed.connect(self.on_resistive_voltage_changed)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.PowerQWidget = PowerQWidget(self)
+            self.addTab(self.PowerQWidget, self.PowerQWidget.settings_key)
+            self.PowerQWidget.changed.connect(self.on_power_changed)
         except Exception as ex:
             print(ex)
         '''try:
@@ -77,12 +83,12 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             print(f'ResistiveVoltageQWidget {ex}')
 
         try:
-            self.WaveformPowerQWidget = WaveformPowerQWidget(
+            self.PowerQWidget = PowerQWidget(
                 df_current=self.CurrentQWidget.current_df_to_plot,
                 df_u_resistive=self.ResistiveVoltageQWidget.df_resistive_voltage,
                 ind_peak_time=self.ResistiveVoltageQWidget.idot_peak_time
             )
-            self.addTab(self.WaveformPowerQWidget, 'Resistive power')
+            self.addTab(self.PowerQWidget, 'Resistive power')
         except Exception as ex:
             print(ex)
         try:
@@ -98,14 +104,20 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         '''try:
             self.WaveformEnergyQWidget = WaveformEnergyQWidget(
                 df_current=self.CurrentQWidget.current_df_to_plot,
-                df_power=self.WaveformPowerQWidget.df_power
+                df_power=self.PowerQWidget.df_power
             )
             self.addTab(self.WaveformEnergyQWidget, 'Energy')
         except Exception as ex:
             print(ex)'''
 
-    def on_resistive_voltage(self):
+    def on_power_changed(self):
         pass
+
+    def on_resistive_voltage_changed(self):
+        try:
+            self.PowerQWidget.refresh()
+        except Exception as ex:
+            print(ex)
 
     def refresh(self):
         self.timeshift = self.WaveformTimingQWidget.t_start
@@ -145,7 +157,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
                 df_Ures=self.WaveformUresQWidget.df_resistive_voltage
             )
         except Exception as ex:
-            print(f'WaveformPowerQWidget.set_data {ex}')
+            print(f'PowerQWidget.set_data {ex}')
         try:
             self.WaveformResistanceQWidget.set_data(
                 df_current=self.CurrentQWidget.current_df_to_plot,
@@ -157,7 +169,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         '''try:
             self.WaveformEnergyQWidget.set_data(
                 df_current=self.CurrentQWidget.current_df_to_plot,
-                df_power=self.WaveformPowerQWidget.df_Power
+                df_power=self.PowerQWidget.df_Power
             )
         except Exception as ex:
             print(f'WaveformEnergyQWidget.set_data {ex}')'''

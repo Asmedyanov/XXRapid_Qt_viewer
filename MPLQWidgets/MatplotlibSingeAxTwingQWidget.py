@@ -9,10 +9,10 @@ class MatplotlibSingeAxTwinxQWidget(MatplotlibSingeAxQWidget):
         self.ax_2.yaxis.label.set_color('r')
         self.ax_2.spines["right"].set_edgecolor('r')
 
-    def OnChanged(self):
+    def on_changed(self):
         self.ax_2.relim()
         self.ax_2.autoscale_view()
-        super().OnChanged()
+        super().on_changed()
 
     def save_report(self, folder_name=None):
         if folder_name is None:

@@ -11,6 +11,7 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.FullVoltageQWidget = self.parent.FullVoltageQWidget
         self.IdotQWidget = self.parent.IdotQWidget
+        self.full_voltage_function = self.FullVoltageQWidget.full_voltage_function
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
             settings_box=Settings(self)
@@ -57,10 +58,6 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
 
     def get_peak(self):
         return self.SettingsBox.PeakSettingsLine.value * 1e-9
-
-    def full_voltage_function(self, time):
-        ret = np.interp(time, self.df_full_voltage['time'].values, self.df_full_voltage['Units'].values)
-        return ret
 
     def idot_function(self, time):
         ret = np.interp(time, self.df_idot['time'].values, self.df_idot['Units'].values)

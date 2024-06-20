@@ -37,7 +37,7 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
             self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
             self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e9, linestyle=':',
                                                                       c='r')
-    def update(self):
+    def refresh(self):
         self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
         self.max_time = self.get_max_time()
         self.Normed_df_dict = self.get_normed_dict()
