@@ -72,7 +72,7 @@ class WaveformProcessingQTabWidget(ChildQTabWidget):
 
     def on_waveform_timing_changed(self):
         try:
-            self.WaveformPhysicalValuesQWidget.update()
+            self.WaveformPhysicalValuesQWidget.refresh()
         except Exception as ex:
             print(ex)
 

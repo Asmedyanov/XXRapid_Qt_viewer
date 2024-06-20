@@ -1,7 +1,7 @@
 from .CurrentQWidget import *
 from .FullVoltageQWidget import *
 from .IdotQWidget import *
-from .WaveformResistiveVoltageQWidget import *
+from .ResistiveVoltageQWidget import *
 from .WaveformPowerQWidget import *
 from .WaveformResistanceQWidget import *
 from .WaveformEnergyQWidget import *
@@ -25,7 +25,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         try:
             self.FullVoltageQWidget = FullVoltageQWidget(self)
             self.addTab(self.FullVoltageQWidget, self.FullVoltageQWidget.settings_key)
-            self.FullVoltageQWidget.changed.connect(self.on_waveform_full_voltage_changed)
+            self.FullVoltageQWidget.changed.connect(self.on_full_voltage_changed)
         except Exception as ex:
             print(ex)
 
@@ -33,6 +33,13 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.IdotQWidget = IdotQWidget(self)
             self.addTab(self.IdotQWidget, self.IdotQWidget.settings_key)
             self.IdotQWidget.changed.connect(self.on_i_dot_changed)
+        except Exception as ex:
+            print(ex)
+
+        try:
+            self.ResistiveVoltageQWidget = ResistiveVoltageQWidget(self)
+            self.addTab(self.ResistiveVoltageQWidget, self.ResistiveVoltageQWidget.settings_key)
+            self.ResistiveVoltageQWidget.changed.connect(self.on_resistive_voltage)
         except Exception as ex:
             print(ex)
         '''try:
@@ -59,21 +66,21 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         if key in settings_dict.keys():
             settings = settings_dict[key]
         try:
-            self.WaveformResistiveVoltageQWidget = WaveformResistiveVoltageQWidget(
+            self.ResistiveVoltageQWidget = ResistiveVoltageQWidget(
                 df_full_voltage=self.FullVoltageQWidget.voltageDF,
                 df_idot=self.IdotQWidget.df_idot_smoothed_to_plot,
                 settings_dict=settings
             )
-            self.WaveformResistiveVoltageQWidget.changed.connect(self.OnWaveformUresQWidget)
-            self.addTab(self.WaveformResistiveVoltageQWidget, 'Resistive voltage')
+            self.ResistiveVoltageQWidget.changed.connect(self.OnWaveformUresQWidget)
+            self.addTab(self.ResistiveVoltageQWidget, 'Resistive voltage')
         except Exception as ex:
-            print(f'WaveformResistiveVoltageQWidget {ex}')
+            print(f'ResistiveVoltageQWidget {ex}')
 
         try:
             self.WaveformPowerQWidget = WaveformPowerQWidget(
                 df_current=self.CurrentQWidget.current_df_to_plot,
-                df_u_resistive=self.WaveformResistiveVoltageQWidget.df_resistive_voltage,
-                ind_peak_time=self.WaveformResistiveVoltageQWidget.idot_peak_time
+                df_u_resistive=self.ResistiveVoltageQWidget.df_resistive_voltage,
+                ind_peak_time=self.ResistiveVoltageQWidget.idot_peak_time
             )
             self.addTab(self.WaveformPowerQWidget, 'Resistive power')
         except Exception as ex:
@@ -81,8 +88,8 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         try:
             self.WaveformResistanceQWidget = WaveformResistanceQWidget(
                 df_current=self.CurrentQWidget.current_df_to_plot,
-                df_u_resistive=self.WaveformResistiveVoltageQWidget.df_resistive_voltage,
-                ind_peak_time=self.WaveformResistiveVoltageQWidget.idot_peak_time
+                df_u_resistive=self.ResistiveVoltageQWidget.df_resistive_voltage,
+                ind_peak_time=self.ResistiveVoltageQWidget.idot_peak_time
             )
             self.addTab(self.WaveformResistanceQWidget, 'Resistance')
         except Exception as ex:
@@ -97,28 +104,37 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         except Exception as ex:
             print(ex)'''
 
-    def update(self):
+    def on_resistive_voltage(self):
+        pass
+
+    def refresh(self):
         self.timeshift = self.WaveformTimingQWidget.t_start
         self.physical_df_dict = self.WaveformTimingQWidget.physical_df_dict
         try:
-            self.CurrentQWidget.update()
+            self.CurrentQWidget.refresh()
         except Exception as ex:
             print(ex)
-            try:
-                self.FullVoltageQWidget.update()
-            except Exception as ex:
-                print(ex)
+        try:
+            self.FullVoltageQWidget.refresh()
+        except Exception as ex:
+            print(ex)
         self.changed.emit()
+
+    """
+    Here is the problem. 
+    """
 
     def on_current_changed(self):
         try:
-            self.FullVoltageQWidget.update()
+            self.IdotQWidget.changed.disconnect()
+            self.IdotQWidget.refresh()
+            self.IdotQWidget.changed.connect(self.on_i_dot_changed)
         except Exception as ex:
             print(ex)
 
-    def on_waveform_full_voltage_changed(self):
+    def on_full_voltage_changed(self):
         try:
-            self.IdotQWidget.update()
+            self.ResistiveVoltageQWidget.refresh()
         except Exception as ex:
             print(ex)
 
@@ -221,4 +237,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         self.changed.emit()
 
     def on_i_dot_changed(self):
-        pass
+        try:
+            self.ResistiveVoltageQWidget.refresh()
+        except Exception as ex:
+            print(ex)

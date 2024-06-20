@@ -69,7 +69,7 @@ class IdotQWidget(SettingsMPLQWidget):
             self.df_idot_smoothed_to_plot['Units'] * 1e-12)
         super().on_settings_box()
 
-    def update(self):
+    def refresh(self):
         self.df_idot = self.get_df_idot()
         self.df_idot_to_plot = self.get_idot_to_plot()
         self.dt = self.get_dt()

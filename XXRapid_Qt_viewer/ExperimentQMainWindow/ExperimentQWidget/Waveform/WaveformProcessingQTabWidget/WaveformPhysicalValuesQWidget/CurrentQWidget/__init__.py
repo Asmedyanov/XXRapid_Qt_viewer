@@ -20,7 +20,7 @@ class CurrentQWidget(MatplotlibSingeAxQWidget):
         self.current_df_to_plot = self.CurrentDF.loc[self.CurrentDF['time'] > 0]
         self.CurrentLine, = self.ax.plot(self.current_df_to_plot['time'] * 1e6, self.current_df_to_plot['Units'] * 1e-3)
 
-    def update(self):
+    def refresh(self):
         self.timeshift = self.parent.timeshift
         self.physical_df_dict = self.parent.physical_df_dict
         self.CurrentDF = self.physical_df_dict['Current'].copy()

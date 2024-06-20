@@ -33,7 +33,8 @@ class FullVoltageQWidget(MatplotlibSingeAxQWidget):
             os.makedirs(f'{folder_name}/Full_voltage')
         super().save_report(f'{folder_name}/Full_voltage')
         self.voltage_df_to_plot.to_csv(f'{folder_name}/Full_voltage/Full_voltage.csv')
-    def update(self):
+
+    def refresh(self):
         self.timeshift = self.parent.timeshift
         self.physical_df_dict = self.parent.physical_df_dict
         self.voltageDF = self.physical_df_dict['Voltage'].copy()

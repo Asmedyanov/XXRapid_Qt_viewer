@@ -16,5 +16,9 @@ class WaveformQTabWidget(ChildQTabWidget):
         try:
             self.WaveformProcessingQTabWidget = WaveformProcessingQTabWidget(self)
             self.addTab(self.WaveformProcessingQTabWidget, self.WaveformProcessingQTabWidget.settings_key)
+            self.WaveformProcessingQTabWidget.changed.connect(self.on_waveform_processing_changed)
         except Exception as ex:
             print(ex)
+
+    def on_waveform_processing_changed(self):
+        self.changed.emit()
