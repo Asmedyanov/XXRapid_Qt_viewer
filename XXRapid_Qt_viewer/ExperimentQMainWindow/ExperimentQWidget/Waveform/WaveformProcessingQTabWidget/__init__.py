@@ -30,8 +30,12 @@ class WaveformProcessingQTabWidget(ChildQTabWidget):
         try:
             self.WaveformPhysicalValuesQWidget = WaveformPhysicalValuesQWidget(self)
             self.addTab(self.WaveformPhysicalValuesQWidget, self.WaveformPhysicalValuesQWidget.settings_key)
+            self.WaveformPhysicalValuesQWidget.changed.connect(self.on_waveform_physical_values_changed)
         except Exception as ex:
             print(ex)
+
+    def on_waveform_physical_values_changed(self):
+        self.changed.emit()
 
     def on_waveform_timing_changed(self):
         try:

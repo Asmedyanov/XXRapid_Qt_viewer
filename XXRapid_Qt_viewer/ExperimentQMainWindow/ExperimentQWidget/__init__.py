@@ -28,6 +28,7 @@ class ExperimentQWidget(QTabWidget):
         try:
             self.WaveformQTabWidget = WaveformQTabWidget(self)
             self.addTab(self.WaveformQTabWidget, self.WaveformQTabWidget.settings_key)
+            self.WaveformQTabWidget.changed.connect(self.on_waveform_changed)
         except Exception as ex:
             print(ex)
             return
@@ -118,6 +119,9 @@ class ExperimentQWidget(QTabWidget):
             self.addTab(self.CAIQTabWidget, 'CAI_experimental')
         except Exception as ex:
             print(ex)'''
+
+    def on_waveform_changed(self):
+        self.changed.emit()
 
     def test_settings_key(self, key_line):
         if key_line not in self.SettingsDict.keys():

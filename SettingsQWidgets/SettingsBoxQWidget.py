@@ -30,8 +30,8 @@ class SettingsBoxQWidget(QWidget):
         return default
 
     def on_settings_line_changed(self):
-        self.update()
+        self.refresh()
         self.changed.emit()
 
-    def update(self):
+    def refresh(self):
         self.SettingsDict['User_comment'] = self.User_comment.value

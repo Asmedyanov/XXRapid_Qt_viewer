@@ -95,7 +95,7 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
         super().on_settings_box()
 
     def refresh(self):
-        print('ures_refresh')
+
         self.df_full_voltage = self.FullVoltageQWidget.voltage_df_to_plot.copy()
         self.df_idot = self.IdotQWidget.df_idot_smoothed_to_plot.copy()
         self.on_settings_box()

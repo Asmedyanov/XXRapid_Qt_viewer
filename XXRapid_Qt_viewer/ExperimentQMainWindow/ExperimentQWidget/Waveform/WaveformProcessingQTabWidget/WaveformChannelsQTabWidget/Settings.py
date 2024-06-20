@@ -1,7 +1,7 @@
 from SettingsQWidgets.SettingsBoxQWidget import *
 
 
-class ChannelSettingsQWidget(SettingsBoxQWidget):
+class Settings(SettingsBoxQWidget):
     def __init__(self, parent):
         super().__init__(parent)
         key = 'Diagnostics'

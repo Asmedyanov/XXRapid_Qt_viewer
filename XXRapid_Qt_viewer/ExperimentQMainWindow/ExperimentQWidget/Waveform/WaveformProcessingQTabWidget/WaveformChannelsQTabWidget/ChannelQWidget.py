@@ -1,6 +1,6 @@
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
-from .ChannelSettingsQWidget import *
+from .Settings import *
 
 
 class ChannelQWidget(SettingsMPLQWidget):
@@ -12,7 +12,7 @@ class ChannelQWidget(SettingsMPLQWidget):
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=ChannelSettingsQWidget(self)
+            settings_box=Settings(self)
         )
         self.df_original = self.focused_df.copy()
         self.MPLQWidget.ax.set(

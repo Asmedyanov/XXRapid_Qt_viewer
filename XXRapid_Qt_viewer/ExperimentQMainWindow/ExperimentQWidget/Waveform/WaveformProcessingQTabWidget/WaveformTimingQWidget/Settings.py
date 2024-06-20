@@ -49,13 +49,13 @@ class Settings(SettingsBoxQWidget):
             self.SettingsDict[key] = shutters_line_dict[key].value
         return shutters_line_dict
 
-    def update(self):
+    def refresh(self):
         self.SettingsDict['Start'] = self.StartLine.value
         self.SettingsDict['N_shutters'] = self.n_shutters_line.value
         for my_key, my_line in self.shutters_line_dict.items():
             self.SettingsDict[my_key] = my_line.value
-        super().update()
+        super().refresh()
 
     def on_settings_line_changed(self):
-        self.update()
+        self.refresh()
         super().on_settings_line_changed()

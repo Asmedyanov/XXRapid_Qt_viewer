@@ -38,6 +38,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_3\Systron.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_3\XXRapid_trig_out.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_4\Systron.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_physical\Current\Current.csv">
           <value>
             <Attribute>
