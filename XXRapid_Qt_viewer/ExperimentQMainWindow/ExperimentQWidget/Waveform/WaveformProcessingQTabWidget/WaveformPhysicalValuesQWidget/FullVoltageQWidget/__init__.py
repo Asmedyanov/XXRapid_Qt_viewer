@@ -1,7 +1,7 @@
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 
 
-class WaveformFullVoltageQWidget(MatplotlibSingeAxQWidget):
+class FullVoltageQWidget(MatplotlibSingeAxQWidget):
     def __init__(self, parent):
         self.parent = parent
         self.settings_key = 'Full_voltage'

@@ -1,14 +1,20 @@
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
-from .WaveformIdotSettingsQWidget import *
+from .Settings import *
 
 
-class WaveformIdotQWidget(SettingsMPLQWidget):
+class IdotQWidget(SettingsMPLQWidget):
 
-    def __init__(self, df_current, settings_dict=None, timeshift=0):
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = 'I_dot'
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.CurrentQWidget = self.parent.CurrentQWidget
+        self.df_current = self.CurrentQWidget.CurrentDF.copy()
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=WaveformIdotSettingsQWidget(settings_dict)
+            settings_box=Settings(self)
         )
         self.MPLQWidget.png_name = 'Idot'
         self.MPLQWidget.ax.set(
@@ -16,8 +22,6 @@ class WaveformIdotQWidget(SettingsMPLQWidget):
             ylabel='$\\dot I, kA/ns$',
             title='dI/dt'
         )
-        self.df_current = df_current
-        self.timeshift = timeshift
         self.df_idot = self.get_df_idot()
         self.df_idot_to_plot = self.get_idot_to_plot()
         self.dt = self.get_dt()
@@ -51,7 +55,7 @@ class WaveformIdotQWidget(SettingsMPLQWidget):
 
     def get_df_idot(self):
         df_idot = pd.DataFrame({
-            'time': self.df_current['time'] - self.timeshift,
+            'time': self.df_current['time'],
             'Units': np.gradient(self.df_current['Units'].values) / np.gradient(self.df_current['time'].values)
         })
         return df_idot
@@ -63,8 +67,17 @@ class WaveformIdotQWidget(SettingsMPLQWidget):
         self.IdotPlot_smoothed.set_data(
             self.df_idot_smoothed_to_plot['time'] * 1e6,
             self.df_idot_smoothed_to_plot['Units'] * 1e-12)
-        self.MPLQWidget.changed.emit()
         super().on_settings_box()
+
+    def update(self):
+        self.df_idot = self.get_df_idot()
+        self.df_idot_to_plot = self.get_idot_to_plot()
+        self.dt = self.get_dt()
+        self.df_current = self.CurrentQWidget.CurrentDF.copy()
+        self.IdotPlot.set_data(
+            self.df_idot_to_plot['time'] * 1e6,
+            self.df_idot_to_plot['Units'] * 1e-12)
+        self.on_settings_box()
 
     def set_data(self, df_current, timeshift=0):
         self.df_current = df_current

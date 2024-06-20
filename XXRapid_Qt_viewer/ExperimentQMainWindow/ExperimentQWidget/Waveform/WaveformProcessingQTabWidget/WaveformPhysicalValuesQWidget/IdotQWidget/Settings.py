@@ -1,13 +1,11 @@
 from SettingsQWidgets.SettingsBoxQWidget import *
 
 
-class WaveformIdotSettingsQWidget(SettingsBoxQWidget):
-    def __init__(self, settings_dict=None):
-        super().__init__(settings_dict)
+class Settings(SettingsBoxQWidget):
+    def __init__(self, parent):
+        super().__init__(parent)
         key = 'Smoothing'
-        default = dict()
-        if key in settings_dict.keys():
-            default = int(float(settings_dict[key]))
+        default = self.test_key(key, 5)  # ns
         self.SmoothingSettingsLine = SettingsLineQWidget(
             name=key,
             default=default,

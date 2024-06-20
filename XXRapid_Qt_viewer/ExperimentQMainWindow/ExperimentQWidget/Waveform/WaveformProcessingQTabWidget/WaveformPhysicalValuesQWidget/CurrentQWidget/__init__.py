@@ -1,7 +1,7 @@
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 
 
-class WaveformCurrentQWidget(MatplotlibSingeAxQWidget):
+class CurrentQWidget(MatplotlibSingeAxQWidget):
     def __init__(self, parent):
         self.parent = parent
         self.settings_key = 'Current'
