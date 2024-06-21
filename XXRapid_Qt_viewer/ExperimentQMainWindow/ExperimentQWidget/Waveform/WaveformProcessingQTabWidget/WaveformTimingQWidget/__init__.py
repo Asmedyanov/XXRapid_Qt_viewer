@@ -11,6 +11,7 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.WaveformChannelsQTabWidget = self.parent.WaveformChannelsQTabWidget
+        self.WaveformChannelsQTabWidget.changed.connect(self.refresh)
         self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
@@ -24,10 +25,10 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
             title='Waveform timing'
         )
         self.Normed_plots_dict = dict()
-        for my_key, mydf in self.Normed_df_dict.items():
+        for my_key, my_df in self.Normed_df_dict.items():
             self.Normed_plots_dict[my_key], = self.MPLQWidget.ax.plot(
-                mydf['time'].loc[mydf['time'] < self.max_time] * 1.0e9,
-                mydf['Units'].loc[mydf['time'] < self.max_time], label=my_key)
+                my_df['time'].loc[my_df['time'] < self.max_time] * 1.0e9,
+                my_df['Units'].loc[my_df['time'] < self.max_time], label=my_key)
         self.MPLQWidget.ax.legend()
         self.t_start = self.SettingsBox.StartLine.value * 1e-9
         self.PulseStartLine = self.MPLQWidget.ax.axvline(self.t_start * 1e9, linestyle=':', c='r')
@@ -37,13 +38,18 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
             self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
             self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e9, linestyle=':',
                                                                       c='r')
+
     def refresh(self):
         self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
-        self.max_time = self.get_max_time()
-        self.Normed_df_dict = self.get_normed_dict()
-        for mykey, mydf in self.Normed_df_dict.items():
-            df_to_plot = mydf.loc[((mydf['time'] > 0) & (mydf['time'] < self.max_time))]
-            self.Normed_plots_dict[mykey].set_data(df_to_plot['time'] * 1e9, df_to_plot['Units'])
+        try:
+            self.max_time = self.get_max_time()
+            self.Normed_df_dict = self.get_normed_dict()
+        except Exception as ex:
+            print(ex)
+            return
+        for my_key, my_df in self.Normed_df_dict.items():
+            df_to_plot = my_df.loc[((my_df['time'] > 0) & (my_df['time'] < self.max_time))]
+            self.Normed_plots_dict[my_key].set_data(df_to_plot['time'] * 1e9, df_to_plot['Units'])
         self.on_settings_box()
 
     def on_settings_box(self):
@@ -58,10 +64,6 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         current_argmax = np.argmax(self.physical_df_dict['Current']['Units'].values)
         max_time = self.physical_df_dict['Current']['time'][current_argmax]
         return max_time * 1.5
-
-    def get_min_time(self):
-        voltage_noise = np.abs(
-            self.physical_df_dict['Voltage']['Units'].loc[self.physical_df_dict['Voltage']['time'] < 0]).max()
 
     def get_normed_dict(self):
         normed_df_dict = {

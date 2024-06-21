@@ -9,6 +9,7 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.CurrentQWidget = self.parent.CurrentQWidget
         self.ResistiveVoltageQWidget = self.parent.ResistiveVoltageQWidget
+        self.ResistiveVoltageQWidget.changed.connect(self.refresh)
         self.u_resistive_function = self.ResistiveVoltageQWidget.resistive_voltage_function
         self.current_function = self.CurrentQWidget.current_function
         self.df_current = self.CurrentQWidget.current_df_to_plot.copy()
@@ -48,6 +49,8 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         if current == 0:
             return 0
         ret = self.u_resistive_function(time) / current
+        if ret < 0:
+            return 0
         return ret
 
     def set_data(self, df_current, df_u_resistive, ind_peak_time=0):
@@ -75,4 +78,4 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         self.df_resistance = self.get_df_resistance()
         self.CurrentLine.set_data(self.df_current_to_plot['time'] * 1e6, self.df_current_to_plot['Units'] * 1e-3)
         self.ResistanceLine.set_data(self.df_resistance['time'] * 1e6, self.df_resistance['Units'])
-        super().on_changed()
+        self.changed.emit()

@@ -739,12 +739,12 @@
         <Current>None</Current>
         <Full_voltage>None</Full_voltage>
         <I_dot>
-          <Smoothing>20.0</Smoothing>
+          <Smoothing>20</Smoothing>
           <User_comment>User_comment</User_comment>
         </I_dot>
         <Physical_values>None</Physical_values>
         <Power>None</Power>
-        <Resistance></Resistance>
+        <Resistance>None</Resistance>
         <Resistive_voltage>
           <Peak>293</Peak>
           <User_comment>User_comment</User_comment>
@@ -760,7 +760,7 @@
         <Shutter_6>1398</Shutter_6>
         <Shutter_7>1498</Shutter_7>
         <Shutter_8>1599</Shutter_8>
-        <Start>428</Start>
+        <Start>435</Start>
         <User_comment>User_comment</User_comment>
       </Timing>
       <Waveform_channels>
@@ -768,7 +768,7 @@
           <Coefficient>-32500</Coefficient>
           <Diagnostics>Rogowski_coil</Diagnostics>
           <Shift>0.0</Shift>
-          <Smoothing>50</Smoothing>
+          <Smoothing>50.0</Smoothing>
           <User_comment>User_comment</User_comment>
         </Channel_1>
         <Channel_2>

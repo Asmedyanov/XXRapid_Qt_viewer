@@ -28,7 +28,6 @@ class ExperimentQWidget(QTabWidget):
         try:
             self.WaveformQTabWidget = WaveformQTabWidget(self)
             self.addTab(self.WaveformQTabWidget, self.WaveformQTabWidget.settings_key)
-            self.WaveformQTabWidget.changed.connect(self.on_waveform_changed)
         except Exception as ex:
             print(ex)
             return

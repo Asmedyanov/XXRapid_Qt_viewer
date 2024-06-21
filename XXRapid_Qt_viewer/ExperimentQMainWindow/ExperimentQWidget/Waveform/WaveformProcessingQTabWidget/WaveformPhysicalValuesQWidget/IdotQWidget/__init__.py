@@ -11,6 +11,7 @@ class IdotQWidget(SettingsMPLQWidget):
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.CurrentQWidget = self.parent.CurrentQWidget
+        self.CurrentQWidget.changed.connect(self.refresh)
         self.df_current = self.CurrentQWidget.CurrentDF.copy()
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
@@ -70,10 +71,13 @@ class IdotQWidget(SettingsMPLQWidget):
         super().on_settings_box()
 
     def refresh(self):
-        self.df_idot = self.get_df_idot()
-        self.df_idot_to_plot = self.get_idot_to_plot()
-        self.dt = self.get_dt()
-        self.df_current = self.CurrentQWidget.CurrentDF.copy()
+        try:
+            self.df_idot = self.get_df_idot()
+            self.df_idot_to_plot = self.get_idot_to_plot()
+            self.dt = self.get_dt()
+            self.df_current = self.CurrentQWidget.CurrentDF.copy()
+        except Exception as ex:
+            print(ex)
         self.IdotPlot.set_data(
             self.df_idot_to_plot['time'] * 1e6,
             self.df_idot_to_plot['Units'] * 1e-12)

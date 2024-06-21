@@ -10,7 +10,9 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.FullVoltageQWidget = self.parent.FullVoltageQWidget
+        self.FullVoltageQWidget.changed.connect(self.refresh)
         self.IdotQWidget = self.parent.IdotQWidget
+        self.IdotQWidget.changed.connect(self.refresh)
         self.full_voltage_function = self.FullVoltageQWidget.full_voltage_function
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
@@ -95,7 +97,6 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
         super().on_settings_box()
 
     def refresh(self):
-
         self.df_full_voltage = self.FullVoltageQWidget.voltage_df_to_plot.copy()
         self.df_idot = self.IdotQWidget.df_idot_smoothed_to_plot.copy()
         self.on_settings_box()

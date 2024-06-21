@@ -16,14 +16,12 @@ class WaveformProcessingQTabWidget(ChildQTabWidget):
         try:
             self.WaveformChannelsQTabWidget = WaveformChannelsQTabWidget(self)
             self.addTab(self.WaveformChannelsQTabWidget, self.WaveformChannelsQTabWidget.settings_key)
-            self.WaveformChannelsQTabWidget.changed.connect(self.on_waveform_channels_changed)
         except Exception as ex:
             print(ex)
             return
         try:
             self.WaveformTimingQWidget = WaveformTimingQWidget(self)
             self.addTab(self.WaveformTimingQWidget, self.WaveformTimingQWidget.settings_key)
-            self.WaveformTimingQWidget.changed.connect(self.on_waveform_timing_changed)
         except Exception as ex:
             print(ex)
             return
@@ -36,18 +34,6 @@ class WaveformProcessingQTabWidget(ChildQTabWidget):
 
     def on_waveform_physical_values_changed(self):
         self.changed.emit()
-
-    def on_waveform_timing_changed(self):
-        try:
-            self.WaveformPhysicalValuesQWidget.refresh()
-        except Exception as ex:
-            print(ex)
-
-    def on_waveform_channels_changed(self):
-        try:
-            self.WaveformTimingQWidget.refresh()
-        except Exception as ex:
-            print(ex)
 
     def set_data(self, ChannelDFDict, info_file_df):
         self.WaveformChannelsTab.set_data(ChannelDFDict)

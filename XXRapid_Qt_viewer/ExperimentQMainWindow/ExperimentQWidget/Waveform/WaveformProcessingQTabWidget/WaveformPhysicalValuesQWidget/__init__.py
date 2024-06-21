@@ -13,6 +13,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Physical_values')
         self.WaveformTimingQWidget = self.parent.WaveformTimingQWidget
+        self.WaveformTimingQWidget.changed.connect(self.refresh)
         self.timeshift = self.WaveformTimingQWidget.t_start
         self.physical_df_dict = self.WaveformTimingQWidget.physical_df_dict
         self.changed.connect(self.on_changed)
@@ -20,27 +21,23 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         try:
             self.CurrentQWidget = CurrentQWidget(self)
             self.addTab(self.CurrentQWidget, self.CurrentQWidget.settings_key)
-            self.CurrentQWidget.changed.connect(self.on_current_changed)
         except Exception as ex:
             print(f'CurrentQWidget {ex}')
         try:
             self.FullVoltageQWidget = FullVoltageQWidget(self)
             self.addTab(self.FullVoltageQWidget, self.FullVoltageQWidget.settings_key)
-            self.FullVoltageQWidget.changed.connect(self.on_full_voltage_changed)
         except Exception as ex:
             print(ex)
 
         try:
             self.IdotQWidget = IdotQWidget(self)
             self.addTab(self.IdotQWidget, self.IdotQWidget.settings_key)
-            self.IdotQWidget.changed.connect(self.on_i_dot_changed)
         except Exception as ex:
             print(ex)
 
         try:
             self.ResistiveVoltageQWidget = ResistiveVoltageQWidget(self)
             self.addTab(self.ResistiveVoltageQWidget, self.ResistiveVoltageQWidget.settings_key)
-            self.ResistiveVoltageQWidget.changed.connect(self.on_resistive_voltage_changed)
         except Exception as ex:
             print(ex)
         try:
@@ -80,7 +77,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         self.changed.emit()
 
     def on_resistance_changed(self):
-        pass
+        self.changed.emit()
 
     def refresh(self):
         self.timeshift = self.WaveformTimingQWidget.t_start
@@ -93,15 +90,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.FullVoltageQWidget.refresh()
         except Exception as ex:
             print(ex)
-        self.changed.emit()
-
-    def on_current_changed(self):
-        try:
-            self.IdotQWidget.changed.disconnect()
-            self.IdotQWidget.refresh()
-            self.IdotQWidget.changed.connect(self.on_i_dot_changed)
-        except Exception as ex:
-            print(ex)
+        #self.changed.emit()
 
     def on_full_voltage_changed(self):
         try:
