@@ -30,7 +30,11 @@ class ExperimentQWidget(QTabWidget):
             self.addTab(self.WaveformQTabWidget, self.WaveformQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
-            return
+        try:
+            self.XXRapidOriginalQWidget = XXRapidOriginalQWidget(self)
+            self.addTab(self.XXRapidOriginalQWidget, self.XXRapidOriginalQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
 
         '''waveform_file_name = self.getWaveformFileName()
         self.WaveformOriginalQWidget = WaveformOriginalQWidget(waveform_file_name)

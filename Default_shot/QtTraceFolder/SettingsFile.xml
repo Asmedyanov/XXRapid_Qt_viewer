@@ -737,16 +737,17 @@
     <Waveform_processing>
       <Physical_values>
         <Current>None</Current>
+        <Energy>None</Energy>
         <Full_voltage>None</Full_voltage>
         <I_dot>
-          <Smoothing>20</Smoothing>
+          <Smoothing>40.0</Smoothing>
           <User_comment>User_comment</User_comment>
         </I_dot>
         <Physical_values>None</Physical_values>
         <Power>None</Power>
         <Resistance>None</Resistance>
         <Resistive_voltage>
-          <Peak>293</Peak>
+          <Peak>250</Peak>
           <User_comment>User_comment</User_comment>
         </Resistive_voltage>
       </Physical_values>
@@ -768,7 +769,7 @@
           <Coefficient>-32500</Coefficient>
           <Diagnostics>Rogowski_coil</Diagnostics>
           <Shift>0.0</Shift>
-          <Smoothing>50.0</Smoothing>
+          <Smoothing>50</Smoothing>
           <User_comment>User_comment</User_comment>
         </Channel_1>
         <Channel_2>

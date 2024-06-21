@@ -8,6 +8,7 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.PowerQWidget = self.parent.PowerQWidget
+        self.PowerQWidget.changed.connect(self.refresh)
         self.CurrentQWidget = self.parent.CurrentQWidget
         self.df_power = self.PowerQWidget.df_power.copy()
         self.df_current = self.CurrentQWidget.current_df_to_plot.copy()
@@ -44,8 +45,6 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
     def get_dt(self):
         return np.mean(np.gradient(self.df_power['time']))
 
-
-
     def energy_function(self, time):
         power_to_sum = self.df_power.loc[self.df_power['time'] < time]
         energy = power_to_sum['Units'].sum() * self.dt
@@ -74,7 +73,7 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
         self.df_current_to_plot = self.get_df_current_to_plot()
         self.dt = self.get_dt()
         self.df_energy = self.get_df_energy()
-        self.CurrentLine, = self.ax_2.plot(self.df_current_to_plot['time'] * 1e6,
-                                           self.df_current_to_plot['Units'] * 1e-3, ':r')
-        self.EnergyLine, = self.ax.plot(self.df_energy['time'] * 1e6, self.df_energy['Units'] * 1e-3)
-        super().on_changed()
+        self.CurrentLine.set_data(self.df_current_to_plot['time'] * 1e6,
+                                  self.df_current_to_plot['Units'] * 1e-3)
+        self.EnergyLine.set_data(self.df_energy['time'] * 1e6, self.df_energy['Units'] * 1e-3)
+        super().changed.emit()

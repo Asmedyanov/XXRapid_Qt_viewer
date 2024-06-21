@@ -32,10 +32,12 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         self.ResistanceLine, = self.ax.plot(self.df_resistance['time'] * 1e6, self.df_resistance['Units'])
 
     def get_df_resistance(self):
+        resistance = self.resistance_function_vect(self.df_u_resistive['time'].values)
         return pd.DataFrame({
             'time': self.df_u_resistive['time'],
             'Units': np.where(self.df_u_resistive['time'].values < self.ind_peak_time, 0,
-                              self.resistance_function_vect(self.df_u_resistive['time'].values))
+
+                              np.where(resistance < 0, 0, resistance))
         })
 
     def get_df_current_to_plot(self):
@@ -49,8 +51,6 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         if current == 0:
             return 0
         ret = self.u_resistive_function(time) / current
-        if ret < 0:
-            return 0
         return ret
 
     def set_data(self, df_current, df_u_resistive, ind_peak_time=0):

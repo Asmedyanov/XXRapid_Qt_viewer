@@ -43,7 +43,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         try:
             self.PowerQWidget = PowerQWidget(self)
             self.addTab(self.PowerQWidget, self.PowerQWidget.settings_key)
-            self.PowerQWidget.changed.connect(self.on_power_changed)
+            #self.PowerQWidget.changed.connect(self.on_power_changed)
         except Exception as ex:
             print(ex)
         try:
@@ -52,6 +52,12 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.ResistanceQWidget.changed.connect(self.on_resistance_changed)
         except Exception as ex:
             print(ex)
+
+        '''try:
+            self.EnergyQWidget = EnergyQWidget(self)
+            self.addTab(self.EnergyQWidget, self.EnergyQWidget.settings_key)
+        except Exception as ex:
+            print(ex)'''
 
     def on_changed(self):
         print('Waveform physical values are changed')
@@ -90,25 +96,9 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.FullVoltageQWidget.refresh()
         except Exception as ex:
             print(ex)
-        #self.changed.emit()
+        # self.changed.emit()
 
-    def on_full_voltage_changed(self):
-        try:
-            self.ResistiveVoltageQWidget.refresh()
-        except Exception as ex:
-            print(ex)
 
-    def set_data(self, physical_df_dict=None, timeshift=0):
-        try:
-            self.CurrentQWidget.set_data(physical_df_dict['Current'], timeshift)
-        except Exception as ex:
-            print(f'CurrentQWidget.set_data {ex}')
-        try:
-            self.FullVoltageQWidget.set_data(physical_df_dict['Voltage'], timeshift)
-        except Exception as ex:
-            print(f'FullVoltageQWidget.set_data {ex}')
-
-        self.changed.emit()
 
     def Save_Raport(self, folder_name):
         if 'Waveform_physical' not in os.listdir(folder_name):
@@ -141,9 +131,3 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.WaveformEnergyQWidget.save_report(f'{folder_name}/Waveform_physical')
         except Exception as ex:
             print(ex)'''
-
-    def on_i_dot_changed(self):
-        try:
-            self.ResistiveVoltageQWidget.refresh()
-        except Exception as ex:
-            print(ex)
