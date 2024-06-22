@@ -1,37 +1,30 @@
-from .XXRapidFrontingFramesQTabWidget import *
-from .XXRapidFrontingExpansionQTabWidget import *
+from .FrontingFramesQTabWidget import *
+from .FrontingExpansionQTabWidget import *
 
 
 class XXRapidFrontingQWidget(QWidget):
     changed = pyqtSignal()
 
-    def __init__(self, camera_data_dict, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = 'Fronting'
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.XXRapidOriginalQWidget = self.parent.XXRapidOriginalQWidget
+        self.camera_data_dict = self.XXRapidOriginalQWidget.CameraDataDict
         super().__init__()
-        self.camera_data_dict = camera_data_dict
-        self.SettingsDict = dict()
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
         try:
-            settings = settings_dict['Fronting_frames']
-        except:
-            settings = dict()
-        try:
-            self.XXRapidFrontingFramesQTabWidget = XXRapidFrontingFramesQTabWidget(self.camera_data_dict, settings)
+            self.XXRapidFrontingFramesQTabWidget = XXRapidFrontingFramesQTabWidget(self)
             self.QHBoxLayout.addWidget(self.XXRapidFrontingFramesQTabWidget, stretch=1)
-            self.SettingsDict['Fronting_frames'] = self.XXRapidFrontingFramesQTabWidget.SettingsDict
-            self.XXRapidFrontingFramesQTabWidget.changed.connect(self.OnXXRapidFrontingFramesQTabWidget)
-            self.XXRapidFrontingFramesQTabWidget.currentQuartChanged.connect(self.on_current_quart_changed)
         except Exception as ex:
             print(f'XXRapidFrontingFramesQTabWidget {ex}')
         try:
-            self.XXRapidFrontingExpansionQTabWidget = XXRapidFrontingExpansionQTabWidget(
-                self.XXRapidFrontingFramesQTabWidget.expansion_dict)
-            self.XXRapidFrontingExpansionQTabWidget.changed.connect(self.OnXXRapidFrontingExpansionQTabWidget)
-            self.QHBoxLayout.addWidget(self.XXRapidFrontingExpansionQTabWidget)
+            self.FrontingExpansionQTabWidget = FrontingExpansionQTabWidget(self)
+            self.QHBoxLayout.addWidget(self.FrontingExpansionQTabWidget)
         except Exception as ex:
-            print(f'XXRapidFrontingExpansionQTabWidget {ex}')
+            print(ex)
 
     def on_current_quart_changed(self):
         self.XXRapidFrontingExpansionQTabWidget.setCurrentIndex(self.XXRapidFrontingFramesQTabWidget.current_quart - 1)
@@ -50,5 +43,9 @@ class XXRapidFrontingQWidget(QWidget):
         self.changed.emit()
 
     def get_expansion_dict(self):
-        #return self.XXRapidFrontingFramesQTabWidget.expansion_dict
+        # return self.FrontingFramesQTabWidget.expansion_dict
         return self.XXRapidFrontingExpansionQTabWidget.expansion_by_quart_dict
+
+    def test_settings_key(self, key_line):
+        if key_line not in self.SettingsDict.keys():
+            self.SettingsDict[key_line] = dict()

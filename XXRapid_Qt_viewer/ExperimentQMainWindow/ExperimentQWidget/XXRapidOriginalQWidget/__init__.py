@@ -1,20 +1,17 @@
-from PyQt5.QtWidgets import QTabWidget
+from SettingsQWidgets.ChildQTabWidget import *
 from XXRapid_Qt_viewer.utility.rtv_reader import *
-from .XXRapidOriginalCameraQWidget import *
+from .Graphics import *
 import os
 
 
-class XXRapidOriginalQWidget(QTabWidget):
+class XXRapidOriginalQWidget(ChildQTabWidget):
     def __init__(self, parent):
-        self.settings_key = 'XXRapid_original'
-        self.parent = parent
-        self.parent.test_settings_key(self.settings_key)
-        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        super().__init__(parent, 'XXRapid_original')
         self.folder_path = self.parent.folder_path
         self.folder_list = self.parent.folder_list
         self.before_name = self.get_before_name()
         self.shot_name = self.get_shot_name()
-        super().__init__()
+
         self.before_array = open_rtv(self.before_name)
         self.shot_array = open_rtv(self.shot_name)
         self.CameraDataDict = dict()
@@ -26,7 +23,7 @@ class XXRapidOriginalQWidget(QTabWidget):
             }
         self.XXRapidOriginalCameraQWidgetDict = dict()
         for my_key, my_camera_data in self.CameraDataDict.items():
-            self.XXRapidOriginalCameraQWidgetDict[my_key] = XXRapidOriginalCameraQWidget(
+            self.XXRapidOriginalCameraQWidgetDict[my_key] = Graphics(
                 image_before=my_camera_data['before'],
                 image_shot=my_camera_data['shot']
             )

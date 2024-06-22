@@ -36,6 +36,12 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(ex)
 
+        try:
+            self.XXRapidFrontingQWidget = XXRapidFrontingQWidget(self)
+            self.addTab(self.XXRapidFrontingQWidget, self.XXRapidFrontingQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+
         '''waveform_file_name = self.getWaveformFileName()
         self.WaveformOriginalQWidget = WaveformOriginalQWidget(waveform_file_name)
         self.addTab(self.WaveformOriginalQWidget, 'Waveform Original')

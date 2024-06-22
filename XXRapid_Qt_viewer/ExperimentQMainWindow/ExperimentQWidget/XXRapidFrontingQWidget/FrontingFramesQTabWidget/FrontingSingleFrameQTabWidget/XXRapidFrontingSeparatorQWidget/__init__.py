@@ -1,17 +1,19 @@
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
-from .XXRapidFrontingSeparatorSettingsQWidget import *
+from .Settings import *
 from MPLQWidgets.SettingsMPLQWidget import *
 
 
-class XXRapidFrontingSeparatorQWidget(SettingsMPLQWidget):
-    def __init__(self, camera_data, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
+class FrontingSeparatorQWidget(SettingsMPLQWidget):
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = 'Separator'
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=XXRapidFrontingSeparatorSettingsQWidget(settings_dict)
+            settings_box=Settings(self)
         )
-        self.camera_data = camera_data
+        self.camera_data = self.parent.camera_data
         self.rotation = self.SettingsBox.RotationSettingLine.value
         self.image_before = self.get_image(self.camera_data['before'])
         self.image_shot = self.get_image(self.camera_data['shot'])
