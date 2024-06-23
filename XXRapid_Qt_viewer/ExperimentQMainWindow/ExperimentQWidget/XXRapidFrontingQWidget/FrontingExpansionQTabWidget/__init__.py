@@ -27,7 +27,7 @@ class FrontingExpansionQTabWidget(ChildQTabWidget):
             print(ex)
 
     def on_current_quart_changed(self):
-        print(self.parent.quart_index)
+
         self.setCurrentIndex(self.parent.quart_index)
 
     def on_fronts(self):

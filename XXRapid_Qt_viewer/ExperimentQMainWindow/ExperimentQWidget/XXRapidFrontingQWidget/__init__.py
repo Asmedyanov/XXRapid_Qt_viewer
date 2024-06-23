@@ -24,8 +24,12 @@ class XXRapidFrontingQWidget(QWidget):
         try:
             self.FrontingExpansionQTabWidget = FrontingExpansionQTabWidget(self)
             self.QHBoxLayout.addWidget(self.FrontingExpansionQTabWidget)
+            self.FrontingExpansionQTabWidget.changed.connect(self.on_expansion_changed)
         except Exception as ex:
             print(ex)
+
+    def on_expansion_changed(self):
+        self.changed.emit()
 
     def on_current_quart_changed(self):
         self.XXRapidFrontingExpansionQTabWidget.setCurrentIndex(self.XXRapidFrontingFramesQTabWidget.current_quart - 1)

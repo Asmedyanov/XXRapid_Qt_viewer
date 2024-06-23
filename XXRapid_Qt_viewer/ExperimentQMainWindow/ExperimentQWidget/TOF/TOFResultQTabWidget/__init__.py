@@ -1,25 +1,36 @@
 from PyQt5.QtWidgets import QTabWidget
-from .XXRapidTOFVelocityQWidget import *
+from .Graphics import *
+from SettingsQWidgets.ChildQTabWidget import *
 
 
-class XXRapidTOFVelocityQTabWidget(QTabWidget):
-    changed = pyqtSignal()
-
-    def __init__(self, motion_approximated_dict, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
-        super().__init__()
-        self.SettingsDict = settings_dict
-        self.motion_approximated_dict = motion_approximated_dict
+class TOFResultQTabWidget(ChildQTabWidget):
+    def __init__(self, parent):
+        super().__init__(parent, 'Result')
+        self.MotionQTabWidget = self.parent.MotionQTabWidget
+        self.MotionQTabWidget.changed.connect(self.refresh)
+        self.motion_approximated_dict = self.MotionQTabWidget.motion_approximated_dict
         self.velocity_dict = self.get_velocity_dict()
         self.XXRapidTOFVelocityQWidgetDict = dict()
-        for my_key, my_velocity_df in self.velocity_dict.items():
+        for my_key, my_df in self.velocity_dict.items():
+            self.current_key = my_key
+            self.current_df = my_df
             try:
-                self.XXRapidTOFVelocityQWidgetDict[my_key] = XXRapidTOFVelocityQWidget(my_velocity_df)
+                self.XXRapidTOFVelocityQWidgetDict[my_key] = Graphics(self)
                 self.addTab(self.XXRapidTOFVelocityQWidgetDict[my_key], my_key)
-                self.XXRapidTOFVelocityQWidgetDict[my_key].changed.connect(self.on_graph_changed)
             except Exception as ex:
                 print(f'XXRapidTOFVelocityQWidgetDict[{my_key}] {ex}')
+
+    def refresh(self):
+        self.motion_approximated_dict = self.MotionQTabWidget.motion_approximated_dict
+        self.velocity_dict = self.get_velocity_dict()
+        for my_key, my_df in self.velocity_dict.items():
+            self.current_key = my_key
+            self.current_df = my_df
+            try:
+                self.XXRapidTOFVelocityQWidgetDict[my_key].refresh()
+            except Exception as ex:
+                print(f'XXRapidTOFVelocityQWidgetDict[{my_key}] {ex}')
+        self.changed.emit()
 
     def on_graph_changed(self):
         self.changed.emit()

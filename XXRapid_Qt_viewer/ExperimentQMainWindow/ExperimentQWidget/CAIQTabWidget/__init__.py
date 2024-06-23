@@ -9,7 +9,7 @@ class CAIQTabWidget(QTabWidget):
         super().__init__()
         self.current_df = self.parent.WaveformProcessingWidget.WaveformPhysicalValuesQWidget.CurrentQWidget.current_df_to_plot
         self.current_function = self.parent.WaveformProcessingWidget.WaveformPhysicalValuesQWidget.PowerQWidget.current_function
-        self.TOF_data_dict = self.parent.XXRapidTOFQTabWidget.XXRapidTOFVelocityQTabWidget.get_velocity_dict()
+        self.TOF_data_dict = self.parent.XXRapidTOFQTabWidget.TOFResultQTabWidget.get_velocity_dict()
         self.explosion_current_dict = self.get_explosion_current_dict()
         try:
             self.CAIExplosionCurrentQTabWidget = CAIExplosionCurrentQTabWidget(self)

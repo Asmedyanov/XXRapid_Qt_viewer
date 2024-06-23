@@ -12,39 +12,40 @@ class MotionQWidget(ChildQWidget):
         self.PhysicalExpansionQWidget = self.parent.PhysicalExpansionQWidget
 
         self.expansion_dict = self.PhysicalExpansionQWidget.expansion_dict
-        #self.PhysicalExpansionQWidget.changed.connect(self.refresh())
+        self.PhysicalExpansionQWidget.changed.connect(self.refresh)
 
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
         self.SettingsQWidget = Settings(self)
         self.cross_1 = int(self.SettingsQWidget.CrossSection1SettingLine.value)
         self.cross_2 = int(self.SettingsQWidget.CrossSection2SettingLine.value)
-        '''self.motion_dict = self.get_motion_dict()
+        self.index_to_plot_list = [self.cross_1, self.cross_2]
+        self.motion_dict = self.get_motion_dict()
         self.motion_approximated_dict = self.get_approximation()
         self.GraphicsQTabWidget = GraphicsQTabWidget(self)
 
         self.QHBoxLayout.addWidget(self.GraphicsQTabWidget, stretch=1)
 
         self.QHBoxLayout.addWidget(self.SettingsQWidget)
-        self.SettingsQWidget.changed.connect(self.on_settings)'''
+        self.SettingsQWidget.changed.connect(self.on_settings)
 
     def get_motion_dict(self):
         motion_dict = dict()
         for my_key, my_quart in self.expansion_dict.items():
-            x_values = [item['x'] for item in my_quart]
+            x_values = [item['x'] for item in my_quart.values()]
             min_x = min(len(x) for x in x_values)
             motion_list = []
             for i in range(min_x):
                 motion_time_list = []
                 motion_expansion_list = []
-                for front in my_quart:
-                    motion_time_list.append(front['Time'])
+                for front in my_quart.values():
+                    motion_time_list.append(front['time'])
                     motion_expansion_list.append(front['expansion'][i])
                 motion_list.append(
                     {
                         'index': i,
-                        'x': my_quart[0]['x'][i],
-                        'width': my_quart[0]['Width'][i],
+                        'x': my_quart['1']['x'][i],
+                        'width': my_quart['1']['width'][i],
                         'time': np.array(motion_time_list),
                         'expansion': np.array(motion_expansion_list)
                     }
@@ -55,17 +56,17 @@ class MotionQWidget(ChildQWidget):
 
     def refresh(self):
         self.expansion_dict = self.PhysicalExpansionQWidget.expansion_dict
-        '''self.motion_dict = self.get_motion_dict()
+        self.motion_dict = self.get_motion_dict()
         self.motion_approximated_dict = self.get_approximation()
         self.on_settings()
-        self.changed.emit()'''
+        self.changed.emit()
 
     def get_approximation(self):
         motion_approximated_dict = dict()
         for my_key, my_quart in self.motion_dict.items():
             approximated_list = []
             for motion_data in my_quart:
-                t_data_0 = motion_data['time']
+                t_data_0 = motion_data['time'] * 1e9
                 x_data_0 = motion_data['expansion']
                 t_data = []
                 expansion_data = []
@@ -82,7 +83,8 @@ class MotionQWidget(ChildQWidget):
                     expansion_data.append(x_data_0[k])
                 if len(t_data) < 4:
                     continue
-                w = np.arange(len(t_data)) + 0.05 * len(t_data)
+                w = np.arange(len(t_data))+ 0.05 * len(t_data)
+                w = np.exp(w)
                 # w = np.ones(len(t_data))
                 w = w / np.sum(w)
                 line_poly_coef, res, _, _, _ = np.polyfit(t_data, expansion_data, 1, full=True, w=w)
@@ -97,9 +99,9 @@ class MotionQWidget(ChildQWidget):
                         'width': motion_data['width'],
                         'x': motion_data['x'],
                         'index': motion_data['index'],
-                        'velocity': velocity,
-                        'velocity_error': velocity_error,
-                        'onset_time': onset_time,
+                        'velocity': velocity,  # km/s
+                        'velocity_error': velocity_error,  # km/s
+                        'onset_time': onset_time,  # ns
                         'onset_time_error': onset_time_error,
                         't_approx': np.arange(onset_time, t_data_0[-1]),
                         'expansion_approx': np.poly1d(line_poly_coef)(np.arange(onset_time, t_data_0[-1]))
@@ -111,7 +113,7 @@ class MotionQWidget(ChildQWidget):
     def on_settings(self):
         self.cross_1 = int(self.SettingsQWidget.CrossSection1SettingLine.value)
         self.cross_2 = int(self.SettingsQWidget.CrossSection2SettingLine.value)
-
+        self.index_to_plot_list = [self.cross_1, self.cross_2]
         try:
             self.GraphicsQTabWidget.refresh()
         except Exception as ex:

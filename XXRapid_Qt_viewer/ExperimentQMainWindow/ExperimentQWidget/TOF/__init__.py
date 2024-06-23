@@ -1,4 +1,4 @@
-from .TOFVelocityQTabWidget import *
+from .TOFResultQTabWidget import *
 from .MotionQWidget import *
 from .PhysicalExpansionQWidget import *
 from SettingsQWidgets.ChildQTabWidget import *
@@ -10,7 +10,7 @@ class XXRapidTOFQTabWidget(ChildQTabWidget):
         self.XXRapidFrontingQWidget = self.parent.XXRapidFrontingQWidget
 
         self.WaveformTimingQWidget = self.parent.WaveformQTabWidget.WaveformProcessingQTabWidget.WaveformTimingQWidget
-        self.WaveformTimingQWidget.changed.connect(self.refresh)
+        # self.WaveformTimingQWidget.changed.connect(self.refresh)
         try:
             self.PhysicalExpansionQWidget = PhysicalExpansionQWidget(self)
             self.addTab(self.PhysicalExpansionQWidget, self.PhysicalExpansionQWidget.settings_key)
@@ -19,6 +19,11 @@ class XXRapidTOFQTabWidget(ChildQTabWidget):
         try:
             self.MotionQTabWidget = MotionQWidget(self)
             self.addTab(self.MotionQTabWidget, self.MotionQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.TOFResultQTabWidget = TOFResultQTabWidget(self)
+            self.addTab(self.TOFResultQTabWidget, self.TOFResultQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
 
