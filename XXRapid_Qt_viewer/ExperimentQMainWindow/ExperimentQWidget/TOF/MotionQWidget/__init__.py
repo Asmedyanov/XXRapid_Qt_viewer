@@ -1,33 +1,64 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout
 import numpy as np
-from .SettingsQWidget import *
+from .Settings import *
 from .GraphicsQTabWidget import *
 import os
+from SettingsQWidgets.ChildQWidget import *
 
 
-class XXRapidTOFMotionQWidget(QWidget):
-    changed = pyqtSignal()
+class MotionQWidget(ChildQWidget):
+    def __init__(self, parent):
+        super().__init__(parent, 'Motion')
+        self.PhysicalExpansionQWidget = self.parent.PhysicalExpansionQWidget
 
-    def __init__(self, motion_dict, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
-        super().__init__()
-        self.SettingsDict = settings_dict
+        self.expansion_dict = self.PhysicalExpansionQWidget.expansion_dict
+        #self.PhysicalExpansionQWidget.changed.connect(self.refresh())
+
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
-        self.SettingsQWidget = SettingsQWidget(settings_dict)
-        self.SettingsDict = self.SettingsQWidget.SettingsDict
+        self.SettingsQWidget = Settings(self)
         self.cross_1 = int(self.SettingsQWidget.CrossSection1SettingLine.value)
         self.cross_2 = int(self.SettingsQWidget.CrossSection2SettingLine.value)
-        self.motion_dict = motion_dict
+        '''self.motion_dict = self.get_motion_dict()
         self.motion_approximated_dict = self.get_approximation()
-        self.GraphicsQTabWidget = GraphicsQTabWidget(motion_dict,
-                                                     self.motion_approximated_dict, [self.cross_1, self.cross_2])
+        self.GraphicsQTabWidget = GraphicsQTabWidget(self)
 
         self.QHBoxLayout.addWidget(self.GraphicsQTabWidget, stretch=1)
 
         self.QHBoxLayout.addWidget(self.SettingsQWidget)
-        self.SettingsQWidget.changed.connect(self.OnSettingsQWidget)
+        self.SettingsQWidget.changed.connect(self.on_settings)'''
+
+    def get_motion_dict(self):
+        motion_dict = dict()
+        for my_key, my_quart in self.expansion_dict.items():
+            x_values = [item['x'] for item in my_quart]
+            min_x = min(len(x) for x in x_values)
+            motion_list = []
+            for i in range(min_x):
+                motion_time_list = []
+                motion_expansion_list = []
+                for front in my_quart:
+                    motion_time_list.append(front['Time'])
+                    motion_expansion_list.append(front['expansion'][i])
+                motion_list.append(
+                    {
+                        'index': i,
+                        'x': my_quart[0]['x'][i],
+                        'width': my_quart[0]['Width'][i],
+                        'time': np.array(motion_time_list),
+                        'expansion': np.array(motion_expansion_list)
+                    }
+                )
+
+            motion_dict[my_key] = motion_list
+        return motion_dict
+
+    def refresh(self):
+        self.expansion_dict = self.PhysicalExpansionQWidget.expansion_dict
+        '''self.motion_dict = self.get_motion_dict()
+        self.motion_approximated_dict = self.get_approximation()
+        self.on_settings()
+        self.changed.emit()'''
 
     def get_approximation(self):
         motion_approximated_dict = dict()
@@ -77,21 +108,19 @@ class XXRapidTOFMotionQWidget(QWidget):
             motion_approximated_dict[my_key] = approximated_list
         return motion_approximated_dict
 
-    def OnSettingsQWidget(self):
-        self.SettingsDict = self.SettingsQWidget.SettingsDict
+    def on_settings(self):
         self.cross_1 = int(self.SettingsQWidget.CrossSection1SettingLine.value)
         self.cross_2 = int(self.SettingsQWidget.CrossSection2SettingLine.value)
 
         try:
-            self.GraphicsQTabWidget.set_data(self.motion_dict, self.motion_approximated_dict,
-                                             [self.cross_1, self.cross_2])
+            self.GraphicsQTabWidget.refresh()
         except Exception as ex:
             print(f'GraphicsQTabWidget.set_data {ex}')
 
     def set_data(self, motion_dict):
         self.motion_dict = motion_dict
         self.motion_approximated_dict = self.get_approximation()
-        self.OnSettingsQWidget()
+        self.on_settings()
 
     def save_report(self, folder_name):
         if 'XXRapid_motion' not in os.listdir(folder_name):

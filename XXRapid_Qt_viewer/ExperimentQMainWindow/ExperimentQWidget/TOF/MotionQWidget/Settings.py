@@ -1,9 +1,9 @@
 from SettingsQWidgets.SettingsBoxQWidget import *
 
 
-class SettingsQWidget(SettingsBoxQWidget):
-    def __init__(self, settings_dict=None):
-        super().__init__(settings_dict)
+class Settings(SettingsBoxQWidget):
+    def __init__(self, parent):
+        super().__init__(parent)
         key = 'Cross_section_1'
         default = self.test_key(key, 3)
 

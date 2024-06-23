@@ -1264,6 +1264,7 @@
       <Foil_length>40.0</Foil_length>
       <Foil_waist>3.0</Foil_waist>
       <Foil_width>50.0</Foil_width>
+      <Graphics>None</Graphics>
       <Scale>45.0</Scale>
       <User_comment>User_comment</User_comment>
     </Physical_expansion>

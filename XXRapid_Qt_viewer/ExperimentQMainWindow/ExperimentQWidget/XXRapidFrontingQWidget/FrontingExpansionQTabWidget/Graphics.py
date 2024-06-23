@@ -4,7 +4,7 @@ from MPLQWidgets.MatplotlibSingeAxQWidget import *
 class Graphics(MatplotlibSingeAxQWidget):
     def __init__(self, parent):
         self.parent = parent
-        self.current_expansion_dict = self.parent.current_expansion_dict
+        self.current_expansion_dict = dict(sorted(self.parent.current_expansion_dict.items()))
         super().__init__()
         self.expansion_line_dict = dict()
         for my_key, my_expansion in self.current_expansion_dict.items():

@@ -1,6 +1,6 @@
 from .TOFVelocityQTabWidget import *
-from .MotionQTabWidget import *
-from .PhysicalExpansionQTabWidget import *
+from .MotionQWidget import *
+from .PhysicalExpansionQWidget import *
 from SettingsQWidgets.ChildQTabWidget import *
 
 
@@ -8,8 +8,19 @@ class XXRapidTOFQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'TOF')
         self.XXRapidFrontingQWidget = self.parent.XXRapidFrontingQWidget
-        self.expansion_dict = self.XXRapidFrontingQWidget.XXRapidFrontingFramesQTabWidget.expansion_dict
-        self.XXRapidFrontingQWidget.changed.connect(self.refresh)
+
+        self.WaveformTimingQWidget = self.parent.WaveformQTabWidget.WaveformProcessingQTabWidget.WaveformTimingQWidget
+        self.WaveformTimingQWidget.changed.connect(self.refresh)
+        try:
+            self.PhysicalExpansionQWidget = PhysicalExpansionQWidget(self)
+            self.addTab(self.PhysicalExpansionQWidget, self.PhysicalExpansionQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.MotionQTabWidget = MotionQWidget(self)
+            self.addTab(self.MotionQTabWidget, self.MotionQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
 
     def refresh(self):
         self.changed.emit()
