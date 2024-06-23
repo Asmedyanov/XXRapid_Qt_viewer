@@ -11,6 +11,9 @@ class QuartQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, parent.current_key)
         self.camera_data = self.parent.current_camera_data
+        if self.settings_key not in self.parent.expansion_dict.keys():
+            self.parent.expansion_dict[self.settings_key] = dict()
+        self.expansion_dict = self.parent.expansion_dict[self.settings_key]
         try:
             self.TracerQWidget = TracerQWidget(self)
             self.addTab(self.TracerQWidget, self.TracerQWidget.settings_key)

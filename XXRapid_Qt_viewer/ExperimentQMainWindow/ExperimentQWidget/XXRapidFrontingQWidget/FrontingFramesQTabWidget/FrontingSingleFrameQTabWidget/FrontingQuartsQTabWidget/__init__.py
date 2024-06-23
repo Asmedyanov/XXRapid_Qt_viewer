@@ -9,14 +9,24 @@ class FrontingQuartsQTabWidget(ChildQTabWidget):
         self.SeparatorQWidget.changed.connect(self.refresh)
         self.camera_data_dict = self.SeparatorQWidget.quarts_dict
         self.QuartQTabWidgetDict = dict()
+        self.expansion_dict = self.parent.expansion_dict
         for my_key, my_camera_data in self.camera_data_dict.items():
             self.current_key = my_key
             self.current_camera_data = my_camera_data
             try:
                 self.QuartQTabWidgetDict[my_key] = QuartQTabWidget(self)
                 self.addTab(self.QuartQTabWidgetDict[my_key], my_key)
+                self.QuartQTabWidgetDict[my_key].changed.connect(self.on_quart)
             except Exception as ex:
                 print(ex)
+        self.currentChanged.connect(self.on_current_changed)
+
+    def on_current_changed(self):
+        self.parent.quart_index = self.currentIndex()
+        self.parent.currentQuartChanged.emit()
+
+    def on_quart(self):
+        self.changed.emit()
 
     def refresh(self):
         self.camera_data_dict = self.SeparatorQWidget.quarts_dict

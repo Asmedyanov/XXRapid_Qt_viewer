@@ -12,6 +12,7 @@ class XXRapidFrontingQWidget(QWidget):
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.XXRapidOriginalQWidget = self.parent.XXRapidOriginalQWidget
         self.camera_data_dict = self.XXRapidOriginalQWidget.CameraDataDict
+        self.quart_index = 0
         super().__init__()
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)

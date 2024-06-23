@@ -10,6 +10,8 @@ class FrontingSingleFrameQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, parent.current_key)
         self.camera_data = self.parent.current_camera_data
+        self.expansion_dict = self.parent.expansion_dict
+        self.quart_index = 0
         try:
             self.SeparatorQWidget = FrontingSeparatorQWidget(self)
             self.addTab(self.SeparatorQWidget, self.SeparatorQWidget.settings_key)
@@ -19,8 +21,17 @@ class FrontingSingleFrameQTabWidget(ChildQTabWidget):
         try:
             self.FrontingQuartsQTabWidget = FrontingQuartsQTabWidget(self)
             self.addTab(self.FrontingQuartsQTabWidget, self.FrontingQuartsQTabWidget.settings_key)
+            self.FrontingQuartsQTabWidget.currentChanged.connect(self.on_current_quart_changed)
+            self.FrontingQuartsQTabWidget.changed.connect(self.on_quart_data_changed)
         except Exception as ex:
             print(ex)
+
+    def on_quart_data_changed(self):
+        self.changed.emit()
+
+    def on_current_quart_changed(self):
+        self.parent.quart_index = self.quart_index
+        self.currentQuartChanged.emit()
         '''self.expansion_dict = dict()
         self.tabBarDoubleClicked.connect(self.on_tab_bar)
         for my_key, my_camera_data in self.XXRapidFrontingSeparatorQWidget.quarts_dict.items():

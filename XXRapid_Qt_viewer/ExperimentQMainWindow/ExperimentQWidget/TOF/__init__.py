@@ -1,18 +1,20 @@
-from .XXRapidTOFVelocityQTabWidget import *
+from .TOFVelocityQTabWidget import *
 from .MotionQTabWidget import *
 from .PhysicalExpansionQTabWidget import *
+from SettingsQWidgets.ChildQTabWidget import *
 
 
-class XXRapidTOFQTabWidget(QTabWidget):
-    changed = pyqtSignal()
+class XXRapidTOFQTabWidget(ChildQTabWidget):
+    def __init__(self, parent):
+        super().__init__(parent, 'TOF')
+        self.XXRapidFrontingQWidget = self.parent.XXRapidFrontingQWidget
+        self.expansion_dict = self.XXRapidFrontingQWidget.XXRapidFrontingFramesQTabWidget.expansion_dict
+        self.XXRapidFrontingQWidget.changed.connect(self.refresh)
 
-    def __init__(self, timing_dict, expansion_dict, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
-        super().__init__()
-        self.SettingsDict = settings_dict
+    def refresh(self):
+        self.changed.emit()
 
-        key = 'Physical_expansion'
+        '''key = 'Physical_expansion'
         settings = dict()
         if key in settings_dict.keys():
             settings = settings_dict[key]
@@ -51,7 +53,7 @@ class XXRapidTOFQTabWidget(QTabWidget):
             # self.XXRapidTOFMotionQWidget.changed.connect(self.on_XXRapidTOFMotionQWidget)
             self.SettingsDict[key] = self.XXRapidTOFVelocityQTabWidget.SettingsDict
         except Exception as ex:
-            print(f'XXRapidTOFVelocityQTabWidget {ex}')
+            print(f'XXRapidTOFVelocityQTabWidget {ex}')'''
 
     def get_explosion_time(self, width=5.0, quart=1):
         approximation_data = self.XXRapidTOFVelocityQTabWidget.get_velocity_dict()
