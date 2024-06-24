@@ -10,7 +10,7 @@ class ExperimentQMainWindow(QMainWindow):
         if self.parent is not None:
             self.folder_path = self.parent.folder_path
         self.title = self.folder_path.split('/')[-1]
-        self.auto_refresh = True
+        self.auto_refresh = False
         title = f'Experiment {self.title}'
         if self.auto_refresh:
             title = f'{title} (auto refresh)'

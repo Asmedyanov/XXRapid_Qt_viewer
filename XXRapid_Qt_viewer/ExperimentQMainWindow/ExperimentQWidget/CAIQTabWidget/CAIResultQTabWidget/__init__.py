@@ -13,10 +13,21 @@ class CAIResultQTabWidget(QTabWidget):
         self.current_density_dict = self.parent.ExplosionCurrentDensityQWidget.current_density_dict
         self.cai_dict = self.get_cai_dict()
         self.cai_plot_dict = dict()
-        self.comsol_df = self.parent.parent.ComsolSimulation.CAIComsolQWidget.get_cai_df()
+        try:
+            self.comsol_dict = self.parent.parent.ComsolSimulationQTabWidget.ComsolCurrentQTabWidget.CAI_dict
+        except Exception as ex:
+            print(ex)
         for my_key, my_df in self.cai_dict.items():
-            self.cai_plot_dict[my_key] = Graphics(self, my_df)
-            self.addTab(self.cai_plot_dict[my_key], my_key)
+            self.current_df = my_df
+            try:
+                self.current_comsol = self.comsol_dict[my_key]
+            except Exception as ex:
+                print(ex)
+            try:
+                self.cai_plot_dict[my_key] = Graphics(self)
+                self.addTab(self.cai_plot_dict[my_key], my_key)
+            except Exception as ex:
+                print(ex)
 
     def update(self):
         self.current_df = self.parent.current_df.copy()
@@ -48,7 +59,7 @@ class CAIResultQTabWidget(QTabWidget):
                 'width': my_df['width'],
                 'current_density': my_df['current_density'],
                 'onset_time': my_df['onset_time'],
-                'cai': self.cai_function(my_df['onset_time'] * 1e-9) / my_df['cross_section']
+                'cai': self.cai_function(my_df['onset_time'] * 1e-9) / (my_df['cross_section']*1e4)**2
             })
             cai_dict[my_key] = cai_df
 

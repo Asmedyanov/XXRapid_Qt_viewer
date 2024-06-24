@@ -1,4 +1,4 @@
-from .XXRapidOverlappedCameraSettingsQWidget import *
+from .Settings import *
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 import numpy as np
@@ -8,12 +8,16 @@ import skimage
 
 
 class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
-    def __init__(self, camera_data, settings_dict=None):
+    def __init__(self, parent):
+        self.parent = parent
+        self.settings_key = self.parent.current_key
+        self.parent.test_settings_key(self.settings_key)
+        self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=XXRapidOverlappedCameraSettingsQWidget(settings_dict)
+            settings_box=Settings(self)
         )
-        self.camera_data = camera_data
+        self.camera_data = self.parent.current_camera_data
         self.MPLQWidget.ax.set(title='Overlapped image', xlabel='x,mm', ylabel='y,mm')
         self.dx = 1.0 / self.SettingsBox.ScaleSettingLine.value
         self.sigma_before = self.SettingsBox.SigmaBeforeLine.value

@@ -58,7 +58,7 @@ class TOFResultQTabWidget(ChildQTabWidget):
                 onset_list.append(motion_data['onset_time'])
                 onset_error_list.append(motion_data['onset_time_error'])
 
-            velocity_dict[my_key] = pd.DataFrame({
+            df= pd.DataFrame({
                 'x': x_list,
                 'width': cross_section_list,
                 'velocity': velocity_list,
@@ -66,6 +66,8 @@ class TOFResultQTabWidget(ChildQTabWidget):
                 'onset_time': onset_list,
                 'onset_time_error': onset_error_list,
             })
+            df_smooth = df.rolling(40, min_periods=1).mean()
+            velocity_dict[my_key]=df_smooth
         return velocity_dict
 
     def save_report(self, folder_name):

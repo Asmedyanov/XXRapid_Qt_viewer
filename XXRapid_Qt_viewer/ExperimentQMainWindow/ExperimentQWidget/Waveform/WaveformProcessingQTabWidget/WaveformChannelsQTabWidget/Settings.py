@@ -49,49 +49,46 @@ class Settings(SettingsBoxQWidget):
         )
         self.SettingsDict[key] = self.ShiftSettingsQWidget.value
 
+        key = 'Delay'
+        default = self.test_key(key, 0)
+        self.DelaySettingsQWidget = SettingsLineQWidget(
+            name=key,
+            default=default,
+            comment='ns',
+            limit=[-1e9, 1e9],
+            step=1
+        )
+        self.SettingsDict[key] = self.DelaySettingsQWidget.value
+
         self.Diagnostics = self.DiagnosticsSettingsQWidget.value
-        self.DiagnosticsSettingsQWidget.changed.connect(self.OnDiagnosticsSettingsQWidgetChanged)
+        self.DiagnosticsSettingsQWidget.changed.connect(self.on_settings_line_changed)
         self.QVBoxLayout.addWidget(self.DiagnosticsSettingsQWidget)
 
         self.TauSmooth = self.SmoothingSettingsQWidget.value * 1.0e-9
-        self.SmoothingSettingsQWidget.changed.connect(self.OnSmoothingSettingsQWidgetChanged)
+        self.SmoothingSettingsQWidget.changed.connect(self.on_settings_line_changed)
         self.QVBoxLayout.addWidget(self.SmoothingSettingsQWidget)
 
         self.Coefficient = self.CoefficientSettingsQWidget.value
-        self.CoefficientSettingsQWidget.changed.connect(self.OnCoefficientSettingsQWidgetChanged)
+        self.CoefficientSettingsQWidget.changed.connect(self.on_settings_line_changed)
         self.QVBoxLayout.addWidget(self.CoefficientSettingsQWidget)
 
         self.Shift = self.ShiftSettingsQWidget.value
-        self.ShiftSettingsQWidget.changed.connect(self.OnShiftSettingsQWidgetChanged)
+        self.ShiftSettingsQWidget.changed.connect(self.on_settings_line_changed)
         self.QVBoxLayout.addWidget(self.ShiftSettingsQWidget)
 
-    def OnShiftSettingsQWidgetChanged(self):
-        self.Shift = self.ShiftSettingsQWidget.value
-        self.SettingsDict['Shift'] = self.ShiftSettingsQWidget.value
-        self.changed.emit()
+        self.Delay = self.DelaySettingsQWidget.value * 1e-9
+        self.DelaySettingsQWidget.changed.connect(self.on_settings_line_changed)
+        self.QVBoxLayout.addWidget(self.DelaySettingsQWidget)
 
-    def OnDiagnosticsSettingsQWidgetChanged(self):
-        self.Diagnostics = self.DiagnosticsSettingsQWidget.value
+    def on_settings_line_changed(self):
         self.SettingsDict['Diagnostics'] = self.DiagnosticsSettingsQWidget.value
-        self.changed.emit()
-
-    def OnSmoothingSettingsQWidgetChanged(self):
-        self.TauSmooth = self.SmoothingSettingsQWidget.value * 1.0e-9
         self.SettingsDict['Smoothing'] = self.SmoothingSettingsQWidget.value
-        self.changed.emit()
-
-    def OnCoefficientSettingsQWidgetChanged(self):
-        self.Coefficient = self.CoefficientSettingsQWidget.value
         self.SettingsDict['Coefficient'] = self.CoefficientSettingsQWidget.value
-        self.changed.emit()
-
-    def set_settings(self, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
-        self.SettingsDict = settings_dict
-        try:
-            default = settings_dict['Diagnostics']
-        except:
-            default = 'Systron'
-        self.DiagnosticsSettingsQWidget.QComboBox.setCurrentText(default)
-        self.SettingsDict['Diagnostics'] = self.DiagnosticsSettingsQWidget.value
+        self.SettingsDict['Shift'] = self.ShiftSettingsQWidget.value
+        self.SettingsDict['Delay'] = self.DelaySettingsQWidget.value
+        self.Diagnostics = self.DiagnosticsSettingsQWidget.value
+        self.TauSmooth = self.SmoothingSettingsQWidget.value * 1.0e-9
+        self.Coefficient = self.CoefficientSettingsQWidget.value
+        self.Shift = self.ShiftSettingsQWidget.value
+        self.Delay = self.DelaySettingsQWidget.value * 1e-9
+        super().on_settings_line_changed()

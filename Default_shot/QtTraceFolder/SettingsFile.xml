@@ -1,4 +1,11 @@
 <Experiment_settings>
+  <CAI>
+    <Explosion_current>None</Explosion_current>
+    <Explosion_current_density>
+      <User_comment>User_comment</User_comment>
+      <foil_thickness>10</foil_thickness>
+    </Explosion_current_density>
+  </CAI>
   <Comsol>
     <CAI_Comsol>None</CAI_Comsol>
     <Current_density>None</Current_density>
@@ -180,15 +187,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>1</Shutter_order>
-                <Threshold>39</Threshold>
-                <Trust>39</Trust>
+                <Threshold>37</Threshold>
+                <Trust>37</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>5</Shutter_order>
                 <Threshold>66</Threshold>
-                <Trust>100</Trust>
+                <Trust>66</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -216,15 +223,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>1</Shutter_order>
-                <Threshold>26</Threshold>
-                <Trust>26</Trust>
+                <Threshold>27</Threshold>
+                <Trust>27</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>5</Shutter_order>
-                <Threshold>66</Threshold>
-                <Trust>66</Trust>
+                <Threshold>72</Threshold>
+                <Trust>72</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -252,15 +259,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>1</Shutter_order>
-                <Threshold>32</Threshold>
-                <Trust>100</Trust>
+                <Threshold>35</Threshold>
+                <Trust>35</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>5</Shutter_order>
-                <Threshold>64</Threshold>
-                <Trust>64</Trust>
+                <Threshold>68</Threshold>
+                <Trust>68</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -289,14 +296,14 @@
                 <Approximation>curve</Approximation>
                 <Shutter_order>1</Shutter_order>
                 <Threshold>30</Threshold>
-                <Trust>100</Trust>
+                <Trust>30</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>5</Shutter_order>
                 <Threshold>61</Threshold>
-                <Trust>100</Trust>
+                <Trust>61</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -486,22 +493,22 @@
               <Front_0>
                 <Approximation>line</Approximation>
                 <Shutter_order>0</Shutter_order>
-                <Threshold>10</Threshold>
-                <Trust>100</Trust>
+                <Threshold>8</Threshold>
+                <Trust>8</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_0>
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>2</Shutter_order>
-                <Threshold>31</Threshold>
-                <Trust>31</Trust>
+                <Threshold>33</Threshold>
+                <Trust>33</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>6</Shutter_order>
-                <Threshold>61</Threshold>
-                <Trust>61</Trust>
+                <Threshold>80</Threshold>
+                <Trust>80</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -529,15 +536,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>2</Shutter_order>
-                <Threshold>28</Threshold>
-                <Trust>100</Trust>
+                <Threshold>29</Threshold>
+                <Trust>29</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>6</Shutter_order>
-                <Threshold>66</Threshold>
-                <Trust>100</Trust>
+                <Threshold>71</Threshold>
+                <Trust>71</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -565,15 +572,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>2</Shutter_order>
-                <Threshold>28</Threshold>
-                <Trust>28</Trust>
+                <Threshold>31</Threshold>
+                <Trust>31</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>6</Shutter_order>
-                <Threshold>61</Threshold>
-                <Trust>61</Trust>
+                <Threshold>67</Threshold>
+                <Trust>67</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -601,15 +608,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>2</Shutter_order>
-                <Threshold>30</Threshold>
-                <Trust>100</Trust>
+                <Threshold>32</Threshold>
+                <Trust>32</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>6</Shutter_order>
-                <Threshold>65</Threshold>
-                <Trust>100</Trust>
+                <Threshold>67</Threshold>
+                <Trust>67</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -812,15 +819,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>3</Shutter_order>
-                <Threshold>30</Threshold>
-                <Trust>100</Trust>
+                <Threshold>31</Threshold>
+                <Trust>31</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>7</Shutter_order>
-                <Threshold>65</Threshold>
-                <Trust>100</Trust>
+                <Threshold>66</Threshold>
+                <Trust>66</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -848,8 +855,8 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>3</Shutter_order>
-                <Threshold>25</Threshold>
-                <Trust>100</Trust>
+                <Threshold>35</Threshold>
+                <Trust>35</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
@@ -884,15 +891,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>3</Shutter_order>
-                <Threshold>35</Threshold>
-                <Trust>35</Trust>
+                <Threshold>36</Threshold>
+                <Trust>36</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>7</Shutter_order>
-                <Threshold>61</Threshold>
-                <Trust>100</Trust>
+                <Threshold>62</Threshold>
+                <Trust>62</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -927,8 +934,8 @@
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>7</Shutter_order>
-                <Threshold>61</Threshold>
-                <Trust>61</Trust>
+                <Threshold>56</Threshold>
+                <Trust>56</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -1121,22 +1128,22 @@
               <Front_0>
                 <Approximation>line</Approximation>
                 <Shutter_order>0</Shutter_order>
-                <Threshold>6</Threshold>
-                <Trust>6</Trust>
+                <Threshold>5</Threshold>
+                <Trust>5</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_0>
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>4</Shutter_order>
-                <Threshold>23</Threshold>
-                <Trust>23</Trust>
+                <Threshold>26</Threshold>
+                <Trust>26</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>8</Shutter_order>
-                <Threshold>65</Threshold>
-                <Trust>100</Trust>
+                <Threshold>68</Threshold>
+                <Trust>68</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -1157,22 +1164,22 @@
               <Front_0>
                 <Approximation>line</Approximation>
                 <Shutter_order>0</Shutter_order>
-                <Threshold>6</Threshold>
-                <Trust>100</Trust>
+                <Threshold>8</Threshold>
+                <Trust>8</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_0>
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>4</Shutter_order>
-                <Threshold>30</Threshold>
-                <Trust>100</Trust>
+                <Threshold>37</Threshold>
+                <Trust>37</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>8</Shutter_order>
-                <Threshold>65</Threshold>
-                <Trust>100</Trust>
+                <Threshold>73</Threshold>
+                <Trust>73</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -1200,15 +1207,15 @@
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>4</Shutter_order>
-                <Threshold>29</Threshold>
-                <Trust>29</Trust>
+                <Threshold>27</Threshold>
+                <Trust>27</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>8</Shutter_order>
                 <Threshold>63</Threshold>
-                <Trust>100</Trust>
+                <Trust>63</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -1229,22 +1236,22 @@
               <Front_0>
                 <Approximation>line</Approximation>
                 <Shutter_order>0</Shutter_order>
-                <Threshold>5</Threshold>
-                <Trust>100</Trust>
+                <Threshold>8</Threshold>
+                <Trust>8</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_0>
               <Front_1>
                 <Approximation>curve</Approximation>
                 <Shutter_order>4</Shutter_order>
-                <Threshold>25</Threshold>
-                <Trust>100</Trust>
+                <Threshold>32</Threshold>
+                <Trust>32</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_1>
               <Front_2>
                 <Approximation>curve</Approximation>
                 <Shutter_order>8</Shutter_order>
-                <Threshold>68</Threshold>
-                <Trust>100</Trust>
+                <Threshold>65</Threshold>
+                <Trust>65</Trust>
                 <User_comment>User_comment</User_comment>
               </Front_2>
             </Fronts>
@@ -1270,6 +1277,40 @@
       </Camera_4>
     </Fronting_frames>
   </Fronting>
+  <Overlapped_image>
+    <Camera_1>
+      <Mask_threshold>10</Mask_threshold>
+      <Scale>50</Scale>
+      <Sigma_before>1.0</Sigma_before>
+      <Sigma_overlapped>1.0</Sigma_overlapped>
+      <Sigma_shot>1.0</Sigma_shot>
+      <User_comment>User_comment</User_comment>
+    </Camera_1>
+    <Camera_2>
+      <Mask_threshold>10</Mask_threshold>
+      <Scale>50</Scale>
+      <Sigma_before>1.0</Sigma_before>
+      <Sigma_overlapped>1.0</Sigma_overlapped>
+      <Sigma_shot>1.0</Sigma_shot>
+      <User_comment>User_comment</User_comment>
+    </Camera_2>
+    <Camera_3>
+      <Mask_threshold>8</Mask_threshold>
+      <Scale>50</Scale>
+      <Sigma_before>1.0</Sigma_before>
+      <Sigma_overlapped>1.0</Sigma_overlapped>
+      <Sigma_shot>1.0</Sigma_shot>
+      <User_comment>User_comment</User_comment>
+    </Camera_3>
+    <Camera_4>
+      <Mask_threshold>7</Mask_threshold>
+      <Scale>50</Scale>
+      <Sigma_before>1.0</Sigma_before>
+      <Sigma_overlapped>1.0</Sigma_overlapped>
+      <Sigma_shot>1.0</Sigma_shot>
+      <User_comment>User_comment</User_comment>
+    </Camera_4>
+  </Overlapped_image>
   <Overlapped_images>
     <Camera_1>
       <Mask_threshold>8</Mask_threshold>
@@ -1356,7 +1397,8 @@
       </Timing>
       <Waveform_channels>
         <Channel_1>
-          <Coefficient>-32500</Coefficient>
+          <Coefficient>-32500.0</Coefficient>
+          <Delay>0.0</Delay>
           <Diagnostics>Rogowski_coil</Diagnostics>
           <Shift>0.0</Shift>
           <Smoothing>50</Smoothing>
@@ -1364,6 +1406,7 @@
         </Channel_1>
         <Channel_2>
           <Coefficient>1</Coefficient>
+          <Delay>0</Delay>
           <Diagnostics>Systron</Diagnostics>
           <Shift>0.0</Shift>
           <Smoothing>5</Smoothing>
@@ -1371,6 +1414,7 @@
         </Channel_2>
         <Channel_3>
           <Coefficient>-1</Coefficient>
+          <Delay>0</Delay>
           <Diagnostics>XXRapid_trig_out</Diagnostics>
           <Shift>1.84</Shift>
           <Smoothing>10</Smoothing>
@@ -1378,6 +1422,7 @@
         </Channel_3>
         <Channel_4>
           <Coefficient>1000</Coefficient>
+          <Delay>0</Delay>
           <Diagnostics>Tektronix_VD</Diagnostics>
           <Shift>0.0</Shift>
           <Smoothing>50</Smoothing>
@@ -1386,98 +1431,5 @@
       </Waveform_channels>
     </Waveform_processing>
   </Waveform>
-  <Waveform_processing_settings>
-    <Waveform_channels>
-      <Channel_1>
-        <Coefficient>-32500.0</Coefficient>
-        <Diagnostics>Rogowski_coil</Diagnostics>
-        <Shift>0.0</Shift>
-        <Smoothing>30</Smoothing>
-        <User_comment>Smoothed signal</User_comment>
-      </Channel_1>
-      <Channel_2>
-        <Coefficient>1.0</Coefficient>
-        <Diagnostics>Systron</Diagnostics>
-        <Shift>0.0</Shift>
-        <Smoothing>5</Smoothing>
-        <User_comment>User_comment</User_comment>
-      </Channel_2>
-      <Channel_3>
-        <Coefficient>-1.0</Coefficient>
-        <Diagnostics>XXRapid_trig_out</Diagnostics>
-        <Shift>1.84</Shift>
-        <Smoothing>2</Smoothing>
-        <User_comment>User_comment</User_comment>
-      </Channel_3>
-      <Channel_4>
-        <Coefficient>1000.0</Coefficient>
-        <Diagnostics>Tektronix_VD</Diagnostics>
-        <Shift>400.0</Shift>
-        <Smoothing>20</Smoothing>
-        <User_comment>User_comment</User_comment>
-      </Channel_4>
-    </Waveform_channels>
-    <Waveform_physical>
-      <I_dot>
-        <Peak>200</Peak>
-        <Smoothing>100</Smoothing>
-        <User_comment>User_comment</User_comment>
-      </I_dot>
-    </Waveform_physical>
-    <Waveform_timing>
-      <Pulse_start>
-        <Time>435</Time>
-        <User_comment>User_comment</User_comment>
-      </Pulse_start>
-      <Shutter_1>
-        <Camera>1</Camera>
-        <Shutter>1</Shutter>
-        <Time>885</Time>
-        <User_comment>User_comment</User_comment>
-      </Shutter_1>
-      <Shutter_2>
-        <Camera>2</Camera>
-        <Shutter>1</Shutter>
-        <Time>985</Time>
-        <User_comment>User_comment</User_comment>
-      </Shutter_2>
-      <Shutter_3>
-        <Camera>3</Camera>
-        <Shutter>1</Shutter>
-        <Time>1086</Time>
-        <User_comment>User_comment</User_comment>
-      </Shutter_3>
-      <Shutter_4>
-        <Camera>4</Camera>
-        <Shutter>1</Shutter>
-        <Time>1186</Time>
-        <User_comment>User_comment</User_comment>
-      </Shutter_4>
-      <Shutter_5>
-        <Camera>1</Camera>
-        <Shutter>2</Shutter>
-        <Time>1296</Time>
-        <User_comment>User_comment</User_comment>
-      </Shutter_5>
-      <Shutter_6>
-        <Camera>2</Camera>
-        <Shutter>2</Shutter>
-        <Time>1396</Time>
-        <User_comment>User_comment</User_comment>
-      </Shutter_6>
-      <Shutter_7>
-        <Camera>3</Camera>
-        <Shutter>2</Shutter>
-        <Time>1497</Time>
-        <User_comment>User_comment</User_comment>
-      </Shutter_7>
-      <Shutter_8>
-        <Camera>4</Camera>
-        <Shutter>2</Shutter>
-        <Time>1597</Time>
-        <User_comment>User_comment</User_comment>
-      </Shutter_8>
-    </Waveform_timing>
-  </Waveform_processing_settings>
   <XXRapid_original>None</XXRapid_original>
 </Experiment_settings>

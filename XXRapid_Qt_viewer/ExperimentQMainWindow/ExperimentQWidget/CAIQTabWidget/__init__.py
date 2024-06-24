@@ -23,11 +23,11 @@ class CAIQTabWidget(ChildQTabWidget):
                         self.ExplosionCurrentDensityQWidget.settings_key)
         except Exception as ex:
             print(ex)
-        '''try:
+        try:
             self.CAIResultQTabWidget = CAIResultQTabWidget(self)
             self.addTab(self.CAIResultQTabWidget, 'CAI')
         except Exception as ex:
-            print(ex)'''
+            print(ex)
 
     def get_explosion_current_dict(self):
         explosion_current_dict = dict()

@@ -1,13 +1,11 @@
 from SettingsQWidgets.SettingsBoxQWidget import *
 
 
-class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
-    def __init__(self, settings_dict=None):
-        super().__init__(settings_dict)
+class Settings(SettingsBoxQWidget):
+    def __init__(self, parent):
+        super().__init__(parent)
         key = 'Scale'
-        default = 50
-        if key in settings_dict.keys():
-            default = int(float(settings_dict[key]))
+        default = self.test_key(key, 50)  # pix/mm
         self.ScaleSettingLine = SettingsLineQWidget(
             name=key,
             default=default,
@@ -20,9 +18,7 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         self.ScaleSettingLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Mask_threshold'
-        default = 50
-        if key in settings_dict.keys():
-            default = int(float(settings_dict[key]))
+        default = self.test_key(key, 50)
         self.MaskThresholdSettingLine = SettingsLineQWidget(
             name=key,
             default=default,
@@ -35,9 +31,7 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         self.MaskThresholdSettingLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Sigma_before'
-        default = 1.0
-        if key in settings_dict.keys():
-            default = float(settings_dict[key])
+        default = self.test_key(key, 1.0)
         self.SigmaBeforeLine = SettingsLineQWidget(
             name=key,
             default=default,
@@ -50,9 +44,7 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         self.SigmaBeforeLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Sigma_shot'
-        default = 1.0
-        if key in settings_dict.keys():
-            default = float(settings_dict[key])
+        default = self.test_key(key, 1.0)
         self.SigmaShotLine = SettingsLineQWidget(
             name=key,
             default=default,
@@ -65,9 +57,7 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         self.SigmaShotLine.changed.connect(self.on_settings_line_changed)
 
         key = 'Sigma_overlapped'
-        default = 1.0
-        if key in settings_dict.keys():
-            default = float(settings_dict[key])
+        default = self.test_key(key, 1.0)
         self.SigmaOverlappedLine = SettingsLineQWidget(
             name=key,
             default=default,
@@ -80,11 +70,10 @@ class XXRapidOverlappedCameraSettingsQWidget(SettingsBoxQWidget):
         self.SigmaOverlappedLine.changed.connect(self.on_settings_line_changed)
 
     def on_settings_line_changed(self):
-        super().on_settings_line_changed()
         self.SettingsDict['Scale'] = self.ScaleSettingLine.value
         self.SettingsDict['Sigma_before'] = self.SigmaBeforeLine.value
         self.SettingsDict['Sigma_shot'] = self.SigmaShotLine.value
         self.SettingsDict['Sigma_overlapped'] = self.SigmaOverlappedLine.value
         self.SettingsDict['Mask_threshold'] = self.MaskThresholdSettingLine.value
 
-        self.changed.emit()
+        super().on_settings_line_changed()

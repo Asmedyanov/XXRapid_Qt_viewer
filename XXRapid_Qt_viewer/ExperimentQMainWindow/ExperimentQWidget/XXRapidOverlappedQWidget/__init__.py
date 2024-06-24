@@ -1,30 +1,23 @@
 from PyQt5.QtWidgets import QTabWidget
 from .XXRapidOverlappedCameraQWidget import *
+from SettingsQWidgets.ChildQTabWidget import *
 
 
-class XXRapidOverlappedQWidget(QTabWidget):
-    changed = pyqtSignal()
-
-    def __init__(self, camera_dict, settings_dict=None):
-        if settings_dict is None:
-            settings_dict = dict()
-        super().__init__()
+class XXRapidOverlappedQWidget(ChildQTabWidget):
+    def __init__(self, parent):
+        super().__init__(parent, 'Overlapped_image')
+        self.XXRapidOriginalQWidget = self.parent.XXRapidOriginalQWidget
+        self.camera_dict = self.XXRapidOriginalQWidget.CameraDataDict
         self.OverlappedCameraQWidgetDict = dict()
-        self.SettingsDict = settings_dict
         self.OverlappedImagesDict = dict()
-        for my_key, my_camera_data in camera_dict.items():
+        for my_key, my_camera_data in self.camera_dict.items():
+            self.current_key = my_key
+            self.current_camera_data = my_camera_data
             try:
-                settings = settings_dict[my_key]
-            except:
-                settings = dict()
-            try:
-                self.OverlappedCameraQWidgetDict[my_key] = XXRapidOverlappedCameraQWidget(my_camera_data, settings)
-                self.OverlappedCameraQWidgetDict[my_key].changed.connect(self.onOverlappedCameraQWidget)
-                self.SettingsDict[my_key] = self.OverlappedCameraQWidgetDict[my_key].SettingsDict
-                self.OverlappedImagesDict[my_key] = self.OverlappedCameraQWidgetDict[my_key].OverlappedImage
+                self.OverlappedCameraQWidgetDict[my_key] = XXRapidOverlappedCameraQWidget(self)
                 self.addTab(self.OverlappedCameraQWidgetDict[my_key], my_key)
             except Exception as ex:
-                print(f'OverlappedCameraQWidgetDict[{my_key}] {ex}')
+                print(ex)
 
     def onOverlappedCameraQWidget(self):
         for my_key, my_OverlappedCameraQWidget in self.OverlappedCameraQWidgetDict.items():

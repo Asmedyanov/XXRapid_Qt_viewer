@@ -38,6 +38,12 @@ class ExperimentQWidget(QTabWidget):
             print(ex)
 
         try:
+            self.XXRapidOverlappedQWidget = XXRapidOverlappedQWidget(self)
+            self.addTab(self.XXRapidOverlappedQWidget, self.XXRapidOverlappedQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+
+        try:
             self.XXRapidFrontingQWidget = XXRapidFrontingQWidget(self)
             self.addTab(self.XXRapidFrontingQWidget, self.XXRapidFrontingQWidget.settings_key)
         except Exception as ex:
@@ -59,92 +65,6 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(ex)
 
-        '''waveform_file_name = self.getWaveformFileName()
-        self.WaveformOriginalQWidget = WaveformOriginalQWidget(waveform_file_name)
-        self.addTab(self.WaveformOriginalQWidget, 'Waveform Original')
-
-        key = 'Waveform_processing_settings'
-        settings = dict()
-        if key in settings_dict.keys():
-            settings = settings_dict[key]
-        try:
-            self.WaveformProcessingWidget = WaveformProcessingQTabWidget(self.WaveformOriginalQWidget.ChannelDFDict,
-                                                                         settings_dict=settings)
-            self.addTab(self.WaveformProcessingWidget, key)
-            self.WaveformProcessingWidget.changed.connect(self.OnWaveformProcessingWidgetChanged)
-            self.SettingsDict[key] = self.WaveformProcessingWidget.SettingsDict
-        except Exception as ex:
-            print(f'WaveformProcessingWidget {ex}')
-
-        before_name = self.get_before_name()
-        shot_name = self.get_shot_name()
-        try:
-            self.XXRapidOriginalQWidget = XXRapidOriginalQWidget(
-                before_name=before_name,
-                shot_name=shot_name
-            )
-        except Exception as ex:
-            print(f'XXRapidOriginalQWidget {ex}')
-        self.addTab(self.XXRapidOriginalQWidget, 'XXRapid_Camera_original')
-
-        key = 'Overlapped_images'
-        settings = dict()
-        if key in settings_dict.keys():
-            settings = settings_dict[key]
-        try:
-            self.XXRapidOverlappedQWidget = XXRapidOverlappedQWidget(self.XXRapidOriginalQWidget.CameraDataDict,
-                                                                     settings)
-            self.addTab(self.XXRapidOverlappedQWidget, key)
-            self.XXRapidOverlappedQWidget.changed.connect(self.OnXXRapidOverlappedQWidget)
-            self.SettingsDict[key] = self.XXRapidOverlappedQWidget.SettingsDict
-        except Exception as ex:
-            print(f'XXRapidOverlappedQWidget {ex}')
-
-        key = 'Fronting'
-        settings = dict()
-        if key in settings_dict.keys():
-            settings = settings_dict[key]
-        try:
-            self.XXRapidFrontingQTabWidget = XXRapidFrontingQWidget(self.XXRapidOriginalQWidget.CameraDataDict,
-                                                                    settings)
-            self.addTab(self.XXRapidFrontingQTabWidget, key)
-            self.XXRapidFrontingQTabWidget.changed.connect(self.OnXXRapidFrontingQTabWidget)
-            self.tabBarDoubleClicked.connect(self.on_tab_bar_double_click)
-            self.SettingsDict[key] = self.XXRapidFrontingQTabWidget.SettingsDict
-        except Exception as ex:
-            print(f'XXRapidFrontingQTabWidget {ex}')
-        try:
-            settings = settings_dict['TOF']
-        except:
-            settings = dict()
-        try:
-            self.XXRapidTOFQTabWidget = XXRapidTOFQTabWidget(
-                timing_dict=self.WaveformProcessingWidget.get_timing_dict(),
-                expansion_dict=self.XXRapidFrontingQTabWidget.get_expansion_dict(),
-                settings_dict=settings)
-            self.addTab(self.XXRapidTOFQTabWidget, 'TOF')
-            self.XXRapidTOFQTabWidget.changed.connect(self.OnXXRapidTOFQTabWidget)
-            self.SettingsDict['TOF'] = self.XXRapidTOFQTabWidget.SettingsDict
-        except Exception as ex:
-            print(f'XXRapidTOFQTabWidget {ex}')
-        key = 'Comsol'
-        try:
-            settings = settings_dict[key]
-        except:
-            settings = dict()
-        try:
-            comsol_simulation_filename = self.get_comsol_simulation_filename()
-            self.ComsolSimulation = ComsolSimulationQTabWidget(self, comsol_simulation_filename, settings)
-            self.SettingsDict[key] = self.ComsolSimulation.SettingsDict
-            self.ComsolSimulation.changed.connect(self.on_comsol_simulation)
-            self.addTab(self.ComsolSimulation, key)
-        except Exception as ex:
-            print(ex)
-        try:
-            self.CAIQTabWidget = CAIQTabWidget(self)
-            self.addTab(self.CAIQTabWidget, 'CAI_experimental')
-        except Exception as ex:
-            print(ex)'''
 
     def on_waveform_changed(self):
         self.changed.emit()

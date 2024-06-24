@@ -19,14 +19,9 @@ class ChannelQWidget(SettingsMPLQWidget):
             xlabel='t, s',
             ylabel='Units'
         )
-        self.df_scaled = pd.DataFrame({
-            'time': self.df_original['time'],
-            'Units': self.df_original[
-                         'Volts'] * self.SettingsBox.Coefficient + self.SettingsBox.Shift
-        })
-        self.dt = np.mean(np.gradient(self.df_original['time']))
-        self.NSmooth = int(self.SettingsBox.TauSmooth / self.dt) + 1
-        self.df_smoothed = self.df_scaled.rolling(self.NSmooth, min_periods=1).mean()
+        self.df_scaled = self.get_df_scaled()
+        self.df_smoothed = self.get_df_smoothed()
+
         self.ScaledPlot, = self.MPLQWidget.ax.plot(self.df_scaled['time'],
                                                    self.df_scaled['Units'], label='Original')
         self.SmoothedPlot, = self.MPLQWidget.ax.plot(self.df_smoothed['time'],
@@ -34,11 +29,22 @@ class ChannelQWidget(SettingsMPLQWidget):
 
         self.MPLQWidget.ax.legend()
 
+    def get_df_scaled(self):
+        return pd.DataFrame({
+            'time': self.df_original['time']+self.SettingsBox.Delay,
+            'Units': self.df_original[
+                         'Volts'] * self.SettingsBox.Coefficient + self.SettingsBox.Shift
+        })
+
+    def get_df_smoothed(self):
+        self.dt = np.mean(np.gradient(self.df_original['time']))
+        self.NSmooth = int(self.SettingsBox.TauSmooth / self.dt) + 1
+        df_smoothed = self.df_scaled.rolling(self.NSmooth, min_periods=1).mean()
+        return df_smoothed
+
     def on_settings_box(self):
-        n_smooth = int(self.SettingsBox.TauSmooth / self.dt) + 1
-        self.df_scaled['Units'] = self.df_original[
-                                      'Volts'] * self.SettingsBox.Coefficient + self.SettingsBox.Shift
-        self.df_smoothed = self.df_scaled.rolling(n_smooth, min_periods=1).mean()
+        self.df_scaled = self.get_df_scaled()
+        self.df_smoothed = self.get_df_smoothed()
         self.SmoothedPlot.set_data(
             self.df_smoothed['time'],
             self.df_smoothed['Units']
