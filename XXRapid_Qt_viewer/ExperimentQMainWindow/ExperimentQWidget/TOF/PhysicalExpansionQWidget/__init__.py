@@ -39,9 +39,10 @@ class PhysicalExpansionQWidget(ChildQWidget):
             my_dict = dict()
             for shutter_key, my_expansion in my_expansion_dict.items():
                 my_dict[shutter_key] = {
+                    'trust': my_expansion['trust'],
                     'time': self.timing_dict[f'Shutter_{shutter_key}'] - self.t_start,
                     'x': self.dx * np.array(my_expansion['x']),
-                    'width':self.get_foil_width(self.dx * np.array(my_expansion['x'])),
+                    'width': self.get_foil_width(self.dx * np.array(my_expansion['x'])),
                     'expansion': self.dx * np.array(my_expansion['expansion'])
                 }
             expansion_dict[my_key] = dict(sorted(my_dict.items()))
@@ -50,8 +51,8 @@ class PhysicalExpansionQWidget(ChildQWidget):
     def get_foil_width(self, x):
         w_max = self.SettingsQWidget.WidthSettingLine.value
         w_min = self.SettingsQWidget.WaistSettingLine.value
-        l = self.SettingsQWidget.LengthSettingLine.value
-        w = 2 * (0.5 * w_min + x * (w_max - w_min) / l)
+        length = self.SettingsQWidget.LengthSettingLine.value
+        w = 2 * (0.5 * w_min + x * (w_max - w_min) / length)
         return w
 
     def OnSettingsQWidget(self):

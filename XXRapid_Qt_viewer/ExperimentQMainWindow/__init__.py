@@ -34,6 +34,20 @@ class ExperimentQMainWindow(QMainWindow):
         save_trace_action.setShortcut(QKeySequence("Ctrl+Shift+T"))  # Set the shortcut
         self.file_menu.addAction(save_trace_action)
 
+        rebuild_action = QAction("Rebuild", self)
+        rebuild_action.triggered.connect(self.on_rebuild)
+        rebuild_action.setShortcut(QKeySequence("Ctrl+Shift+F5"))  # Set the shortcut
+        self.file_menu.addAction(rebuild_action)
+
+    def on_rebuild(self):
+        # self.ExperimentQWidget.SaveTrace()
+        self.ExperimentQWidget.SaveSettings()
+        self.layout().removeWidget(self.ExperimentQWidget)
+        self.ExperimentQWidget.deleteLater()
+        self.ExperimentQWidget = ExperimentQWidget(self)
+        self.setCentralWidget(self.ExperimentQWidget)
+        self.statusBar.showMessage(f'Rebuild')
+
     def on_default_settings(self):
         self.ExperimentQWidget.set_default_settings()
         self.statusBar.showMessage(f'Settings are default')

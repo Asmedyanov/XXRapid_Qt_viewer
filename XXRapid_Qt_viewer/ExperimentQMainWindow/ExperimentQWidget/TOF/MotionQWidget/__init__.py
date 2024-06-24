@@ -38,12 +38,15 @@ class MotionQWidget(ChildQWidget):
             for i in range(min_x):
                 motion_time_list = []
                 motion_expansion_list = []
+                trust_list = []
                 for front in my_quart.values():
                     motion_time_list.append(front['time'])
+                    trust_list.append(front['trust'])
                     motion_expansion_list.append(front['expansion'][i])
                 motion_list.append(
                     {
                         'index': i,
+                        'trust': np.array(trust_list),
                         'x': my_quart['1']['x'][i],
                         'width': my_quart['1']['width'][i],
                         'time': np.array(motion_time_list),
@@ -68,8 +71,10 @@ class MotionQWidget(ChildQWidget):
             for motion_data in my_quart:
                 t_data_0 = motion_data['time'] * 1e9
                 x_data_0 = motion_data['expansion']
+                trust_data_0 = motion_data['trust']
                 t_data = []
                 expansion_data = []
+                trust_data = []
 
                 for k in range(8):
                     if x_data_0[k] <= 0:
@@ -81,10 +86,11 @@ class MotionQWidget(ChildQWidget):
                             continue
                     t_data.append(t_data_0[k])
                     expansion_data.append(x_data_0[k])
+                    trust_data.append(trust_data_0[k])
                 if len(t_data) < 4:
                     continue
-                w = np.arange(len(t_data))+ 0.05 * len(t_data)
-                w = np.exp(w)
+                w = np.array(trust_data)
+                # w = np.exp(w)
                 # w = np.ones(len(t_data))
                 w = w / np.sum(w)
                 line_poly_coef, res, _, _, _ = np.polyfit(t_data, expansion_data, 1, full=True, w=w)
