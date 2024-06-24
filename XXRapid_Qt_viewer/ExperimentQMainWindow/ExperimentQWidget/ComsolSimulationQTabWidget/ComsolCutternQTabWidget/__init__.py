@@ -1,12 +1,50 @@
-from MPLQWidgets.SettingsMPLQWidget import *
-from MPLQWidgets.MatplotlibSingeAxQWidget import *
-from .SettingsBox import *
+from .Graphics import *
 import pandas as pd
+from SettingsQWidgets.ChildQTabWidget import *
 
 
-class ComsolSimulationQWidget(SettingsMPLQWidget):
-    def __init__(self, parent, filename='Default_shot/Jmax.csv', settings_dict=None):
-        super().__init__(
+class ComsolCurrentQTabWidget(ChildQTabWidget):
+    def __init__(self, parent):
+        super().__init__(parent, 'Current_density')
+        self.folder_path = self.parent.folder_path
+        self.folder_list = self.parent.folder_list
+        self.TOFResultQTabWidget = self.parent.TOFResultQTabWidget
+        self.file_name = self.get_file_name()
+        try:
+            self.comsol_current_df = pd.read_csv(self.file_name)
+        except Exception as ex:
+            print(ex)
+            return
+        self.tof_dict = self.TOFResultQTabWidget.velocity_dict
+        self.TOFResultQTabWidget.changed.connect(self.refresh)
+        self.CAI_dict = dict()
+        self.Graphics_dict = dict()
+        for my_key, my_df in self.tof_dict.items():
+            self.current_key = my_key
+            self.current_df = my_df
+            try:
+                self.Graphics_dict[my_key] = Graphics(self)
+                self.addTab(self.Graphics_dict[my_key], my_key)
+            except Exception as ex:
+                print(ex)
+
+    def refresh(self):
+        self.tof_dict = self.TOFResultQTabWidget.velocity_dict
+        for my_key, my_df in self.tof_dict.items():
+            self.current_key = my_key
+            self.current_df = my_df
+            try:
+                self.Graphics_dict[my_key].refresh()
+            except Exception as ex:
+                print(ex)
+        self.changed.emit()
+
+    def get_file_name(self):
+        files_list = [name for name in self.folder_list if
+                      name.startswith('Jmax') and name.endswith('csv')]
+        return f'{self.folder_path}/{files_list[-1]}'
+
+        '''super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
             settings_box=SettingsBox(settings_dict)
         )
@@ -40,12 +78,12 @@ class ComsolSimulationQWidget(SettingsMPLQWidget):
 
                 self.t_exp_plot_dict[width] = self.MPLQWidget.ax.axvline(self.t_exp_array[i], linestyle=':', c='r')
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
     def on_settings_box(self):
         try:
             quart = int(self.SettingsBox.Quart_line.value)
-            #self.t_exp_array = np.arange(len(self.width_list_number))
+            # self.t_exp_array = np.arange(len(self.width_list_number))
             df_list = list(self.comsol_current_density_dict.values())
             for i, width in enumerate(self.width_list_number):
                 self.t_exp_array[i] = self.parent.XXRapidTOFQTabWidget.get_explosion_time(

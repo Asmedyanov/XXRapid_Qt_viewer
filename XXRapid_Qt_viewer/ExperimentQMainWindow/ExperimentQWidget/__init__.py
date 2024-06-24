@@ -47,6 +47,11 @@ class ExperimentQWidget(QTabWidget):
             self.addTab(self.XXRapidTOFQTabWidget, self.XXRapidTOFQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
+        try:
+            self.ComsolSimulationQTabWidget = ComsolSimulationQTabWidget(self)
+            self.addTab(self.ComsolSimulationQTabWidget, self.ComsolSimulationQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
 
         '''waveform_file_name = self.getWaveformFileName()
         self.WaveformOriginalQWidget = WaveformOriginalQWidget(waveform_file_name)
