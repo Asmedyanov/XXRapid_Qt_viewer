@@ -21,4 +21,7 @@ class WaveformQTabWidget(ChildQTabWidget):
             print(ex)
 
     def on_waveform_processing_changed(self):
-        self.changed.emit()
+        if self.parent.auto_refresh:
+            self.changed.emit()
+        else:
+            self.parent.statusBar.showMessage(f'Waveform processing is changed. Please rebuild')

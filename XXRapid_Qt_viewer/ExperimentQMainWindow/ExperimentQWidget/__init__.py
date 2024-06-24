@@ -25,6 +25,7 @@ class ExperimentQWidget(QTabWidget):
         self.statusBar = self.parent.statusBar
         self.check_folder()
         self.SettingsDict = self.open_settings_xml()
+        self.auto_refresh = self.parent.auto_refresh
         try:
             self.WaveformQTabWidget = WaveformQTabWidget(self)
             self.addTab(self.WaveformQTabWidget, self.WaveformQTabWidget.settings_key)
@@ -50,6 +51,11 @@ class ExperimentQWidget(QTabWidget):
         try:
             self.ComsolSimulationQTabWidget = ComsolSimulationQTabWidget(self)
             self.addTab(self.ComsolSimulationQTabWidget, self.ComsolSimulationQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.CAIQTabWidget = CAIQTabWidget(self)
+            self.addTab(self.CAIQTabWidget, self.CAIQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
 

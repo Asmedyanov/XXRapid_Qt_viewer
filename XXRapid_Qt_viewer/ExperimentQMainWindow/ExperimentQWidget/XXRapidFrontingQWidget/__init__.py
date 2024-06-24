@@ -29,27 +29,13 @@ class XXRapidFrontingQWidget(QWidget):
             print(ex)
 
     def on_expansion_changed(self):
-        self.changed.emit()
+        if self.parent.auto_refresh:
+            self.changed.emit()
+        else:
+            self.parent.statusBar.showMessage(f'Fronting is changed. Please rebuild')
 
     def on_current_quart_changed(self):
         self.XXRapidFrontingExpansionQTabWidget.setCurrentIndex(self.XXRapidFrontingFramesQTabWidget.current_quart - 1)
-
-    def OnXXRapidFrontingFramesQTabWidget(self):
-        self.SettingsDict['Fronting_frames'] = self.XXRapidFrontingFramesQTabWidget.SettingsDict
-        self.XXRapidFrontingExpansionQTabWidget.set_data(self.XXRapidFrontingFramesQTabWidget.expansion_dict)
-
-    def set_data(self, camera_data_dict):
-        self.camera_data_dict = camera_data_dict
-        self.changed.emit()
-        pass
-
-    def OnXXRapidFrontingExpansionQTabWidget(self):
-
-        self.changed.emit()
-
-    def get_expansion_dict(self):
-        # return self.FrontingFramesQTabWidget.expansion_dict
-        return self.XXRapidFrontingExpansionQTabWidget.expansion_by_quart_dict
 
     def test_settings_key(self, key_line):
         if key_line not in self.SettingsDict.keys():

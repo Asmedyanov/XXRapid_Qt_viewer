@@ -1,32 +1,33 @@
 from .CAIExplosionCurrentQTabWidget import *
 from .ExplosionCurrentDensityQWidget import *
 from .CAIResultQTabWidget import *
+from SettingsQWidgets.ChildQTabWidget import *
 
 
-class CAIQTabWidget(QTabWidget):
+class CAIQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
-        self.parent = parent
-        super().__init__()
-        self.current_df = self.parent.WaveformProcessingWidget.WaveformPhysicalValuesQWidget.CurrentQWidget.current_df_to_plot
-        self.current_function = self.parent.WaveformProcessingWidget.WaveformPhysicalValuesQWidget.PowerQWidget.current_function
-        self.TOF_data_dict = self.parent.XXRapidTOFQTabWidget.TOFResultQTabWidget.get_velocity_dict()
+        super().__init__(parent, 'CAI')
+        self.CurrentQWidget = self.parent.WaveformQTabWidget.WaveformProcessingQTabWidget.WaveformPhysicalValuesQWidget.CurrentQWidget
+        self.current_df = self.CurrentQWidget.current_df_to_plot
+        self.current_function = self.CurrentQWidget.current_function
+        self.TOF_data_dict = self.parent.XXRapidTOFQTabWidget.TOFResultQTabWidget.velocity_dict
         self.explosion_current_dict = self.get_explosion_current_dict()
         try:
             self.CAIExplosionCurrentQTabWidget = CAIExplosionCurrentQTabWidget(self)
-            self.addTab(self.CAIExplosionCurrentQTabWidget, 'Explosion_current')
+            self.addTab(self.CAIExplosionCurrentQTabWidget, self.CAIExplosionCurrentQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
         try:
             self.ExplosionCurrentDensityQWidget = ExplosionCurrentDensityQWidget(self)
             self.addTab(self.ExplosionCurrentDensityQWidget,
-                        'Explosion current density')
+                        self.ExplosionCurrentDensityQWidget.settings_key)
         except Exception as ex:
             print(ex)
-        try:
+        '''try:
             self.CAIResultQTabWidget = CAIResultQTabWidget(self)
             self.addTab(self.CAIResultQTabWidget, 'CAI')
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
     def get_explosion_current_dict(self):
         explosion_current_dict = dict()

@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QTabWidget
+from .CAIComsolQTabWidget import *
 from .ComsolCutternQTabWidget import *
-from .CAIComsolQWidget import *
 from SettingsQWidgets.ChildQTabWidget import *
 
 
@@ -13,6 +13,11 @@ class ComsolSimulationQTabWidget(ChildQTabWidget):
         try:
             self.ComsolCurrentQTabWidget = ComsolCurrentQTabWidget(self)
             self.addTab(self.ComsolCurrentQTabWidget, self.ComsolCurrentQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.CAIComsolQTabWidget = CAIComsolQTabWidget(self)
+            self.addTab(self.CAIComsolQTabWidget, self.CAIComsolQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
         '''self.ComsolCutternQTabWidget = ComsolCutternQTabWidget(self.parent, self.filename, settings_dict)

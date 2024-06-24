@@ -10,7 +10,11 @@ class ExperimentQMainWindow(QMainWindow):
         if self.parent is not None:
             self.folder_path = self.parent.folder_path
         self.title = self.folder_path.split('/')[-1]
-        self.setWindowTitle(f'Experiment {self.title}')
+        self.auto_refresh = True
+        title = f'Experiment {self.title}'
+        if self.auto_refresh:
+            title = f'{title} (auto refresh)'
+        self.setWindowTitle(title)
         # Create a menu bar
         self.statusBar = self.statusBar()
         self.menu_bar = self.menuBar()
@@ -24,11 +28,6 @@ class ExperimentQMainWindow(QMainWindow):
         save_settings_action.setShortcut(QKeySequence("Ctrl+Shift+S"))  # Set the shortcut
         self.file_menu.addAction(save_settings_action)
 
-        default_settings_action = QAction("Default settings", self)
-        default_settings_action.triggered.connect(self.on_default_settings)
-        default_settings_action.setShortcut(QKeySequence("Ctrl+Shift+D"))  # Set the shortcut
-        self.file_menu.addAction(default_settings_action)
-
         save_trace_action = QAction("Save trace", self)
         save_trace_action.triggered.connect(self.on_save_trace)
         save_trace_action.setShortcut(QKeySequence("Ctrl+Shift+T"))  # Set the shortcut
@@ -36,11 +35,27 @@ class ExperimentQMainWindow(QMainWindow):
 
         rebuild_action = QAction("Rebuild", self)
         rebuild_action.triggered.connect(self.on_rebuild)
-        rebuild_action.setShortcut(QKeySequence("Ctrl+Shift+F5"))  # Set the shortcut
+        rebuild_action.setShortcut(QKeySequence("F5"))  # Set the shortcut
         self.file_menu.addAction(rebuild_action)
 
+        auto_refresh_action = QAction("Auto Refresh", self)
+        auto_refresh_action.triggered.connect(self.on_auto_refresh)
+        auto_refresh_action.setShortcut(QKeySequence("Ctrl+F5"))  # Set the shortcut
+        self.file_menu.addAction(auto_refresh_action)
+
+    def on_auto_refresh(self):
+        self.auto_refresh = not self.auto_refresh
+        self.on_rebuild()
+        title = f'Experiment {self.title}'
+        if self.auto_refresh:
+            title = f'{title} (auto refresh)'
+            self.statusBar.showMessage(f'Auto Refresh is ON')
+        else:
+            title = f'{title} (manual refresh)'
+            self.statusBar.showMessage(f'Auto Refresh is OFF')
+        self.setWindowTitle(title)
+
     def on_rebuild(self):
-        # self.ExperimentQWidget.SaveTrace()
         self.ExperimentQWidget.SaveSettings()
         self.layout().removeWidget(self.ExperimentQWidget)
         self.ExperimentQWidget.deleteLater()
@@ -57,6 +72,7 @@ class ExperimentQMainWindow(QMainWindow):
         self.statusBar.showMessage(f'Settings are saved')
 
     def on_save_trace(self):
+        self.on_rebuild()
         self.ExperimentQWidget.SaveTrace()
         self.statusBar.showMessage(f'Trace is saved')
 

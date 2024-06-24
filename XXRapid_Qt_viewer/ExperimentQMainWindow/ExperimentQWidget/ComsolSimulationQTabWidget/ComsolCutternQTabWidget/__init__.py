@@ -22,6 +22,7 @@ class ComsolCurrentQTabWidget(ChildQTabWidget):
         for my_key, my_df in self.tof_dict.items():
             self.current_key = my_key
             self.current_df = my_df
+            self.CAI_dict[my_key] = dict()
             try:
                 self.Graphics_dict[my_key] = Graphics(self)
                 self.addTab(self.Graphics_dict[my_key], my_key)
