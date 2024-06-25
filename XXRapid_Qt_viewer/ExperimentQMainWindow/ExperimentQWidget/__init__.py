@@ -8,7 +8,6 @@ from .XXRapidOriginalQWidget import *
 from .XXRapidOverlappedQWidget import *
 from .XXRapidFrontingQWidget import *
 from .TOF import *
-from PyQt5.QtWidgets import QMessageBox
 from .ComsolSimulationQTabWidget import *
 from .CAIQTabWidget import *
 import shutil
@@ -183,17 +182,3 @@ class ExperimentQWidget(QTabWidget):
                                name.startswith('shot') and name.endswith('csv')]
         # print(f'Folder contains waveform files\n{waveform_files_list}\nI took the last one')
         return f'{self.folder_path}/{waveform_files_list[-1]}'
-
-    def set_default_settings(self):
-        settings_dict = self.open_settings_xml()
-        self.SettingsDict = settings_dict
-
-        try:
-            settings = settings_dict['Waveform_processing_settings']
-        except:
-            settings = dict()
-        try:
-            self.WaveformProcessingWidget.set_settings(settings)
-            self.SettingsDict['Waveform_processing_settings'] = self.WaveformProcessingWidget.SettingsDict
-        except Exception as ex:
-            print(f'WaveformProcessingWidget.set_settings {ex}')

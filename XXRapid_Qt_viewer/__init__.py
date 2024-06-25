@@ -17,6 +17,7 @@ class MainWindow(ExperimentQMainWindow):
     def closeEvent(self, event):
         for experiment in self.ExperimentQWidgetDict.values():
             experiment.close()
+            experiment.deleteLater()
         super().closeEvent(event)
 
     def open_folder_dialog(self):

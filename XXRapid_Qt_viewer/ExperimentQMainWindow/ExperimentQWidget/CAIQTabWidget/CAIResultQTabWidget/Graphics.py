@@ -17,7 +17,7 @@ class Graphics(MatplotlibSingeAxQWidget):
                                       self.df_cai['cai'] * 1e-9, 'o')
         try:
             self.comsol_dict = self.parent.current_comsol
-            self.j_exp = np.array(self.comsol_dict['j_exp'])*2
+            self.j_exp = np.array(self.comsol_dict['j_exp'])
             self.h_exp = np.array(self.comsol_dict['h_exp'])
             self.dj_exp = 0.15 * self.j_exp
             self.dh_exp = 0.25 * self.h_exp

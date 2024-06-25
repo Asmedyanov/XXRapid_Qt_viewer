@@ -3,7 +3,7 @@
     <Explosion_current>None</Explosion_current>
     <Explosion_current_density>
       <User_comment>User_comment</User_comment>
-      <foil_thickness>10</foil_thickness>
+      <foil_thickness>15</foil_thickness>
     </Explosion_current_density>
   </CAI>
   <Comsol>
@@ -1397,11 +1397,11 @@
       </Timing>
       <Waveform_channels>
         <Channel_1>
-          <Coefficient>-32500.0</Coefficient>
-          <Delay>0.0</Delay>
+          <Coefficient>-32500</Coefficient>
+          <Delay>0</Delay>
           <Diagnostics>Rogowski_coil</Diagnostics>
           <Shift>0.0</Shift>
-          <Smoothing>50</Smoothing>
+          <Smoothing>150</Smoothing>
           <User_comment>User_comment</User_comment>
         </Channel_1>
         <Channel_2>
