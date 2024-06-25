@@ -43,10 +43,8 @@ class WaveformOriginalQWidget(MatplotlibSingeAxQWidget):
                 self.NChannels += 1
         return channels_dict
 
-    def save_report(self, folder_name='Default_shot/QtTraceFolder'):
-        if 'Waveform_original' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Waveform_original')
-        self.figure.savefig(f'{folder_name}/Waveform_original/Waveform_original.png')
+    def save_report(self):
+        self.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
 
     def set_data(self, df):
         self.NChannels = 0

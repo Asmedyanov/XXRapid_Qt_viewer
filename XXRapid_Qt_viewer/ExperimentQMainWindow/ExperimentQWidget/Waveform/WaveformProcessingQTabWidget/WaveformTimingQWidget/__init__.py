@@ -10,6 +10,7 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.settings_key = 'Timing'
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        # self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.WaveformChannelsQTabWidget = self.parent.WaveformChannelsQTabWidget
         self.WaveformChannelsQTabWidget.changed.connect(self.refresh)
         self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
@@ -110,3 +111,6 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         if 'Waveform_timing' not in os.listdir(folder_name):
             os.makedirs(f'{folder_name}/Waveform_timing')
         self.MatplotlibQWidget.figure.savefig(f'{folder_name}/Waveform_timing/Waveform_timing.png')
+
+    def save_report(self):
+        self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')

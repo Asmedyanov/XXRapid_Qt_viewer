@@ -12,6 +12,7 @@ from SettingsQWidgets.ChildQTabWidget import *
 class WaveformPhysicalValuesQWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Physical_values')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.WaveformTimingQWidget = self.parent.WaveformTimingQWidget
         self.WaveformTimingQWidget.changed.connect(self.refresh)
         self.timeshift = self.WaveformTimingQWidget.t_start
@@ -43,7 +44,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         try:
             self.PowerQWidget = PowerQWidget(self)
             self.addTab(self.PowerQWidget, self.PowerQWidget.settings_key)
-            #self.PowerQWidget.changed.connect(self.on_power_changed)
+            # self.PowerQWidget.changed.connect(self.on_power_changed)
         except Exception as ex:
             print(ex)
         try:
@@ -53,11 +54,11 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         except Exception as ex:
             print(ex)
 
-        '''try:
+        try:
             self.EnergyQWidget = EnergyQWidget(self)
             self.addTab(self.EnergyQWidget, self.EnergyQWidget.settings_key)
         except Exception as ex:
-            print(ex)'''
+            print(ex)
 
     def on_changed(self):
         print('Waveform physical values are changed')
@@ -98,36 +99,33 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             print(ex)
         # self.changed.emit()
 
-
-
-    def Save_Raport(self, folder_name):
-        if 'Waveform_physical' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Waveform_physical')
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
         try:
-            self.CurrentQWidget.save_report(f'{folder_name}/Waveform_physical')
+            self.CurrentQWidget.save_report()
         except Exception as ex:
             print(ex)
         try:
-            self.FullVoltageQWidget.save_report(f'{folder_name}/Waveform_physical')
+            self.FullVoltageQWidget.save_report()
         except Exception as ex:
             print(ex)
         try:
-            self.WaveformIdotQWidget.Save_Raport(f'{folder_name}/Waveform_physical')
+            self.IdotQWidget.save_report()
         except Exception as ex:
             print(ex)
         try:
-            self.WaveformUresQWidget.save_report(f'{folder_name}/Waveform_physical')
+            self.ResistiveVoltageQWidget.save_report()
         except Exception as ex:
             print(ex)
         try:
-            self.WaveformPowerQWidget.save_report(f'{folder_name}/Waveform_physical')
+            self.PowerQWidget.save_report()
         except Exception as ex:
             print(ex)
         try:
-            self.WaveformResistanceQWidget.save_report(f'{folder_name}/Waveform_physical')
+            self.ResistanceQWidget.save_report()
         except Exception as ex:
             print(ex)
-        '''try:
-            self.WaveformEnergyQWidget.save_report(f'{folder_name}/Waveform_physical')
+        try:
+            self.EnergyQWidget.save_report()
         except Exception as ex:
-            print(ex)'''
+            print(ex)

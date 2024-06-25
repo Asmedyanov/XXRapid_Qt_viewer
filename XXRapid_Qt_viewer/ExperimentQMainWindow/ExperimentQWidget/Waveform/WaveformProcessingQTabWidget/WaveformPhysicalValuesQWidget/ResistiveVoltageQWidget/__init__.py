@@ -119,8 +119,6 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
                                                 self.df_resistive_voltage['Units'] * 1e-3)
         self.MPLQWidget.changed.emit()
 
-    def save_report(self, folder_name):
-        if 'Resistive_voltage' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Resistive_voltage')
-        super().save_report(f'{folder_name}/Resistive_voltage')
-        self.df_resistive_voltage.to_csv(f'{folder_name}/Resistive_voltage/Resistive_voltage.csv')
+    def save_report(self):
+        self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+        self.df_resistive_voltage.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')

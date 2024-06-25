@@ -28,11 +28,9 @@ class FullVoltageQWidget(MatplotlibSingeAxQWidget):
         self.voltageLine.set_data(self.voltage_df_to_plot['time'] * 1e6, self.voltage_df_to_plot['Units'] * 1e-3)
         self.changed.emit()
 
-    def save_report(self, folder_name):
-        if 'Full_voltage' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Full_voltage')
-        super().save_report(f'{folder_name}/Full_voltage')
-        self.voltage_df_to_plot.to_csv(f'{folder_name}/Full_voltage/Full_voltage.csv')
+    def save_report(self):
+        self.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+        self.voltage_df_to_plot.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')
 
     def refresh(self):
         self.timeshift = self.parent.timeshift

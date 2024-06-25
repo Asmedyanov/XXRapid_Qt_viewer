@@ -7,6 +7,7 @@ class WaveformQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Waveform')
         self.folder_path = self.parent.folder_path
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.folder_list = self.parent.folder_list
         try:
             self.WaveformOriginalQWidget = WaveformOriginalQWidget(self)
@@ -25,3 +26,14 @@ class WaveformQTabWidget(ChildQTabWidget):
             self.changed.emit()
         else:
             self.parent.statusBar.showMessage(f'Waveform processing is changed. Please rebuild')
+
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        try:
+            self.WaveformOriginalQWidget.save_report()
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformProcessingQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)

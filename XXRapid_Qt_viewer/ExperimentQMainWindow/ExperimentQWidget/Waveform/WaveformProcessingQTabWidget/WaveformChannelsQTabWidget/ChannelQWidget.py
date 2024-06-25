@@ -31,7 +31,7 @@ class ChannelQWidget(SettingsMPLQWidget):
 
     def get_df_scaled(self):
         return pd.DataFrame({
-            'time': self.df_original['time']+self.SettingsBox.Delay,
+            'time': self.df_original['time'] + self.SettingsBox.Delay,
             'Units': self.df_original[
                          'Volts'] * self.SettingsBox.Coefficient + self.SettingsBox.Shift
         })
@@ -72,9 +72,9 @@ class ChannelQWidget(SettingsMPLQWidget):
         )
         self.MPLQWidget.changed.emit()
 
-    def save_report(self, folder_name):
-        self.MPLQWidget.figure.savefig(f'{folder_name}/{self.SettingsBox.Diagnostics}.png')
-        self.df_smoothed.to_csv(f'{folder_name}/{self.SettingsBox.Diagnostics}.csv')
+    def save_report(self):
+        self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.SettingsBox.Diagnostics}.png')
+        self.df_smoothed.to_csv(f'{self.parent.report_path}/{self.SettingsBox.Diagnostics}.csv')
 
     def set_settings(self, settings_dict=None):
         self.SettingsBox.set_settings(settings_dict)

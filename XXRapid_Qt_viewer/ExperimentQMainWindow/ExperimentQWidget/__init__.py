@@ -20,6 +20,7 @@ class ExperimentQWidget(QTabWidget):
         self.parent = parent
         super().__init__()
         self.folder_path = self.parent.folder_path
+        self.report_path = f'{self.folder_path}/QtTraceFolder'
         self.folder_list = os.listdir(self.folder_path)
         self.statusBar = self.parent.statusBar
         self.check_folder()
@@ -31,7 +32,7 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(ex)
         try:
-            self.XXRapidOriginalQWidget = XXRapidOriginalQWidget(self)
+            self.XXRapidOriginalQWidget = XXRapidOriginalQTabWidget(self)
             self.addTab(self.XXRapidOriginalQWidget, self.XXRapidOriginalQWidget.settings_key)
         except Exception as ex:
             print(ex)
@@ -63,7 +64,6 @@ class ExperimentQWidget(QTabWidget):
             self.addTab(self.CAIQTabWidget, self.CAIQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
-
 
     def on_waveform_changed(self):
         self.changed.emit()
@@ -141,12 +141,41 @@ class ExperimentQWidget(QTabWidget):
         SettingsFile.write(dict2xml({'Experiment_settings': self.SettingsDict}))
         SettingsFile.close()
 
-    def SaveTrace(self, ):
+    def save_report(self):
+
         try:
-            self.WaveformOriginalQWidget.save_report(f'{self.folder_path}/QtTraceFolder')
+            self.WaveformQTabWidget.save_report()
         except Exception as ex:
-            print(f'WaveformOriginalQWidget.Save_Report {ex}')
+            print(f'WaveformOriginalQWidget.save_report {ex}')
         try:
+            self.XXRapidOriginalQWidget.save_report()
+        except Exception as ex:
+            print(f'XXRapidOriginalQWidget.save_report {ex}')
+        try:
+            self.XXRapidOverlappedQWidget.save_report()
+        except Exception as ex:
+            print(f'XXRapidOverlappedQWidget.save_report {ex}')
+        try:
+            self.XXRapidFrontingQWidget.save_report()
+        except Exception as ex:
+            print(f'XXRapidOverlappedQWidget.save_report {ex}')
+
+        try:
+            self.XXRapidTOFQTabWidget.save_report()
+        except Exception as ex:
+            print(f'XXRapidOverlappedQWidget.save_report {ex}')
+
+        try:
+            self.ComsolSimulationQTabWidget.save_report()
+        except Exception as ex:
+            print(f'XXRapidOverlappedQWidget.save_report {ex}')
+
+        try:
+            self.CAIQTabWidget.save_report()
+        except Exception as ex:
+            print(f'XXRapidOverlappedQWidget.save_report {ex}')
+
+        '''try:
             self.WaveformProcessingWidget.save_report(f'{self.folder_path}/QtTraceFolder')
         except Exception as ex:
             print(f'WaveformProcessingWidget.Save_Report {ex}')
@@ -161,7 +190,7 @@ class ExperimentQWidget(QTabWidget):
         try:
             self.XXRapidTOFQTabWidget.save_report(f'{self.folder_path}/QtTraceFolder')
         except Exception as ex:
-            print(f'XXRapidTOFQTabWidget.Save_Report {ex}')
+            print(f'XXRapidTOFQTabWidget.Save_Report {ex}')'''
 
     def open_settings_xml(self):
         settings = dict()

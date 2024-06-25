@@ -36,11 +36,9 @@ class CurrentQWidget(MatplotlibSingeAxQWidget):
         self.CurrentLine.set_data(self.current_df_to_plot['time'] * 1e6, self.current_df_to_plot['Units'] * 1e-3)
         self.changed.emit()
 
-    def save_report(self, folder_name):
-        if 'Current' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Current')
-        super().save_report(f'{folder_name}/Current')
-        self.current_df_to_plot.to_csv(f'{folder_name}/Current/Current.csv')
+    def save_report(self):
+        self.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+        self.current_df_to_plot.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')
 
     def current_function(self, time):
         ret = np.interp(time, self.CurrentDF['time'].values, self.CurrentDF['Units'].values)

@@ -4,30 +4,37 @@ from .Graphics import *
 import os
 
 
-class XXRapidOriginalQWidget(ChildQTabWidget):
+class XXRapidOriginalQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'XXRapid_original')
         self.folder_path = self.parent.folder_path
         self.folder_list = self.parent.folder_list
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.before_name = self.get_before_name()
         self.shot_name = self.get_shot_name()
 
         self.before_array = open_rtv(self.before_name)
         self.shot_array = open_rtv(self.shot_name)
-        self.CameraDataDict = dict()
+        self.CameraDataDict = self.get_camera_data_dict()
+        self.XXRapidOriginalCameraQWidgetDict = dict()
+        for my_key, my_camera_data in self.CameraDataDict.items():
+            self.current_key = my_key
+            self.current_camera_data = my_camera_data
+            try:
+                self.XXRapidOriginalCameraQWidgetDict[my_key] = Graphics(self)
+                self.addTab(self.XXRapidOriginalCameraQWidgetDict[my_key], my_key)
+            except Exception as ex:
+                print(ex)
+
+    def get_camera_data_dict(self):
+        camera_data_dict = dict()
         for i in range(self.before_array.shape[0]):
             key = f'Camera_{i + 1}'
-            self.CameraDataDict[key] = {
+            camera_data_dict[key] = {
                 'before': self.before_array[i],
                 'shot': self.shot_array[i]
             }
-        self.XXRapidOriginalCameraQWidgetDict = dict()
-        for my_key, my_camera_data in self.CameraDataDict.items():
-            self.XXRapidOriginalCameraQWidgetDict[my_key] = Graphics(
-                image_before=my_camera_data['before'],
-                image_shot=my_camera_data['shot']
-            )
-            self.addTab(self.XXRapidOriginalCameraQWidgetDict[my_key], my_key)
+        return camera_data_dict
 
     def get_before_name(self):
         before_files_list = [name for name in self.folder_list if
@@ -40,8 +47,7 @@ class XXRapidOriginalQWidget(ChildQTabWidget):
         # print(f'Folder contains shot files\n{shot_files_list}\nI took the last one')
         return f'{self.folder_path}/{shot_files_list[-1]}'
 
-    def save_report(self, folder_name):
-        if 'XXRapid_original' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/XXRapid_original')
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
         for my_key, myXXRapidOriginalCameraQWidget in self.XXRapidOriginalCameraQWidgetDict.items():
-            myXXRapidOriginalCameraQWidget.figure.savefig(f'{folder_name}/XXRapid_original/{my_key}.png')
+            myXXRapidOriginalCameraQWidget.save_report()

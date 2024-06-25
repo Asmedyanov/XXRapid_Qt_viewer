@@ -1,3 +1,5 @@
+import os
+
 from PyQt5.QtWidgets import QTabWidget
 from .XXRapidOverlappedCameraQWidget import *
 from SettingsQWidgets.ChildQTabWidget import *
@@ -6,6 +8,7 @@ from SettingsQWidgets.ChildQTabWidget import *
 class XXRapidOverlappedQWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Overlapped_image')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.XXRapidOriginalQWidget = self.parent.XXRapidOriginalQWidget
         self.camera_dict = self.XXRapidOriginalQWidget.CameraDataDict
         self.OverlappedCameraQWidgetDict = dict()
@@ -24,9 +27,7 @@ class XXRapidOverlappedQWidget(ChildQTabWidget):
             self.SettingsDict[my_key] = self.OverlappedCameraQWidgetDict[my_key].SettingsDict
         self.changed.emit()
 
-    def save_report(self, folder_name):
-        if 'XXRapid_overlapped' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/XXRapid_overlapped')
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
         for mykey, myOverlappedCameraQWidget in self.OverlappedCameraQWidgetDict.items():
-            myOverlappedCameraQWidget.MatplotlibSingeAxQWidget.figure.savefig(
-                f'{folder_name}/XXRapid_overlapped/{mykey}.png')
+            myOverlappedCameraQWidget.save_report()

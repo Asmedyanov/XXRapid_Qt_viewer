@@ -101,8 +101,7 @@ class IdotQWidget(SettingsMPLQWidget):
 
         self.MPLQWidget.changed.emit()
 
-    def save_report(self, folder_name):
-        if 'Idot' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Idot')
-        self.MatplotlibQWidget.save_report(f'{folder_name}/Idot')
-        self.df_idot_smoothed_to_plot.to_csv(f'{folder_name}/Idot/Idot.csv')
+    def save_report(self):
+        self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+        self.df_idot_smoothed_to_plot.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')
+

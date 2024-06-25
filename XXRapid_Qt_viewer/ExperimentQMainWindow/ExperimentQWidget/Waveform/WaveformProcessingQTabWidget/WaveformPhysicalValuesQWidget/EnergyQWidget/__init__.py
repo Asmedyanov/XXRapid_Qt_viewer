@@ -61,14 +61,11 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
         self.EnergyLine.set_data(self.df_energy['time'] * 1e6, self.df_energy['Units'] * 1e-3)
         self.changed.emit()
 
-    def save_report(self, folder_name):
-        if 'Energy' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Energy')
-        super().save_report(f'{folder_name}/Energy')
-        self.df_energy.to_csv(f'{folder_name}/Energy/Energy.csv')
+    def save_report(self):
+        self.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+        self.df_energy.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')
 
     def refresh(self):
-        print('E_refresh')
         self.df_current = self.CurrentQWidget.current_df_to_plot.copy()
         self.df_current_to_plot = self.get_df_current_to_plot()
         self.dt = self.get_dt()

@@ -6,6 +6,7 @@ import os
 class WaveformChannelsQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Waveform_channels')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.WaveformOriginalQWidget = self.parent.WaveformOriginalQWidget
         self.ChannelDFDict = self.WaveformOriginalQWidget.ChannelDFDict
         self.ChannelQWidgetDict = dict()
@@ -48,6 +49,11 @@ class WaveformChannelsQTabWidget(ChildQTabWidget):
             if mykey not in os.listdir(f'{folder_name}/Waveform_channels'):
                 os.makedirs(f'{folder_name}/Waveform_channels/{mykey}')
             mychannel.Save_Raport(f'{folder_name}/Waveform_channels/{mykey}')
+
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        for my_key, my_widget in self.ChannelQWidgetDict.items():
+            my_widget.save_report()
 
     def set_settings(self, settings_dict=None):
         if settings_dict is None:

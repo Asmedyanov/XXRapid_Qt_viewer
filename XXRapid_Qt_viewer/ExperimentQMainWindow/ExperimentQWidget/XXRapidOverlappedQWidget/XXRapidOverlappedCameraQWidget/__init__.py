@@ -18,7 +18,7 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
             settings_box=Settings(self)
         )
         self.camera_data = self.parent.current_camera_data
-        self.MPLQWidget.ax.set(title='Overlapped image', xlabel='x,mm', ylabel='y,mm')
+        self.MPLQWidget.ax.set(title=f'{self.settings_key}, mm')
         self.dx = 1.0 / self.SettingsBox.ScaleSettingLine.value
         self.sigma_before = self.SettingsBox.SigmaBeforeLine.value
         self.sigma_shot = self.SettingsBox.SigmaShotLine.value
@@ -62,3 +62,6 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         self.imshow.set_extent(self.get_extent())
         self.imshow.set_data(self.OverlappedImage)
         super().on_settings_box()
+
+    def save_report(self):
+        self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')

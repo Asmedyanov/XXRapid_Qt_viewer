@@ -7,6 +7,7 @@ class SettingsMPLQWidget(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__()
+
         self.QHBoxLayout = QHBoxLayout()
         self.setLayout(self.QHBoxLayout)
         if 'MPLQWidget' in kwargs.keys():

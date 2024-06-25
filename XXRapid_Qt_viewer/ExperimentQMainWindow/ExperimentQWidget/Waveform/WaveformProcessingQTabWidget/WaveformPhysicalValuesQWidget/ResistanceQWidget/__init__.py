@@ -65,11 +65,9 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         self.ResistanceLine.set_data(self.df_resistance['time'] * 1e6, self.df_resistance['Units'])
         self.changed.emit()
 
-    def save_report(self, folder_name):
-        if 'Resistance' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Resistance')
-        super().save_report(f'{folder_name}/Resistance')
-        self.df_resistance.to_csv(f'{folder_name}/Resistance/Resistance.csv')
+    def save_report(self):
+        self.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+        self.df_resistance.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')
 
     def refresh(self):
         self.df_current = self.CurrentQWidget.current_df_to_plot.copy()
