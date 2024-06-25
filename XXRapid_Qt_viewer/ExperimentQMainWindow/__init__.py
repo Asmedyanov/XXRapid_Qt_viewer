@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QAction, QFileDialog
 from .ExperimentQWidget import *
 from PyQt5.QtGui import QKeySequence
 import shutil
+import os
 
 
 class ExperimentQMainWindow(QMainWindow):
@@ -33,8 +34,13 @@ class ExperimentQMainWindow(QMainWindow):
 
         default_settings_action = QAction("Default settings", self)
         default_settings_action.triggered.connect(self.on_default_settings)
-        default_settings_action.setShortcut(QKeySequence("Ctrl+Shift+d"))  # Set the shortcut
+        default_settings_action.setShortcut(QKeySequence("Ctrl+Shift+D"))  # Set the shortcut
         self.settings_menu.addAction(default_settings_action)
+
+        import_settings_action = QAction("Import settings", self)
+        import_settings_action.triggered.connect(self.on_import_settings)
+        import_settings_action.setShortcut(QKeySequence("Ctrl+Shift+I"))  # Set the shortcut
+        self.settings_menu.addAction(import_settings_action)
 
         save_trace_action = QAction("Save trace", self)
         save_trace_action.triggered.connect(self.on_save_trace)
@@ -50,6 +56,22 @@ class ExperimentQMainWindow(QMainWindow):
         auto_refresh_action.triggered.connect(self.on_auto_refresh)
         auto_refresh_action.setShortcut(QKeySequence("Ctrl+F5"))  # Set the shortcut
         self.refresh_menu.addAction(auto_refresh_action)
+
+    def on_import_settings(self):
+        folder_path = QFileDialog.getOpenFileName(self, "Select SettingsFile.xml",
+                                                  os.path.expanduser("~"))[0]
+        try:
+            filename = folder_path.split('/')[-1]
+        except Exception as ex:
+            print(ex)
+            return
+        if filename == 'SettingsFile.xml':
+            current = f'{self.folder_path}/QtTraceFolder/SettingsFile.xml'
+            shutil.copy(folder_path, current)
+            self.remake()
+            self.statusBar.showMessage(f'Settings are imported')
+        else:
+            self.statusBar.showMessage(f'Settings ARE NOT imported')
 
     def on_auto_refresh(self):
         self.auto_refresh = not self.auto_refresh
