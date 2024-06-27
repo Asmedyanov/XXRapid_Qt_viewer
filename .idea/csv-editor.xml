@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Experimental_CAI_result\Quart_4.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\QtTraceFolder\Comsol\CAI_Comsol\Quart_1.csv">
           <value>
             <Attribute>

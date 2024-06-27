@@ -10,6 +10,7 @@ class TOFResultQTabWidget(ChildQTabWidget):
         self.MotionQTabWidget.changed.connect(self.refresh)
         self.motion_approximated_dict = self.MotionQTabWidget.motion_approximated_dict
         self.velocity_dict = self.get_velocity_dict()
+        self.velocity_smoothed_dict = dict()
         self.TOFResultsQWidgetDict = dict()
         for my_key, my_df in self.velocity_dict.items():
             self.current_key = my_key

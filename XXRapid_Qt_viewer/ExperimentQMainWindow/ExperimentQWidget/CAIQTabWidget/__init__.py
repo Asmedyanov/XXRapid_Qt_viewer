@@ -7,10 +7,11 @@ from SettingsQWidgets.ChildQTabWidget import *
 class CAIQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'CAI')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.CurrentQWidget = self.parent.WaveformQTabWidget.WaveformProcessingQTabWidget.WaveformPhysicalValuesQWidget.CurrentQWidget
         self.current_df = self.CurrentQWidget.current_df_to_plot
         self.current_function = self.CurrentQWidget.current_function
-        self.TOF_data_dict = self.parent.XXRapidTOFQTabWidget.TOFResultQTabWidget.velocity_dict
+        self.TOF_data_dict = self.parent.XXRapidTOFQTabWidget.TOFResultQTabWidget.velocity_smoothed_dict
         self.explosion_current_dict = self.get_explosion_current_dict()
         try:
             self.CAIExplosionCurrentQTabWidget = CAIExplosionCurrentQTabWidget(self)
@@ -40,3 +41,18 @@ class CAIQTabWidget(ChildQTabWidget):
             explosion_current_dict[my_key] = explosion_current_df
 
         return explosion_current_dict
+
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        try:
+            self.CAIExplosionCurrentQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)
+        try:
+            self.ExplosionCurrentDensityQWidget.save_report()
+        except Exception as ex:
+            print(ex)
+        try:
+            self.CAIResultQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)

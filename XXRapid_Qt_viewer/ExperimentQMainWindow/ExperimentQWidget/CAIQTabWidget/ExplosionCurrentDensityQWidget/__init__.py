@@ -11,6 +11,7 @@ class ExplosionCurrentDensityQWidget(SettingsQWidget2):
         self.settings_key = 'Explosion_current_density'
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         settings = Settings(self)
         self.thickness = settings.ThicknessSettingLine.value
         self.current_density_dict = self.get_current_density_dict()
@@ -38,3 +39,10 @@ class ExplosionCurrentDensityQWidget(SettingsQWidget2):
             current_density_dict[my_key] = current_density_df
 
         return current_density_dict
+
+    def save_report(self):
+        os.makedirs(self.report_path,exist_ok=True)
+        try:
+            self.MainWidget.save_report()
+        except Exception as ex:
+            print(ex)

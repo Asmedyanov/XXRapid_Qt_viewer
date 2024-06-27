@@ -4,6 +4,8 @@ from MPLQWidgets.MatplotlibSingeAxTwingQWidget import *
 class Graphics(MatplotlibSingeAxQWidget):
     def __init__(self, parent):
         self.parent = parent
+        self.settings_key = self.parent.current_key
+        self.report_path = self.parent.report_path
         super().__init__()
         self.ax.set(
             title='CAI',
@@ -29,8 +31,6 @@ class Graphics(MatplotlibSingeAxQWidget):
         except Exception as ex:
             print(ex)
 
-    def set_data(self, df_current_density):
-        self.df_current_density = df_current_density
-        self.cai_plot.set_data(self.df_cai['current_density'] * 1e-11,
-                               self.df_cai['cai'] * 1e-10)
-        self.changed.emit()
+    def save_report(self):
+        self.figure.savefig(f'{self.report_path}/{self.settings_key}.png')
+        self.df_cai.to_csv(f'{self.report_path}/{self.settings_key}.csv')

@@ -15,6 +15,7 @@ class TOFResultsQWidget(SettingsMPLQWidget):
         self.dw = np.gradient(self.velocity_df['width']).mean()
         self.Settings = Settings(self)
         self.velocity_smoothed_df = self.get_velocity_smoothed_df()
+        self.parent.velocity_smoothed_dict[self.settings_key] = self.velocity_smoothed_df
 
         super().__init__(
             MPLQWidget=Graphics(self),
@@ -30,6 +31,7 @@ class TOFResultsQWidget(SettingsMPLQWidget):
     def on_settings_box(self):
         self.velocity_smoothed_df = self.get_velocity_smoothed_df()
         self.MPLQWidget.refresh()
+        self.parent.velocity_smoothed_dict[self.settings_key] = self.velocity_smoothed_df
         super().on_settings_box()
 
     def save_report(self):
