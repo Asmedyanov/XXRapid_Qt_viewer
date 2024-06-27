@@ -1,3 +1,5 @@
+import os
+
 from .FrontingSingleFrameQTabWidget import *
 from SettingsQWidgets.ChildQTabWidget import *
 
@@ -7,14 +9,15 @@ class XXRapidFrontingFramesQTabWidget(ChildQTabWidget):
 
     def __init__(self, parent):
         super().__init__(parent, 'Fronting_frames')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.camera_data_dict = self.parent.camera_data_dict
         self.FrontingSingleFrameQTabWidgetDict = dict()
         self.expansion_dict = dict()
         self.quart_index = 0
         for my_key, my_camera_data in self.camera_data_dict.items():
+            self.current_key = my_key
+            self.current_camera_data = my_camera_data
             try:
-                self.current_key = my_key
-                self.current_camera_data = my_camera_data
                 self.FrontingSingleFrameQTabWidgetDict[my_key] = FrontingSingleFrameQTabWidget(self)
                 self.FrontingSingleFrameQTabWidgetDict[my_key].changed.connect(self.on_frame)
                 self.FrontingSingleFrameQTabWidgetDict[my_key].currentQuartChanged.connect(
@@ -30,18 +33,10 @@ class XXRapidFrontingFramesQTabWidget(ChildQTabWidget):
     def on_frame(self):
         self.changed.emit()
 
-    def on_currentQuartChanged(self):
-        self.current_quart = self.currentWidget().currentQuart
-        self.currentQuartChanged.emit()
-
-    def OnXXRapidFrontingSingleFrameQTabWidgetDict(self):
-        for mykey, mycamera, in self.FrontingSingleFrameQTabWidgetDict.items():
-            self.SettingsDict[mykey] = mycamera.SettingsDict
-            self.expansion_dict[mykey] = mycamera.expansion_dict
-        self.changed.emit()
-
-    def set_data(self, camera_data_dict):
-        self.camera_data_dict = camera_data_dict
-        for mykey, mycamera, in self.FrontingSingleFrameQTabWidgetDict.items():
-            mycamera.set_data(self.camera_data_dict[mykey])
-        self.changed.emit()
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        for frame in self.FrontingSingleFrameQTabWidgetDict.values():
+            try:
+                frame.save_report()
+            except Exception as ex:
+                print(ex)

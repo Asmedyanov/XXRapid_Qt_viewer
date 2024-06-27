@@ -11,6 +11,7 @@ class QuartQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, parent.current_key)
         self.camera_data = self.parent.current_camera_data
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         if self.settings_key not in self.parent.expansion_dict.keys():
             self.parent.expansion_dict[self.settings_key] = dict()
         self.expansion_dict = self.parent.expansion_dict[self.settings_key]
@@ -33,31 +34,13 @@ class QuartQTabWidget(ChildQTabWidget):
         self.camera_data = self.parent.current_camera_data
         self.TracerQWidget.refresh()
 
-    def get_expansion(self):
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
         try:
-            expansion_dict = {
-                'Expansion_1': {
-                    'shutter': self.XXRapidFrontingFrontQWidgetDict['Front_2'].shutter_order,
-                    'x': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx,
-                    'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].y_approx -
-                                 self.XXRapidFrontingFrontQWidgetDict['Front_2'].y_approx
-                },
-                'Expansion_2': {
-                    'shutter': self.XXRapidFrontingFrontQWidgetDict['Front_3'].shutter_order,
-                    'x': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx,
-                    'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].y_approx -
-                                 self.XXRapidFrontingFrontQWidgetDict['Front_3'].y_approx
-                }
-            }
-        except:
-            expansion_dict = {
-                'Expansion_1': {
-                    'x': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx,
-                    'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx * 0
-                },
-                'Expansion_2': {
-                    'x': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx,
-                    'expansion': self.XXRapidFrontingFrontQWidgetDict['Front_1'].x_approx * 0
-                }
-            }
-        return expansion_dict
+            self.TracerQWidget.save_report()
+        except Exception as ex:
+            print(ex)
+        try:
+            self.FrontsQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)

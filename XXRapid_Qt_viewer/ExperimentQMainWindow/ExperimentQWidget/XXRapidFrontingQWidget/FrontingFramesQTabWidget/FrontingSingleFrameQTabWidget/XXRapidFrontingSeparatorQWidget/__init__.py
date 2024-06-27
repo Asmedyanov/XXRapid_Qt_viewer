@@ -9,6 +9,7 @@ class FrontingSeparatorQWidget(SettingsMPLQWidget):
         self.settings_key = 'Separator'
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
+        self.report_path = self.parent.report_path
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
             settings_box=Settings(self)
@@ -23,9 +24,9 @@ class FrontingSeparatorQWidget(SettingsMPLQWidget):
         self.quarts_dict = self.get_quarts_dict()
         self.x_center_line = self.MPLQWidget.ax.axvline(self.x_center, c='r')
         self.y_center_line = self.MPLQWidget.ax.axhline(self.y_center, c='r')
-        self.cid_1 = self.MPLQWidget.figure.canvas.mpl_connect('button_press_event', self.On_mouse_click)
+        self.cid_1 = self.MPLQWidget.figure.canvas.mpl_connect('button_press_event', self.on_mouse_click)
 
-    def On_mouse_click(self, event):
+    def on_mouse_click(self, event):
         if event.dblclick:
             x_center, y_center = int(event.xdata), int(event.ydata)
             self.SettingsBox.set_center(x_center, y_center)
@@ -67,7 +68,8 @@ class FrontingSeparatorQWidget(SettingsMPLQWidget):
         self.y_center_line.set_ydata(self.y_center)
         self.imshow.set_data(self.image_before)
         self.imshow.set_extent(self.get_extent())
-
-        self.MPLQWidget.changed.emit()
         self.quarts_dict = self.get_quarts_dict()
         super().on_settings_box()
+
+    def save_report(self):
+        self.MPLQWidget.figure.savefig(f'{self.report_path}/{self.settings_key}.png')

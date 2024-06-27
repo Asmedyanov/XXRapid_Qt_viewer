@@ -9,6 +9,7 @@ class XXRapidFrontingQWidget(QWidget):
         self.parent = parent
         self.settings_key = 'Fronting'
         self.parent.test_settings_key(self.settings_key)
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.XXRapidOriginalQWidget = self.parent.XXRapidOriginalQWidget
         self.camera_data_dict = self.XXRapidOriginalQWidget.CameraDataDict
@@ -40,3 +41,13 @@ class XXRapidFrontingQWidget(QWidget):
     def test_settings_key(self, key_line):
         if key_line not in self.SettingsDict.keys():
             self.SettingsDict[key_line] = dict()
+
+    def save_report(self):
+        try:
+            self.XXRapidFrontingFramesQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)
+        try:
+            self.FrontingExpansionQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)

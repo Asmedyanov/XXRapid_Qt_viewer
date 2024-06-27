@@ -17,84 +17,77 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_1\Rogowski_coil.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Physical_values\Current.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_1\Systron.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Physical_values\Energy.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_2\Systron.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Physical_values\Full_voltage.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_3\Systron.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Physical_values\I_dot.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_3\XXRapid_trig_out.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Physical_values\Power.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_channels\Channel_4\Systron.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Physical_values\Resistance.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_physical\Current\Current.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Physical_values\Resistive_voltage.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\Waveform_processing\Waveform_physical\Idot\Idot.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Waveform_channels\Rogowski_coil.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\XXRapid_TOF\XXRapid_velocity_and_onset\Quart_1.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Waveform_channels\Systron.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\XXRapid_TOF\XXRapid_velocity_and_onset\Quart_2.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Waveform_channels\Tektronix_VD.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\QtTraceFolder\XXRapid_TOF\XXRapid_velocity_and_onset\Quart_3.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Default_shot\QtTraceFolder\XXRapid_TOF\XXRapid_velocity_and_onset\Quart_4.csv">
+        <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Waveform_channels\XXRapid_trig_out.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

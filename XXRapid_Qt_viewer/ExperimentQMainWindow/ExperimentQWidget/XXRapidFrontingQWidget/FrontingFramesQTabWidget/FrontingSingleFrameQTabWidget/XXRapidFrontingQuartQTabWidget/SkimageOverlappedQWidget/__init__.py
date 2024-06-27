@@ -29,7 +29,7 @@ class SkimageOverlappedQWidget(SettingsMPLQWidget):
 
     def mouse_event_release(self, event):
         x_2, y_2 = int(event.xdata), int(event.ydata)
-        self.SettingsBox.SetLine(self.x_1, self.y_1, x_2, y_2)
+        self.SettingsBox.set_line(self.x_1, self.y_1, x_2, y_2)
         self.on_settings_box()
 
     def set_data(self, camera_data):

@@ -65,7 +65,7 @@ class Settings(SettingsBoxQWidget):
         self.XMinLine = SettingsLineQWidget(
             name=key,
             default=default,
-            limit=[0, x_max],
+            limit=[0, 1e6],
             step=1,
             comment='pix'
         )
@@ -78,7 +78,7 @@ class Settings(SettingsBoxQWidget):
         self.YMinLine = SettingsLineQWidget(
             name=key,
             default=default,
-            limit=[0, y_max],
+            limit=[0, 1e6],
             step=1,
             comment='pix'
         )
@@ -91,7 +91,7 @@ class Settings(SettingsBoxQWidget):
         self.XMaxLine = SettingsLineQWidget(
             name=key,
             default=default,
-            limit=[0, x_max],
+            limit=[0, 1e6],
             step=1,
             comment='pix'
         )
@@ -104,7 +104,7 @@ class Settings(SettingsBoxQWidget):
         self.YMaxLine = SettingsLineQWidget(
             name=key,
             default=default,
-            limit=[0, y_max],
+            limit=[0, 1e6],
             step=1,
             comment='pix'
         )
@@ -113,7 +113,6 @@ class Settings(SettingsBoxQWidget):
         self.YMaxLine.changed.connect(self.on_settings_line_changed)
 
     def on_settings_line_changed(self):
-        super().on_settings_line_changed()
         self.SettingsDict['Sigma_before'] = self.SigmaBeforeLine.value
         self.SettingsDict['Sigma_shot'] = self.SigmaShotLine.value
         self.SettingsDict['Sigma_overlapped'] = self.SigmaOverlappedLine.value
@@ -122,10 +121,9 @@ class Settings(SettingsBoxQWidget):
         self.SettingsDict['Y_min'] = self.YMinLine.value
         self.SettingsDict['X_max'] = self.XMaxLine.value
         self.SettingsDict['Y_max'] = self.YMaxLine.value
+        super().on_settings_line_changed()
 
-        self.changed.emit()
-
-    def SetLine(self, x_min, y_min, x_max, y_max):
+    def set_line(self, x_min, y_min, x_max, y_max):
         self.XMinLine.setValue(x_min)
         self.XMaxLine.setValue(x_max)
         self.YMinLine.setValue(y_min)

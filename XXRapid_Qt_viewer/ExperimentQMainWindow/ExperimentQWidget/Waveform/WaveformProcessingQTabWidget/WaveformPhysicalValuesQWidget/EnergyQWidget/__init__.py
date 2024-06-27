@@ -8,7 +8,7 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.PowerQWidget = self.parent.PowerQWidget
-        self.PowerQWidget.changed.connect(self.refresh)
+        #self.PowerQWidget.changed.connect(self.refresh)
         self.CurrentQWidget = self.parent.CurrentQWidget
         self.df_power = self.PowerQWidget.df_power.copy()
         self.df_current = self.CurrentQWidget.current_df_to_plot.copy()

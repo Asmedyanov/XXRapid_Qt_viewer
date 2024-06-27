@@ -5,6 +5,7 @@ from .QuartQTabWidgetDict import *
 class FrontingQuartsQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Quarts')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.SeparatorQWidget = self.parent.SeparatorQWidget
         self.SeparatorQWidget.changed.connect(self.refresh)
         self.camera_data_dict = self.SeparatorQWidget.quarts_dict
@@ -35,3 +36,11 @@ class FrontingQuartsQTabWidget(ChildQTabWidget):
             self.current_camera_data = my_camera_data
             self.QuartQTabWidgetDict[my_key].refresh()
         self.changed.emit()
+
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        for quart in self.QuartQTabWidgetDict.values():
+            try:
+                quart.save_report()
+            except Exception as ex:
+                print(ex)

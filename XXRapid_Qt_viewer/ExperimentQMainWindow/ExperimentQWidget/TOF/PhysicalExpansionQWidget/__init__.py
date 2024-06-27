@@ -12,7 +12,7 @@ class PhysicalExpansionQWidget(ChildQWidget):
         self.XXRapidFrontingQWidget = self.parent.XXRapidFrontingQWidget
         self.XXRapidFrontingQWidget.changed.connect(self.refresh)
         self.WaveformTimingQWidget = self.parent.WaveformTimingQWidget
-        self.WaveformTimingQWidget.changed.connect(self.refresh)
+        #self.WaveformTimingQWidget.changed.connect(self.refresh)
         self.expansion_pixel_dict = self.XXRapidFrontingQWidget.XXRapidFrontingFramesQTabWidget.expansion_dict.copy()
         self.timing_dict = self.WaveformTimingQWidget.t_shutter_dict.copy()
         self.t_start = self.WaveformTimingQWidget.t_start

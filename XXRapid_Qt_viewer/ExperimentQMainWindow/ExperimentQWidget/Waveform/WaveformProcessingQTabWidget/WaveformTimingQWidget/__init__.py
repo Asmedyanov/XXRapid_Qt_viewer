@@ -28,8 +28,10 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.Normed_plots_dict = dict()
         for my_key, my_df in self.Normed_df_dict.items():
             self.Normed_plots_dict[my_key], = self.MPLQWidget.ax.plot(
-                my_df['time'].loc[my_df['time'] < self.max_time] * 1.0e9,
-                my_df['Units'].loc[my_df['time'] < self.max_time], label=my_key)
+                #my_df['time'].loc[my_df['time'] < self.max_time] * 1.0e9,
+                #my_df['Units'].loc[my_df['time'] < self.max_time], label=my_key)
+                my_df['time'] * 1.0e9,
+                                my_df['Units'], label=my_key)
         self.MPLQWidget.ax.legend()
         self.t_start = self.SettingsBox.StartLine.value * 1e-9
         self.PulseStartLine = self.MPLQWidget.ax.axvline(self.t_start * 1e9, linestyle=':', c='r')

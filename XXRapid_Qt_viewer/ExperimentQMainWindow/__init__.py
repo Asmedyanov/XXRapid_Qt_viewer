@@ -86,7 +86,7 @@ class ExperimentQMainWindow(QMainWindow):
         self.setWindowTitle(title)
 
     def on_rebuild(self):
-        self.ExperimentQWidget.SaveSettings()
+        self.ExperimentQWidget.save_settings()
         self.remake()
         self.statusBar.showMessage(f'Rebuild')
 
@@ -104,7 +104,7 @@ class ExperimentQMainWindow(QMainWindow):
         self.statusBar.showMessage(f'Settings are default')
 
     def on_save_settings(self):
-        self.ExperimentQWidget.SaveSettings()
+        self.ExperimentQWidget.save_settings()
         self.statusBar.showMessage(f'Settings are saved')
 
     def on_save_trace(self):
@@ -114,4 +114,4 @@ class ExperimentQMainWindow(QMainWindow):
 
     def closeEvent(self, event):
         self.ExperimentQWidget.save_report()
-        self.ExperimentQWidget.SaveSettings()
+        self.ExperimentQWidget.save_settings()

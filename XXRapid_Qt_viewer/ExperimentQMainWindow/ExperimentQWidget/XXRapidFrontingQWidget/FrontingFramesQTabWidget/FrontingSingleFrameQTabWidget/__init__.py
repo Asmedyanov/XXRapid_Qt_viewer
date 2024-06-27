@@ -1,3 +1,5 @@
+import os
+
 from .XXRapidFrontingSeparatorQWidget import *
 from .XXRapidFrontingQuartQTabWidget import *
 from .FrontingQuartsQTabWidget import *
@@ -12,6 +14,7 @@ class FrontingSingleFrameQTabWidget(ChildQTabWidget):
         self.camera_data = self.parent.current_camera_data
         self.expansion_dict = self.parent.expansion_dict
         self.quart_index = 0
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         try:
             self.SeparatorQWidget = FrontingSeparatorQWidget(self)
             self.addTab(self.SeparatorQWidget, self.SeparatorQWidget.settings_key)
@@ -32,23 +35,6 @@ class FrontingSingleFrameQTabWidget(ChildQTabWidget):
     def on_current_quart_changed(self):
         self.parent.quart_index = self.quart_index
         self.currentQuartChanged.emit()
-        '''self.expansion_dict = dict()
-        self.tabBarDoubleClicked.connect(self.on_tab_bar)
-        for my_key, my_camera_data in self.XXRapidFrontingSeparatorQWidget.quarts_dict.items():
-            try:
-                settings = settings_dict[my_key]
-            except:
-                settings = dict()
-            try:
-                self.XXRapidFrontingQuartQTabWidgetDict[my_key] = XXRapidFrontingQuartQTabWidget(my_camera_data,
-                                                                                                 settings)
-                self.SettingsDict[my_key] = self.XXRapidFrontingQuartQTabWidgetDict[my_key].SettingsDict
-                self.expansion_dict[my_key] = self.XXRapidFrontingQuartQTabWidgetDict[my_key].get_expansion()
-                self.addTab(self.XXRapidFrontingQuartQTabWidgetDict[my_key], my_key)
-                self.currentQuart = self.currentIndex()
-                self.XXRapidFrontingQuartQTabWidgetDict[my_key].changed.connect(self.OnXXRapidFrontingQuartQTabWidget)
-            except Exception as ex:
-                print(f'XXRapidFrontingQuartQTabWidgetDict[{my_key}] {ex}')'''
 
     def on_tab_bar(self):
         index = self.currentIndex()
@@ -56,25 +42,13 @@ class FrontingSingleFrameQTabWidget(ChildQTabWidget):
             self.currentQuart = index
             self.currentQuartChanged.emit()
 
-    def OnXXRapidFrontingQuartQTabWidget(self):
-        for mykey, myQuartQWidget in self.XXRapidFrontingQuartQTabWidgetDict.items():
-            self.SettingsDict[mykey] = myQuartQWidget.SettingsDict
-            self.expansion_dict[mykey] = myQuartQWidget.get_expansion()
-        self.changed.emit()
-
-    def OnXXRapidFrontingSeparatorQWidget(self):
-        self.SettingsDict['Separator'] = self.SeparatorQWidget.SettingsDict
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
         try:
-            for mykey, myQuartQWidget in self.XXRapidFrontingQuartQTabWidgetDict.items():
-                try:
-                    myQuartQWidget.set_data(self.SeparatorQWidget.quarts_dict[mykey])
-                except Exception as ex:
-                    print(f'{mykey}')
+            self.SeparatorQWidget.save_report()
         except Exception as ex:
-            print(f'XXRapidFrontingQuartQTabWidgetDict {ex}')
-
-        # self.changed.emit()
-
-    def set_data(self, camera_data):
-        self.camera_data = camera_data
-        self.changed.emit()
+            print(ex)
+        try:
+            self.FrontingQuartsQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)

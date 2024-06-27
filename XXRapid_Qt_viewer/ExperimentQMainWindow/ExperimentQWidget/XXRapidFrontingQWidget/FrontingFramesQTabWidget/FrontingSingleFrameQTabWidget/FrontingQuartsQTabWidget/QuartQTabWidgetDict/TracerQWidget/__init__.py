@@ -11,6 +11,7 @@ class TracerQWidget(SettingsMPLQWidget):
     def __init__(self, parent):
         self.parent = parent
         self.settings_key = 'Tracer'
+        self.report_path = self.parent.report_path
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.camera_data = self.parent.camera_data
@@ -27,7 +28,7 @@ class TracerQWidget(SettingsMPLQWidget):
         self.y_min = self.SettingsBox.YMinLine.value
         self.x_max = self.SettingsBox.XMaxLine.value
         self.y_max = self.SettingsBox.YMaxLine.value
-        self.OverlappedImage = self.getOverlappedImage()
+        self.OverlappedImage = self.get_overlapped_image()
         self.imshow = self.MPLQWidget.ax.imshow(self.OverlappedImage)
         self.TraceLine, = self.MPLQWidget.ax.plot(
             [self.x_min, self.x_max],
@@ -39,6 +40,7 @@ class TracerQWidget(SettingsMPLQWidget):
         self.cid_2 = self.MPLQWidget.figure.canvas.mpl_connect('button_release_event',
                                                                self.mouse_event_release)
         self.traced_image = self.get_traced_image()
+
     def refresh(self):
         self.camera_data = self.parent.camera_data
         self.on_settings_box()
@@ -48,14 +50,10 @@ class TracerQWidget(SettingsMPLQWidget):
 
     def mouse_event_release(self, event):
         x_2, y_2 = int(event.xdata), int(event.ydata)
-        self.SettingsBox.SetLine(self.x_1, self.y_1, x_2, y_2)
+        self.SettingsBox.set_line(self.x_1, self.y_1, x_2, y_2)
         self.on_settings_box()
 
-    def set_data(self, camera_data):
-        self.camera_data = camera_data
-        self.on_settings_box()
-
-    def getOverlappedImage(self):
+    def get_overlapped_image(self):
         before_image = filters.gaussian(self.camera_data['before'],
                                         sigma=self.sigma_before)
         thresh = np.where(before_image > 1e-2 * np.max(before_image[np.nonzero(before_image)]) * self.mask_threshold, 1,
@@ -72,23 +70,6 @@ class TracerQWidget(SettingsMPLQWidget):
         overlapped_image = filters.gaussian(overlapped_image, sigma=self.sigma_overlapped)
         return overlapped_image
 
-        '''before_image = gaussian_filter(self.camera_data['before'], sigma=self.sigma_before)
-        # before_image = before_image/np.median(before_image)
-        shot_image = gaussian_filter(self.camera_data['shot'], sigma=self.sigma_shot)
-        # shot_image = shot_image/np.median(shot_image.mean())
-        shadow_image = np.where(shot_image < before_image,
-                                shot_image,
-                                before_image)
-        mask = np.where(before_image > 1e-2 * np.max(before_image[np.nonzero(before_image)]) * self.mask_threshold, 1,
-                        0)
-        overlapped_image = np.where(before_image <= 0, 0,
-                                    shadow_image / before_image) * mask
-
-        overlapped_image = gaussian_filter(overlapped_image, sigma=self.sigma_overlapped)
-        return overlapped_image'''
-
-    # def set_geometry_settings(self, x_min, x_max, y_min, y_max):
-
     def on_settings_box(self):
         self.SettingsDict = self.SettingsBox.SettingsDict
         self.sigma_before = self.SettingsBox.SigmaBeforeLine.value
@@ -103,7 +84,7 @@ class TracerQWidget(SettingsMPLQWidget):
             [self.x_min, self.x_max],
             [self.y_min, self.y_max],
         )
-        self.OverlappedImage = self.getOverlappedImage()
+        self.OverlappedImage = self.get_overlapped_image()
         extent = [0,
                   self.OverlappedImage.shape[1],
                   self.OverlappedImage.shape[0],
@@ -120,3 +101,6 @@ class TracerQWidget(SettingsMPLQWidget):
         max_y_index = int(max(self.y_min, self.y_max))
         traced_image = self.OverlappedImage[min_y_index:max_y_index, min_x_index:max_x_index]
         return traced_image
+
+    def save_report(self):
+        self.MPLQWidget.figure.savefig(f'{self.report_path}/{self.settings_key}.png')

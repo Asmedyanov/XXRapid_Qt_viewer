@@ -5,6 +5,7 @@ from .FrontQWidget import *
 class FrontsQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Fronts')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.n_fronts = 3
         self.FrontQWidgetDict = dict()
         self.TracerQWidget = self.parent.TracerQWidget
@@ -38,3 +39,11 @@ class FrontsQTabWidget(ChildQTabWidget):
 
     def on_front_changed(self):
         self.changed.emit()
+
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        for front in self.FrontQWidgetDict.values():
+            try:
+                front.save_report()
+            except Exception as ex:
+                print(ex)
