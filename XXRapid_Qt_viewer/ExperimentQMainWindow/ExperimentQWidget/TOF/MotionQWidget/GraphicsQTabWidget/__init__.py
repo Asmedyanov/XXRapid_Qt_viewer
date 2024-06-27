@@ -1,11 +1,14 @@
+import os
+
 from PyQt5.QtWidgets import QTabWidget
-from .GraphicsQWidget import *
+from .Graphics import *
 from SettingsQWidgets.ChildQTabWidget import *
 
 
 class GraphicsQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Graphics')
+        self.report_path = self.parent.report_path
         self.motion_dict = self.parent.motion_dict
         self.motion_approximated_dict = self.parent.motion_approximated_dict
         self.index_to_plot_list = self.parent.index_to_plot_list
@@ -16,7 +19,7 @@ class GraphicsQTabWidget(ChildQTabWidget):
             self.current_motion_list = my_list
             self.current_motion_approx_list = self.motion_approximated_dict[my_key]
             try:
-                self.GraphicsDict[my_key] = GraphicsQWidget(self)
+                self.GraphicsDict[my_key] = Graphics(self)
                 self.addTab(self.GraphicsDict[my_key], my_key)
             except Exception as ex:
                 print(ex)
@@ -34,7 +37,10 @@ class GraphicsQTabWidget(ChildQTabWidget):
             except Exception as ex:
                 print(ex)
 
-    def set_data(self, motion_dict, motion_approximated_dict, index_to_plot_list):
-        for my_key, my_list in motion_dict.items():
-            self.GraphicsDict[my_key].set_data(my_list, motion_approximated_dict[my_key], index_to_plot_list)
-        self.changed.emit()
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        for graphics in self.GraphicsDict.values():
+            try:
+                graphics.save_report()
+            except Exception as ex:
+                print(ex)

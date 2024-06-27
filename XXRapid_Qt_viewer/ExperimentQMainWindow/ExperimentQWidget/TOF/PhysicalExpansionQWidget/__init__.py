@@ -1,3 +1,5 @@
+import os
+
 from PyQt5.QtWidgets import QWidget, QHBoxLayout
 from PyQt5.QtCore import pyqtSignal
 import numpy as np
@@ -9,10 +11,11 @@ from SettingsQWidgets.ChildQWidget import *
 class PhysicalExpansionQWidget(ChildQWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Physical_expansion')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.XXRapidFrontingQWidget = self.parent.XXRapidFrontingQWidget
         self.XXRapidFrontingQWidget.changed.connect(self.refresh)
         self.WaveformTimingQWidget = self.parent.WaveformTimingQWidget
-        #self.WaveformTimingQWidget.changed.connect(self.refresh)
+        # self.WaveformTimingQWidget.changed.connect(self.refresh)
         self.expansion_pixel_dict = self.XXRapidFrontingQWidget.XXRapidFrontingFramesQTabWidget.expansion_dict.copy()
         self.timing_dict = self.WaveformTimingQWidget.t_shutter_dict.copy()
         self.t_start = self.WaveformTimingQWidget.t_start
@@ -64,14 +67,8 @@ class PhysicalExpansionQWidget(ChildQWidget):
             print(ex)
         self.changed.emit()
 
-    def set_data(self, timing_dict, expansion_dict):
-        self.expansion_pixel_dict = expansion_dict.copy()
-        self.timing_dict = timing_dict.copy()
-        self.OnSettingsQWidget()
-
-    def save_report(self, folder_name):
-        if 'XXRapid_physical_expansion' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/XXRapid_physical_expansion')
-        for mykey, myGraphics in self.GraphicsQTabWidget.GraphicsDict.items():
-            myGraphics.figure.savefig(
-                f'{folder_name}/XXRapid_physical_expansion/{mykey}.png')
+    def save_report(self):
+        try:
+            self.GraphicsQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)

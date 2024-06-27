@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QTabWidget
-from .GraphicsQWidget import *
+from .Graphics import *
 from SettingsQWidgets.ChildQTabWidget import *
 
 
@@ -8,13 +8,14 @@ class GraphicsQTabWidget(ChildQTabWidget):
         super().__init__(parent, 'Graphics')
         self.expansion_dict = self.parent.expansion_dict
         self.timing_dict = self.parent.timing_dict
+        self.report_path = self.parent.report_path
 
         self.GraphicsDict = dict()
         for my_key, my_list in self.expansion_dict.items():
             self.current_key = my_key
             self.current_expansion_data = my_list
             try:
-                self.GraphicsDict[my_key] = GraphicsQWidget(self)
+                self.GraphicsDict[my_key] = Graphics(self)
                 self.addTab(self.GraphicsDict[my_key], my_key)
             except Exception as ex:
                 print(ex)
@@ -30,7 +31,10 @@ class GraphicsQTabWidget(ChildQTabWidget):
             except Exception as ex:
                 print(ex)
 
-    def set_data(self, timing_dict, expansion_dict):
-        for my_key, my_list in expansion_dict.items():
-            self.GraphicsDict[my_key].set_data(expansion_list=my_list, time_list=timing_dict)
-        self.changed.emit()
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        for graphics in self.GraphicsDict.values():
+            try:
+                graphics.save_report()
+            except Exception as ex:
+                print(ex)

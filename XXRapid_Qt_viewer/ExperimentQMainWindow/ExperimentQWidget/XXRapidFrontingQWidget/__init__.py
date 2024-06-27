@@ -43,6 +43,7 @@ class XXRapidFrontingQWidget(QWidget):
             self.SettingsDict[key_line] = dict()
 
     def save_report(self):
+        os.makedirs(self.report_path,exist_ok=True)
         try:
             self.XXRapidFrontingFramesQTabWidget.save_report()
         except Exception as ex:

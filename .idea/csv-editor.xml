@@ -17,6 +17,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\QtTraceFolder\TOF\Result\Quart_2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\TOF\Result\Quart_3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\QtTraceFolder\Waveform\Waveform_processing\Physical_values\Current.csv">
           <value>
             <Attribute>

@@ -1360,8 +1360,22 @@
       <Scale>45.0</Scale>
       <User_comment>User_comment</User_comment>
     </Physical_expansion>
-    <Result>None</Result>
-    <Velocity>None</Velocity>
+    <Result>
+      <Quart_1>
+        <Smoothing>3.0</Smoothing>
+        <User_comment>User_comment</User_comment>
+      </Quart_1>
+      <Quart_2>
+        <User_comment>User_comment</User_comment>
+      </Quart_2>
+      <Quart_3>
+        <Smoothing>3.0</Smoothing>
+        <User_comment>User_comment</User_comment>
+      </Quart_3>
+      <Quart_4>
+        <User_comment>User_comment</User_comment>
+      </Quart_4>
+    </Result>
   </TOF>
   <Waveform>
     <Waveform_original>None</Waveform_original>

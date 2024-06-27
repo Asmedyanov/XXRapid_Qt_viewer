@@ -1,11 +1,12 @@
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 
 
-class GraphicsQWidget(MatplotlibSingeAxQWidget):
+class Graphics(MatplotlibSingeAxQWidget):
     def __init__(self, parent):
         self.parent = parent
         self.expansion_dict = self.parent.current_expansion_data
         self.current_key = self.parent.current_key
+        self.report_path = self.parent.report_path
         super().__init__()
         self.plot_dict = dict()
         self.ax.set(
@@ -29,9 +30,5 @@ class GraphicsQWidget(MatplotlibSingeAxQWidget):
         self.ax.legend()
         self.changed.emit()
 
-    def set_data(self, expansion_list, time_list):
-        for i, expansion in enumerate(expansion_list):
-            self.PlotList[i].set_data(expansion['Width'], expansion['expansion'])
-            self.PlotList[i].set_label(f'{expansion["Time"]} ns')
-        self.ax.legend()
-        self.changed.emit()
+    def save_report(self):
+        self.figure.savefig(f'{self.report_path}/{self.current_key}')

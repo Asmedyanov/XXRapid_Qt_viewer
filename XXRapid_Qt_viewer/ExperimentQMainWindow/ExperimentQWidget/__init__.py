@@ -135,12 +135,10 @@ class ExperimentQWidget(QTabWidget):
             self.XXRapidTOFQTabWidget.save_report()
         except Exception as ex:
             print(f'XXRapidTOFQTabWidget.save_report {ex}')
-
         try:
             self.ComsolSimulationQTabWidget.save_report()
         except Exception as ex:
             print(f'ComsolSimulationQTabWidget.save_report {ex}')
-
         try:
             self.CAIQTabWidget.save_report()
         except Exception as ex:

@@ -9,6 +9,7 @@ from SettingsQWidgets.ChildQWidget import *
 class MotionQWidget(ChildQWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Motion')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.PhysicalExpansionQWidget = self.parent.PhysicalExpansionQWidget
 
         self.expansion_dict = self.PhysicalExpansionQWidget.expansion_dict
@@ -125,14 +126,9 @@ class MotionQWidget(ChildQWidget):
         except Exception as ex:
             print(f'GraphicsQTabWidget.set_data {ex}')
 
-    def set_data(self, motion_dict):
-        self.motion_dict = motion_dict
-        self.motion_approximated_dict = self.get_approximation()
-        self.on_settings()
+    def save_report(self):
+        try:
+            self.GraphicsQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)
 
-    def save_report(self, folder_name):
-        if 'XXRapid_motion' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/XXRapid_motion')
-        for mykey, myGraphics in self.GraphicsQTabWidget.GraphicsDict.items():
-            myGraphics.figure.savefig(
-                f'{folder_name}/XXRapid_motion/{mykey}.png')
