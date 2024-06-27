@@ -6,6 +6,7 @@ from SettingsQWidgets.ChildQTabWidget import *
 class ComsolCurrentQTabWidget(ChildQTabWidget):
     def __init__(self, parent):
         super().__init__(parent, 'Current_density')
+        self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.folder_path = self.parent.folder_path
         self.folder_list = self.parent.folder_list
         self.TOFResultQTabWidget = self.parent.TOFResultQTabWidget
@@ -45,46 +46,9 @@ class ComsolCurrentQTabWidget(ChildQTabWidget):
                       name.startswith('Jmax') and name.endswith('csv')]
         return f'{self.folder_path}/{files_list[-1]}'
 
-        '''super().__init__(
-            MPLQWidget=MatplotlibSingeAxQWidget(),
-            settings_box=SettingsBox(settings_dict)
-        )
-        self.parent = parent
-        self.filename = filename
-        self.df = pd.read_csv(self.filename)
-        self.width_list_number, self.comsol_current_density_dict = self.get_comsol_current_density_dict()
-        self.MPLQWidget.ax.set(xlabel='t, ns',
-                               ylabel='J$_{edge}, \\times 10^8 A/cm^2$'
-                               )
-        self.j_plot_dict = dict()
-        for my_key, my_value in self.comsol_current_density_dict.items():
-            self.j_plot_dict[my_key], = self.MPLQWidget.ax.plot(my_value['time'] * 1e9, my_value['density'] * 1e-8,
-                                                                label=my_key)
-        self.MPLQWidget.ax.legend()
-        self.t_exp_plot_dict = dict()
-        try:
-            quart = int(self.SettingsBox.Quart_line.value)
-            self.t_exp_array = np.arange(len(self.width_list_number))
-            self.j_exp_array = np.arange(len(self.width_list_number))
-            self.h_exp_array = np.arange(len(self.width_list_number))
-            df_list = list(self.comsol_current_density_dict.values())
-            for i, width in enumerate(self.width_list_number):
-                self.t_exp_array[i] = self.parent.XXRapidTOFQTabWidget.get_explosion_time(
-                    width=width,
-                    quart=quart)
-                j_df = df_list[i]
-                j_df = j_df.loc[j_df['time'] * 1e9 < self.t_exp_array[i]]
-                self.j_exp_array[i] = j_df['density'].values[-1]
-                self.h_exp_array[i] = j_df['action'].values.sum()
-
-                self.t_exp_plot_dict[width] = self.MPLQWidget.ax.axvline(self.t_exp_array[i], linestyle=':', c='r')
-        except Exception as ex:
-            print(ex)'''
-
     def on_settings_box(self):
         try:
             quart = int(self.SettingsBox.Quart_line.value)
-            # self.t_exp_array = np.arange(len(self.width_list_number))
             df_list = list(self.comsol_current_density_dict.values())
             for i, width in enumerate(self.width_list_number):
                 self.t_exp_array[i] = self.parent.XXRapidTOFQTabWidget.get_explosion_time(
@@ -121,3 +85,11 @@ class ComsolCurrentQTabWidget(ChildQTabWidget):
                 width_list_number[i] = 0
             comsol_current_density_dict[name] = df
         return width_list_number, comsol_current_density_dict
+
+    def save_report(self):
+        os.makedirs(self.report_path, exist_ok=True)
+        for graphics in self.Graphics_dict.values():
+            try:
+                graphics.save_report()
+            except Exception as ex:
+                print(ex)

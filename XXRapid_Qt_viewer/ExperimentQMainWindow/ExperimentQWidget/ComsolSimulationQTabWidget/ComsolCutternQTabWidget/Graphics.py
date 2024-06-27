@@ -7,6 +7,8 @@ class Graphics(MatplotlibSingeAxQWidget):
         self.comsol_current_df = self.parent.comsol_current_df
         self.tof_df = self.parent.tof_dict[self.parent.current_key]
         self.CAI_dict = self.parent.CAI_dict[self.parent.current_key]
+        self.report_path = self.parent.report_path
+        self.settings_key = self.parent.current_key
         super().__init__()
         self.ax.set(
             xlabel='time, ns',
@@ -45,3 +47,6 @@ class Graphics(MatplotlibSingeAxQWidget):
 
     def refresh(self):
         self.tof_dict = self.parent.tof_dict
+
+    def save_report(self):
+        self.figure.savefig(f'{self.report_path}/{self.settings_key}.png')
