@@ -47,6 +47,11 @@ class ExperimentQMainWindow(QMainWindow):
         save_trace_action.setShortcut(QKeySequence("Ctrl+Shift+T"))  # Set the shortcut
         self.file_menu.addAction(save_trace_action)
 
+        save_origin_pro_action = QAction("Save Origin Pro", self)
+        save_origin_pro_action.triggered.connect(self.on_save_origin_pro)
+        save_origin_pro_action.setShortcut(QKeySequence("Ctrl+Shift+O"))  # Set the shortcut
+        self.file_menu.addAction(save_origin_pro_action)
+
         rebuild_action = QAction("Rebuild", self)
         rebuild_action.triggered.connect(self.on_rebuild)
         rebuild_action.setShortcut(QKeySequence("F5"))  # Set the shortcut
@@ -56,6 +61,12 @@ class ExperimentQMainWindow(QMainWindow):
         auto_refresh_action.triggered.connect(self.on_auto_refresh)
         auto_refresh_action.setShortcut(QKeySequence("Ctrl+F5"))  # Set the shortcut
         self.refresh_menu.addAction(auto_refresh_action)
+
+    def on_save_origin_pro(self):
+        try:
+            self.ExperimentQWidget.save_origin_pro()
+        except Exception as ex:
+            print(ex)
 
     def on_import_settings(self):
         folder_path = QFileDialog.getOpenFileName(self, "Select SettingsFile.xml",

@@ -65,6 +65,19 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(ex)
 
+    def save_origin_pro(self):
+        import originpro as op
+        op.new()
+        path = os.getcwd()
+        save_name = path + '\\Experiment_OriginLab.opju'
+        op.save(save_name)
+        try:
+            self.WaveformQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        op.save()
+        op.exit()
+
     def on_waveform_changed(self):
         self.changed.emit()
 
@@ -143,7 +156,6 @@ class ExperimentQWidget(QTabWidget):
             self.CAIQTabWidget.save_report()
         except Exception as ex:
             print(f'CAIQTabWidget.save_report {ex}')
-
 
     def open_settings_xml(self):
         settings = dict()

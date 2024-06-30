@@ -122,34 +122,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\Default_shot\SW_onset_Quart_1.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Default_shot\SW_onset_Quart_2.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Default_shot\SW_onset_Quart_3.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Default_shot\SW_onset_Quart_4.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\Default_shot\shot57.csv">
           <value>
             <Attribute>

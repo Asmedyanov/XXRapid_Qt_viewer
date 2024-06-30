@@ -46,27 +46,12 @@ class WaveformOriginalQWidget(MatplotlibSingeAxQWidget):
     def save_report(self):
         self.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
 
-    def set_data(self, df):
-        self.NChannels = 0
-        self.ChannelDFDict = dict()
-        for key in df.columns:
-            if key.startswith('s'):
-                self.ChannelDFDict[f'Channel_{self.NChannels + 1}'] = pd.DataFrame({'time': df[key]})
-            if key.startswith('Volts'):
-                self.ChannelDFDict[f'Channel_{self.NChannels + 1}']['Volts'] = df[key]
-                self.NChannels += 1
-
-        for mykey, myChannelDF in self.ChannelDFDict.items():
-            try:
-                self.waveform_plots_dict[mykey].set_data(
-                    myChannelDF['time'],
-                    myChannelDF['Volts']
-                )
-            except:
-                self.waveform_plots_dict[mykey], = self.ax.plot(
-                    myChannelDF['time'],
-                    myChannelDF['Volts'],
-                    label=mykey
-                )
-                self.ax.legend()
-        self.changed.emit()
+    def save_origin_pro(self, op):
+        waveform_sheet = op.new_sheet(lname=self.settings_key)
+        waveform_sheet.from_df(self.df)
+        waveform_graph = op.new_graph(template='WaveformOriginal', lname=self.settings_key)
+        waveform_graph[0].add_plot(waveform_sheet, colx=0, coly=1, type='line')
+        waveform_graph[0].add_plot(waveform_sheet, colx=2, coly=3, type='line')
+        waveform_graph[0].add_plot(waveform_sheet, colx=4, coly=5, type='line')
+        waveform_graph[0].add_plot(waveform_sheet, colx=6, coly=7, type='line')
+        waveform_graph[0].rescale()

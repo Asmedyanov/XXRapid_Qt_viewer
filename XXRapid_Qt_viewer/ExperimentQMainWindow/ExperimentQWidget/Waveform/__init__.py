@@ -37,3 +37,13 @@ class WaveformQTabWidget(ChildQTabWidget):
             self.WaveformProcessingQTabWidget.save_report()
         except Exception as ex:
             print(ex)
+
+    def save_origin_pro(self, op):
+        try:
+            self.WaveformOriginalQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformProcessingQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
