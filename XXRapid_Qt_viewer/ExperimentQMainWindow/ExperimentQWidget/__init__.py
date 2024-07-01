@@ -78,6 +78,11 @@ class ExperimentQWidget(QTabWidget):
         op.save()
         op.exit()
 
+        shutil.copy('Experiment_OriginLab.opju',
+                    f'{self.folder_path}/QtTraceFolder')
+
+
+
     def on_waveform_changed(self):
         self.changed.emit()
 

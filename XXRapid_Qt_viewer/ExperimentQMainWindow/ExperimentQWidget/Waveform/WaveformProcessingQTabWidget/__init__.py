@@ -55,3 +55,18 @@ class WaveformProcessingQTabWidget(ChildQTabWidget):
 
     def get_timing_dict(self):
         return self.SettingsDict['Waveform_timing']
+
+    def save_origin_pro(self,op):
+        try:
+            self.WaveformChannelsQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformTimingQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.WaveformPhysicalValuesQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+

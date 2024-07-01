@@ -3,7 +3,7 @@
     <Explosion_current>None</Explosion_current>
     <Explosion_current_density>
       <User_comment>User_comment</User_comment>
-      <foil_thickness>13</foil_thickness>
+      <foil_thickness>15</foil_thickness>
     </Explosion_current_density>
   </CAI>
   <Comsol>

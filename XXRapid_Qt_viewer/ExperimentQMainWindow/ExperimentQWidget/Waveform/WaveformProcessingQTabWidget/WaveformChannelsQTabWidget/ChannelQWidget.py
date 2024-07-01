@@ -55,27 +55,13 @@ class ChannelQWidget(SettingsMPLQWidget):
         )
         super().on_settings_box()
 
-    def set_data(self, df_original):
-        self.df_original = df_original
-        self.OriginalPlot.set_data(
-            self.df_original['time'],
-            self.df_original['Volts'],
-        )
-        self.dt = np.mean(np.gradient(self.df_original['time']))
-        self.NSmooth = int(self.TauSmooth / self.dt) + 1
-
-        self.df_smoothed = self.df_original.rolling(self.NSmooth, min_periods=1).mean()
-
-        self.SmoothedPlot.set_data(
-            self.df_smoothed['time'],
-            self.df_smoothed['Volts']
-        )
-        self.MPLQWidget.changed.emit()
-
     def save_report(self):
         self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.SettingsBox.Diagnostics}.png')
         self.df_smoothed.to_csv(f'{self.parent.report_path}/{self.SettingsBox.Diagnostics}.csv')
 
-    def set_settings(self, settings_dict=None):
-        self.SettingsBox.set_settings(settings_dict)
-        self.SettingsDict = self.SettingsBox.SettingsDict
+    def save_origin_pro(self, op, work_book):
+        sheet = work_book.add_sheet(name=f'{self.settings_key}')
+        sheet.from_df(self.df_smoothed)
+        graph = op.new_graph(lname=self.settings_key)
+        plot = graph[0].add_plot(sheet, colx=0, coly=1)
+        graph[0].rescale()
