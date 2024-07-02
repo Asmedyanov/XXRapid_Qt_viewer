@@ -59,7 +59,6 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.addTab(self.EnergyQWidget, self.EnergyQWidget.settings_key)
         except Exception as ex:
             print(ex)
-
     def on_changed(self):
         print('Waveform physical values are changed')
 
@@ -127,5 +126,35 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             print(ex)
         try:
             self.EnergyQWidget.save_report()
+        except Exception as ex:
+            print(ex)
+
+    def save_origin_pro(self,op):
+        try:
+            self.CurrentQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.FullVoltageQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.IdotQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.ResistiveVoltageQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.PowerQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.ResistanceQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.EnergyQWidget.save_origin_pro(op)
         except Exception as ex:
             print(ex)

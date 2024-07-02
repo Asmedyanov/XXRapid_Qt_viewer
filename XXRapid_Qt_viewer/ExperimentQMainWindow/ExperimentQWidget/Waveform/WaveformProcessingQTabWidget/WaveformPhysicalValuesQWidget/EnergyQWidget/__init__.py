@@ -8,7 +8,7 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.PowerQWidget = self.parent.PowerQWidget
-        #self.PowerQWidget.changed.connect(self.refresh)
+        # self.PowerQWidget.changed.connect(self.refresh)
         self.CurrentQWidget = self.parent.CurrentQWidget
         self.df_power = self.PowerQWidget.df_power.copy()
         self.df_current = self.CurrentQWidget.current_df_to_plot.copy()
@@ -74,3 +74,16 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
                                   self.df_current_to_plot['Units'] * 1e-3)
         self.EnergyLine.set_data(self.df_energy['time'] * 1e6, self.df_energy['Units'] * 1e-3)
         super().changed.emit()
+
+    def save_origin_pro(self, op):
+        workbook = op.new_book(lname=self.settings_key)
+        current_sheet = workbook.add_sheet(name='Current')
+        current_sheet.from_df(self.df_energy)
+        energy_sheet = workbook.add_sheet(name='Energy')
+        energy_sheet.from_df(self.df_power)
+        graph = op.new_graph(template='3Ys_Y-YY', lname=self.settings_key)
+        energy_plot = graph[0].add_plot(energy_sheet, colx=0, coly=1)
+        current_plot = graph[1].add_plot(current_sheet, colx=0, coly=1)
+
+        graph[0].rescale()
+        graph[1].rescale()

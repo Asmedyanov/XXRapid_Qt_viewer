@@ -101,24 +101,20 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
         self.df_idot = self.IdotQWidget.df_idot_smoothed_to_plot.copy()
         self.on_settings_box()
 
-    def set_data(self, df_full_voltage, df_idot):
-        self.df_full_voltage = df_full_voltage.copy()
-        self.df_idot = df_idot.copy()
-        self.idot_peak_time = self.get_peak()
-        self.idot_peak_time_line.set_xdata(self.idot_peak_time * 1.0e9)
-        self.df_voltage_to_plot = self.get_df_voltage_to_plot()
-        self.fullVoltageLine.set_data(self.df_voltage_to_plot['time'] * 1e9,
-                                      self.df_voltage_to_plot['Units'] * 1e-3)
-        self.inductance = self.get_inductance()
-        self.df_inductive_voltage = self.get_df_inductive_voltage()
-        self.df_inductive_voltage_line.set_data(self.df_inductive_voltage['time'] * 1e9,
-                                                self.df_inductive_voltage['Units'] * 1e-3)
-        self.df_resistive_voltage = self.get_df_resistive_voltage()
-
-        self.df_resistive_voltage_line.set_data(self.df_resistive_voltage['time'] * 1e6,
-                                                self.df_resistive_voltage['Units'] * 1e-3)
-        self.MPLQWidget.changed.emit()
-
     def save_report(self):
         self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
         self.df_resistive_voltage.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')
+
+    def save_origin_pro(self, op):
+        workbook = op.new_book(lname=self.settings_key)
+        full_sheet = workbook.add_sheet(name='Full voltage')
+        full_sheet.from_df(self.df_voltage_to_plot)
+        inductive_sheet = workbook.add_sheet(name='Inductive voltage')
+        inductive_sheet.from_df(self.df_inductive_voltage)
+        resistive_sheet = workbook.add_sheet(name='Resistive voltage')
+        resistive_sheet.from_df(self.df_resistive_voltage)
+        graph = op.new_graph(lname=self.settings_key)
+        full_plot = graph[0].add_plot(full_sheet, colx=0, coly=1)
+        inductive_plot = graph[0].add_plot(inductive_sheet, colx=0, coly=1)
+        resistive_plot = graph[0].add_plot(resistive_sheet, colx=0, coly=1)
+        graph[0].rescale()

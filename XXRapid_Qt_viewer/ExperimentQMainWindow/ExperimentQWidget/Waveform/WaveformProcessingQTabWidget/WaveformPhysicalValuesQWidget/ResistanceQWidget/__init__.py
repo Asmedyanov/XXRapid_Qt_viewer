@@ -53,18 +53,6 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         ret = self.u_resistive_function(time) / current
         return ret
 
-    def set_data(self, df_current, df_u_resistive, ind_peak_time=0):
-        self.df_current = df_current.copy()
-        self.df_u_resistive = df_u_resistive.copy()
-        self.ind_peak_time = ind_peak_time
-        self.df_current_to_plot = self.get_df_current_to_plot()
-        self.df_u_resistive_to_plot = self.get_df_u_resistive_to_plot()
-        self.resistance_function_vect = np.vectorize(self.resistance_function)
-        self.df_resistance = self.get_df_resistance()
-        self.CurrentLine.set_data(self.df_current_to_plot['time'] * 1e6, self.df_current_to_plot['Units'] * 1e-3)
-        self.ResistanceLine.set_data(self.df_resistance['time'] * 1e6, self.df_resistance['Units'])
-        self.changed.emit()
-
     def save_report(self):
         self.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
         self.df_resistance.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')
@@ -77,3 +65,16 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         self.CurrentLine.set_data(self.df_current_to_plot['time'] * 1e6, self.df_current_to_plot['Units'] * 1e-3)
         self.ResistanceLine.set_data(self.df_resistance['time'] * 1e6, self.df_resistance['Units'])
         self.changed.emit()
+
+    def save_origin_pro(self, op):
+        workbook = op.new_book(lname=self.settings_key)
+        current_sheet = workbook.add_sheet(name='Current')
+        current_sheet.from_df(self.df_current_to_plot)
+        resistance_sheet = workbook.add_sheet(name='Resistance')
+        resistance_sheet.from_df(self.df_resistance)
+        graph = op.new_graph(template='3Ys_Y-YY',lname=self.settings_key)
+        resistance_plot = graph[0].add_plot(resistance_sheet, colx=0, coly=1)
+        current_plot = graph[1].add_plot(current_sheet, colx=0, coly=1)
+
+        graph[0].rescale()
+        graph[1].rescale()

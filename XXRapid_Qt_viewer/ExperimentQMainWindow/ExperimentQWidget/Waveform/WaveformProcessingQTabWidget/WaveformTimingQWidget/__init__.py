@@ -19,19 +19,19 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
             settings_box=Settings(self)
         )
         self.max_time = self.get_max_time()
-        self.Normed_df_dict = self.get_normed_dict()
+        self.normed_df_dict = self.get_normed_dict()
         self.MPLQWidget.ax.set(
             xlabel='t, ns',
             ylabel='Unit',
             title='Waveform timing'
         )
         self.Normed_plots_dict = dict()
-        for my_key, my_df in self.Normed_df_dict.items():
+        for my_key, my_df in self.normed_df_dict.items():
             self.Normed_plots_dict[my_key], = self.MPLQWidget.ax.plot(
-                #my_df['time'].loc[my_df['time'] < self.max_time] * 1.0e9,
-                #my_df['Units'].loc[my_df['time'] < self.max_time], label=my_key)
+                # my_df['time'].loc[my_df['time'] < self.max_time] * 1.0e9,
+                # my_df['Units'].loc[my_df['time'] < self.max_time], label=my_key)
                 my_df['time'] * 1.0e9,
-                                my_df['Units'], label=my_key)
+                my_df['Units'], label=my_key)
         self.MPLQWidget.ax.legend()
         self.t_start = self.SettingsBox.StartLine.value * 1e-9
         self.PulseStartLine = self.MPLQWidget.ax.axvline(self.t_start * 1e9, linestyle=':', c='r')
@@ -46,11 +46,11 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
         try:
             self.max_time = self.get_max_time()
-            self.Normed_df_dict = self.get_normed_dict()
+            self.normed_df_dict = self.get_normed_dict()
         except Exception as ex:
             print(ex)
             return
-        for my_key, my_df in self.Normed_df_dict.items():
+        for my_key, my_df in self.normed_df_dict.items():
             df_to_plot = my_df.loc[((my_df['time'] > 0) & (my_df['time'] < self.max_time))]
             self.Normed_plots_dict[my_key].set_data(df_to_plot['time'] * 1e9, df_to_plot['Units'])
         self.on_settings_box()
@@ -98,21 +98,16 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         }
         return normed_df_dict
 
-    def set_data(self, physical_df_dict):
-        self.physical_df_dict = physical_df_dict
-        self.max_time = self.get_max_time()
-        self.Normed_df_dict = self.get_normed_dict()
-        for mykey, mydf in self.Normed_df_dict.items():
-            df_to_plot = mydf.loc[((mydf['time'] > 0) & (mydf['time'] < self.max_time))]
-            self.Normed_plots_dict[mykey].set_data(df_to_plot['time'] * 1e9, df_to_plot['Units'])
-        self.MPLQWidget.ax.relim()
-        self.MPLQWidget.ax.autoscale_view()
-        self.on_settings_box()
-
-    def Save_Raport(self, folder_name):
-        if 'Waveform_timing' not in os.listdir(folder_name):
-            os.makedirs(f'{folder_name}/Waveform_timing')
-        self.MatplotlibQWidget.figure.savefig(f'{folder_name}/Waveform_timing/Waveform_timing.png')
-
     def save_report(self):
         self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+
+    def save_origin_pro(self, op):
+        workbook = op.new_book(lname=self.settings_key)
+        graph = op.new_graph(lname=self.settings_key)
+        for my_key, my_df in self.normed_df_dict.items():
+            sheet = workbook.add_sheet(name=my_key)
+            sheet.from_df(my_df)
+            plot = graph[0].add_plot(sheet, colx=0, coly=1)
+            plot.name = my_key
+        graph[0].rescale()
+

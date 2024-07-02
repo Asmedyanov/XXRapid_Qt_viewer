@@ -43,3 +43,10 @@ class CurrentQWidget(MatplotlibSingeAxQWidget):
     def current_function(self, time):
         ret = np.interp(time, self.CurrentDF['time'].values, self.CurrentDF['Units'].values)
         return ret
+
+    def save_origin_pro(self, op):
+        sheet = op.new_sheet(lname=self.settings_key)
+        sheet.from_df(self.current_df_to_plot)
+        graph = op.new_graph(lname=self.settings_key)
+        plot = graph[0].add_plot(sheet, colx=0, coly=1)
+        graph[0].rescale()

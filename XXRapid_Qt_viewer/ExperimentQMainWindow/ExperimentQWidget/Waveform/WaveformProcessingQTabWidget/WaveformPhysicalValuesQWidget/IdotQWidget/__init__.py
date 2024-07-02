@@ -83,25 +83,13 @@ class IdotQWidget(SettingsMPLQWidget):
             self.df_idot_to_plot['Units'] * 1e-12)
         self.on_settings_box()
 
-    def set_data(self, df_current, timeshift=0):
-        self.df_current = df_current
-        self.timeshift = timeshift
-        self.df_idot = self.get_df_idot()
-        self.df_idot_to_plot = self.get_idot_to_plot()
-        self.dt = self.get_dt()
-        self.N_smoothing = self.get_n_smooth()
-        self.df_idot_smoothed = self.get_df_idot_smoothed()
-        self.df_idot_smoothed_to_plot = self.get_idot_smoothed_to_plot()
-        self.IdotPlot.set_data(
-            self.df_idot_to_plot['time'] * 1e6,
-            self.df_idot_to_plot['Units'] * 1e-12)
-        self.IdotPlot_smoothed.set_data(
-            self.df_idot_smoothed_to_plot['time'] * 1e6,
-            self.df_idot_smoothed_to_plot['Units'] * 1e-12)
-
-        self.MPLQWidget.changed.emit()
-
     def save_report(self):
         self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
         self.df_idot_smoothed_to_plot.to_csv(f'{self.parent.report_path}/{self.settings_key}.csv')
 
+    def save_origin_pro(self, op):
+        sheet = op.new_sheet(lname=self.settings_key)
+        sheet.from_df(self.df_idot_smoothed_to_plot)
+        graph = op.new_graph(lname=self.settings_key)
+        plot = graph[0].add_plot(sheet, colx=0, coly=1)
+        graph[0].rescale()
