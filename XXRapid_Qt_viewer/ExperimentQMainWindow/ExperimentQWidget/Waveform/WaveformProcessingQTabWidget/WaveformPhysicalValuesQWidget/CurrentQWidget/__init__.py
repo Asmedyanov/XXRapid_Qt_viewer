@@ -55,3 +55,9 @@ class CurrentQWidget(MatplotlibSingeAxQWidget):
         graph = op.new_graph(lname=self.settings_key)
         plot = graph[0].add_plot(sheet, colx=0, coly=1)
         graph[0].rescale()
+
+        try:
+            self.parent.graph_c_v_r[0].add_plot(sheet, type='line', colx=0, coly=1)
+            self.parent.graph_c_v_r[0].rescale()
+        except Exception as ex:
+            print(ex)

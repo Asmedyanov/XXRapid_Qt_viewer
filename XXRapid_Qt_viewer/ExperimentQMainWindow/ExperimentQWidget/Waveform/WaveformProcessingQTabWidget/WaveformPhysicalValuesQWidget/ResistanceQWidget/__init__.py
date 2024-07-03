@@ -78,3 +78,9 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
 
         graph[0].rescale()
         graph[1].rescale()
+
+        try:
+            self.parent.graph_c_v_r[1].add_plot(resistance_sheet, type='line', colx=0, coly=1)
+            self.parent.graph_c_v_r[1].rescale()
+        except Exception as ex:
+            print(ex)

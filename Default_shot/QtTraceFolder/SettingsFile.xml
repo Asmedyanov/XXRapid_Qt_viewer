@@ -12,6 +12,14 @@
     <Quart>2</Quart>
     <User_comment>User_comment</User_comment>
   </Comsol>
+  <Foil>
+    <Density>8.9</Density>
+    <Length>40.0</Length>
+    <Thickness>15</Thickness>
+    <User_comment>User_comment</User_comment>
+    <Waist>3.0</Waist>
+    <Width>50.0</Width>
+  </Foil>
   <Fronting>
     <Expansion>None</Expansion>
     <Fronting_frames>
@@ -1397,7 +1405,7 @@
         </Resistive_voltage>
       </Physical_values>
       <Timing>
-        <End>4000.0</End>
+        <End>4000</End>
         <N_shutters>8</N_shutters>
         <Shutter_1>882</Shutter_1>
         <Shutter_2>987</Shutter_2>

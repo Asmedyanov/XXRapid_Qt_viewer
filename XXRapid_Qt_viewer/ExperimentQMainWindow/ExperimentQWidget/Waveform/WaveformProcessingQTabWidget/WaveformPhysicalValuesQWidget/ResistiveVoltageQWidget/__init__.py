@@ -118,3 +118,9 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
         inductive_plot = graph[0].add_plot(inductive_sheet, colx=0, coly=1)
         resistive_plot = graph[0].add_plot(resistive_sheet, colx=0, coly=1)
         graph[0].rescale()
+
+        try:
+            self.parent.graph_c_v_r[2].add_plot(resistive_sheet, type='line', colx=0, coly=1)
+            self.parent.graph_c_v_r[2].rescale()
+        except Exception as ex:
+            print(ex)

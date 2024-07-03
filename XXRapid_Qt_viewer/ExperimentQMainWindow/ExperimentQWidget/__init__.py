@@ -11,6 +11,7 @@ from .TOF import *
 from .ComsolSimulationQTabWidget import *
 from .CAIQTabWidget import *
 import shutil
+from .FoilQWidget import *
 
 
 class ExperimentQWidget(QTabWidget):
@@ -26,6 +27,11 @@ class ExperimentQWidget(QTabWidget):
         self.check_folder()
         self.SettingsDict = self.open_settings_xml()
         self.auto_refresh = self.parent.auto_refresh
+        try:
+            self.FoilQWidget = FoilQWidget(self)
+            self.addTab(self.FoilQWidget, self.FoilQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
         try:
             self.WaveformQTabWidget = WaveformQTabWidget(self)
             self.addTab(self.WaveformQTabWidget, self.WaveformQTabWidget.settings_key)
@@ -71,7 +77,6 @@ class ExperimentQWidget(QTabWidget):
         path = os.getcwd()
         save_name = path + '\\Experiment_OriginLab.opju'
         op.save(save_name)
-
 
         try:
             self.WaveformQTabWidget.save_origin_pro(op)

@@ -78,12 +78,15 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
     def save_origin_pro(self, op):
         workbook = op.new_book(lname=self.settings_key)
         current_sheet = workbook.add_sheet(name='Current')
-        current_sheet.from_df(self.df_energy)
+        current_sheet.from_df(self.df_current)
         energy_sheet = workbook.add_sheet(name='Energy')
-        energy_sheet.from_df(self.df_power)
+        energy_sheet.from_df(self.df_energy)
         graph = op.new_graph(template='3Ys_Y-YY', lname=self.settings_key)
-        energy_plot = graph[0].add_plot(energy_sheet, colx=0, coly=1)
-        current_plot = graph[1].add_plot(current_sheet, colx=0, coly=1)
+        energy_plot = graph[0].add_plot(energy_sheet, type='line', colx=0, coly=1)
+        current_plot = graph[1].add_plot(current_sheet, type='line', colx=0, coly=1)
 
         graph[0].rescale()
         graph[1].rescale()
+
+        self.parent.graph_e_p[1].add_plot(energy_sheet, type='line', colx=0, coly=1)
+        self.parent.graph_e_p[1].rescale()

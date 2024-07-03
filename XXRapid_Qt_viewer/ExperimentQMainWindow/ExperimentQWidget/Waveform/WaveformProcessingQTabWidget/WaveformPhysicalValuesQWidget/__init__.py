@@ -132,6 +132,10 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             print(ex)
 
     def save_origin_pro(self, op):
+        self.workbook_c_v_r = op.new_book(lname='Current Voltage Resistance')
+        self.graph_c_v_r = op.new_graph(template='3Ys_Y-YY', lname='Current Voltage Resistance')
+        self.workbook_e_p = op.new_book(lname='Power Energy')
+        self.graph_e_p = op.new_graph(template='3Ys_Y-YY', lname='Power Energy')
         try:
             self.CurrentQWidget.save_origin_pro(op)
         except Exception as ex:
