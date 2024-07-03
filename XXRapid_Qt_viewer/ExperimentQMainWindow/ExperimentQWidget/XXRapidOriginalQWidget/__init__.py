@@ -51,3 +51,10 @@ class XXRapidOriginalQTabWidget(ChildQTabWidget):
         os.makedirs(self.report_path, exist_ok=True)
         for my_key, myXXRapidOriginalCameraQWidget in self.XXRapidOriginalCameraQWidgetDict.items():
             myXXRapidOriginalCameraQWidget.save_report()
+
+    def save_origin_pro(self,op):
+        for my_key,my_widget in self.XXRapidOriginalCameraQWidgetDict.items():
+            try:
+                my_widget.save_origin_pro(op)
+            except Exception as ex:
+                print(ex)

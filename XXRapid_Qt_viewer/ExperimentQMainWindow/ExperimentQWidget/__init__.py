@@ -71,10 +71,22 @@ class ExperimentQWidget(QTabWidget):
         path = os.getcwd()
         save_name = path + '\\Experiment_OriginLab.opju'
         op.save(save_name)
+
+
         try:
             self.WaveformQTabWidget.save_origin_pro(op)
         except Exception as ex:
             print(ex)
+        try:
+            self.XXRapidTOFQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+
+        '''try:
+            self.XXRapidOriginalQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)'''
+
         op.save()
         op.exit()
 

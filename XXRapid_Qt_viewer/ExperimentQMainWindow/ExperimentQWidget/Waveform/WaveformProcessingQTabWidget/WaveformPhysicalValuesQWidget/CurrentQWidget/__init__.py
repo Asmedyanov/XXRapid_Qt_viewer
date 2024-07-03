@@ -8,6 +8,7 @@ class CurrentQWidget(MatplotlibSingeAxQWidget):
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.timeshift = self.parent.timeshift
+        self.t_end = self.parent.t_end
         self.physical_df_dict = self.parent.physical_df_dict
         self.CurrentDF = self.physical_df_dict['Current'].copy()
         self.CurrentDF['time'] -= self.timeshift
@@ -15,10 +16,14 @@ class CurrentQWidget(MatplotlibSingeAxQWidget):
         self.ax.set(
             xlabel='t, us',
             ylabel='I, kA',
-            title='Physical current'
+            title='Current'
         )
-        self.current_df_to_plot = self.CurrentDF.loc[self.CurrentDF['time'] > 0]
+        self.current_df_to_plot = self.get_current_df_to_plot()
         self.CurrentLine, = self.ax.plot(self.current_df_to_plot['time'] * 1e6, self.current_df_to_plot['Units'] * 1e-3)
+
+    def get_current_df_to_plot(self):
+        return self.CurrentDF.loc[
+            ((self.CurrentDF['time'] > 0) & (self.CurrentDF['time'] < self.t_end))]
 
     def refresh(self):
         self.timeshift = self.parent.timeshift

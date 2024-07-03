@@ -44,3 +44,7 @@ class GraphicsQTabWidget(ChildQTabWidget):
                 graphics.save_report()
             except Exception as ex:
                 print(ex)
+
+    def save_origin_pro(self,op):
+        for my_key, my_widget in self.GraphicsDict.items():
+            my_widget.save_origin_pro(op)

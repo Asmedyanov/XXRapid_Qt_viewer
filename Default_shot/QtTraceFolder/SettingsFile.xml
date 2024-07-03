@@ -1280,34 +1280,34 @@
   <Overlapped_image>
     <Camera_1>
       <Mask_threshold>10</Mask_threshold>
-      <Scale>50</Scale>
-      <Sigma_before>1.0</Sigma_before>
+      <Scale>45</Scale>
+      <Sigma_before>3.0</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
-      <Sigma_shot>1.0</Sigma_shot>
+      <Sigma_shot>2.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_1>
     <Camera_2>
-      <Mask_threshold>10</Mask_threshold>
-      <Scale>50</Scale>
-      <Sigma_before>1.0</Sigma_before>
+      <Mask_threshold>12</Mask_threshold>
+      <Scale>45</Scale>
+      <Sigma_before>3.5</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
-      <Sigma_shot>1.0</Sigma_shot>
+      <Sigma_shot>2.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_2>
     <Camera_3>
       <Mask_threshold>8</Mask_threshold>
-      <Scale>50</Scale>
-      <Sigma_before>1.0</Sigma_before>
+      <Scale>45</Scale>
+      <Sigma_before>3.0</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
-      <Sigma_shot>1.0</Sigma_shot>
+      <Sigma_shot>2.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_3>
     <Camera_4>
-      <Mask_threshold>7</Mask_threshold>
-      <Scale>50</Scale>
-      <Sigma_before>1.0</Sigma_before>
+      <Mask_threshold>10</Mask_threshold>
+      <Scale>45</Scale>
+      <Sigma_before>4.0</Sigma_before>
       <Sigma_overlapped>1.0</Sigma_overlapped>
-      <Sigma_shot>1.0</Sigma_shot>
+      <Sigma_shot>2.0</Sigma_shot>
       <User_comment>User_comment</User_comment>
     </Camera_4>
   </Overlapped_image>
@@ -1397,6 +1397,7 @@
         </Resistive_voltage>
       </Physical_values>
       <Timing>
+        <End>4000.0</End>
         <N_shutters>8</N_shutters>
         <Shutter_1>882</Shutter_1>
         <Shutter_2>987</Shutter_2>

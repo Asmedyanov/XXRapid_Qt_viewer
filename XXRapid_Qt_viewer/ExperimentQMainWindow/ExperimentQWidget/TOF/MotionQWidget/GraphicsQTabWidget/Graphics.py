@@ -78,3 +78,40 @@ class Graphics(MatplotlibSingeAxQWidget):
 
     def save_report(self):
         self.figure.savefig(f'{self.report_path}/{self.settings_key}')
+
+    def save_origin_pro(self, op):
+        data_1 = self.plot_1.get_data()
+        data_2 = self.plot_2.get_data()
+        data_1_a = self.plot_1_a.get_data()
+        data_2_a = self.plot_2_a.get_data()
+        name_workbook = f'{self.parent.parent.settings_key}_{self.settings_key}'
+        workbook = op.new_book(lname=name_workbook)
+        graph = op.new_graph(lname=name_workbook)
+        sheet_1 = workbook.add_sheet(name='expansion_1')
+        sheet_1.from_dict({
+            'time': data_1[0],
+            'Expansion': data_1[1]
+        })
+        plot_1 = graph[0].add_plot(sheet_1, colx=0, coly=1, type='scatter')
+
+        sheet_1_a = workbook.add_sheet(name='expansion_1_a')
+        sheet_1_a.from_dict({
+            'time': data_1_a[0],
+            'Expansion': data_1_a[1]
+        })
+        plot_1_a = graph[0].add_plot(sheet_1_a, colx=0, coly=1, type='line')
+
+        sheet_2 = workbook.add_sheet(name='expansion_2')
+        sheet_2.from_dict({
+            'time': data_2[0],
+            'Expansion': data_2[1]
+        })
+        plot_2 = graph[0].add_plot(sheet_2, colx=0, coly=1, type='scatter')
+
+        sheet_2_a = workbook.add_sheet(name='expansion_2_a')
+        sheet_2_a.from_dict({
+            'time': data_2_a[0],
+            'Expansion': data_2_a[1]
+        })
+        plot_2_a = graph[0].add_plot(sheet_2_a, colx=0, coly=1, type='line')
+        graph[0].rescale()

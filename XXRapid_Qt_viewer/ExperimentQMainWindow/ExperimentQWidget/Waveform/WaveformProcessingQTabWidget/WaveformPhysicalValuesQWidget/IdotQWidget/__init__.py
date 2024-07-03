@@ -12,7 +12,8 @@ class IdotQWidget(SettingsMPLQWidget):
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.CurrentQWidget = self.parent.CurrentQWidget
         self.CurrentQWidget.changed.connect(self.refresh)
-        self.df_current = self.CurrentQWidget.CurrentDF.copy()
+        self.t_end = self.parent.t_end
+        self.df_current = self.CurrentQWidget.current_df_to_plot
         super().__init__(
             MPLQWidget=MatplotlibSingeAxQWidget(),
             settings_box=Settings(self)
@@ -40,10 +41,11 @@ class IdotQWidget(SettingsMPLQWidget):
         self.MPLQWidget.ax.legend()
 
     def get_idot_smoothed_to_plot(self):
-        return self.df_idot_smoothed.loc[self.df_idot_smoothed['time'] > 0]
+        return self.df_idot_smoothed.loc[
+            ((self.df_idot_smoothed['time'] > 0) & (self.df_idot_smoothed['time'] < self.t_end))]
 
     def get_idot_to_plot(self):
-        return self.df_idot.loc[self.df_idot['time'] > 0]
+        return self.df_idot.loc[((self.df_idot['time'] > 0) & (self.df_idot['time'] < self.t_end))]
 
     def get_df_idot_smoothed(self):
         return self.df_idot.rolling(self.N_smoothing, min_periods=1).mean()

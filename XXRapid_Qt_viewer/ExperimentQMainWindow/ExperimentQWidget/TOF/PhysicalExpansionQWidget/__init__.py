@@ -72,3 +72,21 @@ class PhysicalExpansionQWidget(ChildQWidget):
             self.GraphicsQTabWidget.save_report()
         except Exception as ex:
             print(ex)
+
+    def save_origin_pro(self, op):
+        for quart_key, quart_data in self.expansion_dict.items():
+            name_workbook = f'{self.settings_key}_{quart_key}'
+            workbook = op.new_book(lname=name_workbook)
+            graphic = op.new_graph(lname=name_workbook)
+            for shutter_key, shutter_data in quart_data.items():
+                name_sheet = f'{name_workbook}_{shutter_key}'
+                sheet = workbook.add_sheet(name=name_sheet)
+                sheet.from_dict({
+                    'x': shutter_data['x'],
+                    'width': shutter_data['width'],
+                    'expansion': shutter_data['expansion']
+                })
+
+                plot = graphic[0].add_plot(sheet, colx=1, coly=2)
+
+            graphic[0].rescale()

@@ -132,3 +132,8 @@ class MotionQWidget(ChildQWidget):
         except Exception as ex:
             print(ex)
 
+    def save_origin_pro(self, op):
+        try:
+            self.GraphicsQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)

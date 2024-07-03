@@ -67,6 +67,7 @@ class ExperimentQMainWindow(QMainWindow):
             self.ExperimentQWidget.save_origin_pro()
         except Exception as ex:
             print(ex)
+        self.statusBar.showMessage(f'Origin file is saved')
 
     def on_import_settings(self):
         folder_path = QFileDialog.getOpenFileName(self, "Select SettingsFile.xml",

@@ -1,4 +1,7 @@
 from MPLQWidgets.MatplotlibQWidget import *
+import numpy as np
+from io import BytesIO
+from PIL import Image
 
 
 class Graphics(MatplotlibQWidget):
@@ -20,3 +23,31 @@ class Graphics(MatplotlibQWidget):
 
     def save_report(self):
         self.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+
+    def save_origin_pro(self, op):
+        pass
+        # Save the image to a BytesIO object
+        '''image = Image.fromarray(self.image_before)
+        buf = BytesIO()
+        image.save(buf, format='PNG')
+        buf.seek(0)
+
+        # Create a new graph window in Origin
+        graph = op.new_graph(lname=f'{self.settings_key}_before')
+
+        # Add the image to the graph layer
+        layer = graph[0]
+        layer.import_image(buf)
+
+        # Save the image to a BytesIO object
+        image = Image.fromarray(self.image_shot)
+        buf = BytesIO()
+        image.save(buf, format='PNG')
+        buf.seek(0)
+
+        # Create a new graph window in Origin
+        graph = op.new_graph(lname=f'{self.settings_key}_shot')
+
+        # Add the image to the graph layer
+        layer = graph[0]
+        layer.import_image(buf)'''

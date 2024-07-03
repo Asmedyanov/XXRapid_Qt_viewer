@@ -31,6 +31,19 @@ class Settings(SettingsBoxQWidget):
 
         self.shutters_line_dict = self.get_shutters_line_dict()
 
+        key = 'End'
+        default = self.test_key(key, 5000)  # ns
+        self.EndLine = SettingsLineQWidget(
+            name=key,
+            default=default,
+            limit=[0, 1e9],
+            step=1,
+            comment='ns'
+        )
+        self.EndLine.changed.connect(self.on_settings_line_changed)
+        self.QVBoxLayout.addWidget(self.EndLine)
+        self.SettingsDict[key] = self.EndLine.value
+
     def get_shutters_line_dict(self):
         shutters_line_dict = dict()
         n_shutters = self.n_shutters_line.value
@@ -52,6 +65,7 @@ class Settings(SettingsBoxQWidget):
     def refresh(self):
         self.SettingsDict['Start'] = self.StartLine.value
         self.SettingsDict['N_shutters'] = self.n_shutters_line.value
+        self.SettingsDict['End'] = self.EndLine.value
         for my_key, my_line in self.shutters_line_dict.items():
             self.SettingsDict[my_key] = my_line.value
         super().refresh()

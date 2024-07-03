@@ -2,7 +2,7 @@ from .Settings import *
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 import numpy as np
-from scipy.ndimage import binary_fill_holes
+from scipy.ndimage import binary_fill_holes, binary_hit_or_miss
 from skimage import filters, morphology, segmentation
 import skimage
 
@@ -18,7 +18,7 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
             settings_box=Settings(self)
         )
         self.camera_data = self.parent.current_camera_data
-        self.MPLQWidget.ax.set(title=f'{self.settings_key}, mm')
+        # self.MPLQWidget.ax.set(title=f'{self.settings_key}, mm')
         self.dx = 1.0 / self.SettingsBox.ScaleSettingLine.value
         self.sigma_before = self.SettingsBox.SigmaBeforeLine.value
         self.sigma_shot = self.SettingsBox.SigmaShotLine.value
@@ -36,11 +36,13 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         return extent
 
     def getOverlappedImage(self):
+
         before_image = filters.gaussian(self.camera_data['before'],
                                         sigma=self.sigma_before)
         thresh = np.where(before_image > 1e-2 * np.max(before_image[np.nonzero(before_image)]) * self.mask_threshold, 1,
                           0)  # before_image > thresh_value
-        fill = binary_fill_holes(thresh)
+        fill = binary_fill_holes(thresh)#, structure=np.zeros((int(self.sigma_before*2), int(self.sigma_before*2))))
+        # fill = binary_hit_or_miss(thresh)
         shot_image = filters.gaussian(self.camera_data['shot'],
                                       sigma=self.sigma_shot)
         shadow_image = np.where(shot_image < before_image,  # + before_image.std(),
@@ -64,4 +66,8 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         super().on_settings_box()
 
     def save_report(self):
+        fig_w, fig_h = self.MPLQWidget.figure.get_size_inches()
+        new_w = 3.0  # inch
+        new_h = fig_h * new_w / fig_w
+        self.MPLQWidget.figure.set_size_inches(new_w, new_h)
         self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')

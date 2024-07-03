@@ -1,4 +1,3 @@
-from .WaveformTimingSettingsQTabWidget import *
 from .Settings import *
 from MPLQWidgets.SettingsMPLQWidget import *
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
@@ -34,13 +33,18 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
                 my_df['Units'], label=my_key)
         self.MPLQWidget.ax.legend()
         self.t_start = self.SettingsBox.StartLine.value * 1e-9
-        self.PulseStartLine = self.MPLQWidget.ax.axvline(self.t_start * 1e9, linestyle=':', c='r')
+        self.t_end = self.SettingsBox.EndLine.value * 1e-9
+        color = 0
+        self.PulseStartLine = self.MPLQWidget.ax.axvline(self.t_start * 1e9, linestyle=':', c=f'{color}')
+        color += 0.08
+        self.EndLine = self.MPLQWidget.ax.axvline(self.t_end * 1e9, linestyle=':', c=f'{color}')
         self.t_shutter_dict = dict()
         self.ShutterLineDict = dict()
         for my_key, my_shutter in self.SettingsBox.shutters_line_dict.items():
+            color += 0.08
             self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
             self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e9, linestyle=':',
-                                                                      c='r')
+                                                                      c=f'{color}')
 
     def refresh(self):
         self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
@@ -57,7 +61,9 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
 
     def on_settings_box(self):
         self.t_start = self.SettingsBox.StartLine.value * 1e-9
+        self.t_end = self.SettingsBox.EndLine.value * 1e-9
         self.PulseStartLine.set_xdata(self.t_start * 1e9)
+        self.EndLine.set_xdata(self.t_end * 1e9)
         for my_key, my_shutter in self.SettingsBox.shutters_line_dict.items():
             self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
             self.ShutterLineDict[my_key].set_xdata(self.t_shutter_dict[my_key] * 1e9)
@@ -110,4 +116,3 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
             plot = graph[0].add_plot(sheet, colx=0, coly=1)
             plot.name = my_key
         graph[0].rescale()
-

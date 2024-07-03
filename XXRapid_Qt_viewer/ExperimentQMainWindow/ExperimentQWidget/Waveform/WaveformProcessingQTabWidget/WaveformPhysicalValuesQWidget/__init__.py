@@ -17,6 +17,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         self.WaveformTimingQWidget.changed.connect(self.refresh)
         self.timeshift = self.WaveformTimingQWidget.t_start
         self.physical_df_dict = self.WaveformTimingQWidget.physical_df_dict
+        self.t_end = self.WaveformTimingQWidget.t_end
         self.changed.connect(self.on_changed)
 
         try:
@@ -59,6 +60,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.addTab(self.EnergyQWidget, self.EnergyQWidget.settings_key)
         except Exception as ex:
             print(ex)
+
     def on_changed(self):
         print('Waveform physical values are changed')
 
@@ -129,7 +131,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
         except Exception as ex:
             print(ex)
 
-    def save_origin_pro(self,op):
+    def save_origin_pro(self, op):
         try:
             self.CurrentQWidget.save_origin_pro(op)
         except Exception as ex:

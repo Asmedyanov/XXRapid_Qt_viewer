@@ -53,3 +53,18 @@ class XXRapidTOFQTabWidget(ChildQTabWidget):
             self.TOFResultQTabWidget.save_report()
         except Exception as ex:
             print(f'XXRapidTOFVelocityQTabWidget.save_report {ex}')
+
+    def save_origin_pro(self,op):
+        try:
+            self.PhysicalExpansionQWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.MotionQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.TOFResultQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+
