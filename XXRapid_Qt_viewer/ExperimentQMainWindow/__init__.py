@@ -9,6 +9,7 @@ class ExperimentQMainWindow(QMainWindow):
     def __init__(self, parent=None):
         self.parent = parent
         super().__init__()
+        self.show()
         if self.parent is not None:
             self.folder_path = self.parent.folder_path
         self.title = self.folder_path.split('/')[-1]

@@ -13,10 +13,9 @@ class Graphics(MatplotlibSingeAxQWidget):
             ylabel='h$\\times 10^9 A^2*s/cm^4$'
         )
         self.df = self.parent.current_df
-        self.df_cai = self.df.loc[
-            ((self.df['width'] > 5) & (self.df['width'] < 15))]
-        self.cai_plot, = self.ax.plot(self.df_cai['current_density'] * 1e-11,
-                                      self.df_cai['cai'] * 1e-9, 'o')
+        self.df_cai = self.df
+        self.cai_plot, = self.ax.plot(self.df_cai['current_density'] * 1e-5,
+                                      self.df_cai['cai'] * 1e-5, 'o')
         try:
             self.comsol_dict = self.parent.current_comsol
             self.j_exp = np.array(self.comsol_dict['j_exp'])

@@ -1,5 +1,5 @@
 from .CAIExplosionCurrentQTabWidget import *
-from .ExplosionCurrentDensityQWidget import *
+from .ExplosionCurrentDensityQTabWidget import *
 from .CAIResultQTabWidget import *
 from SettingsQWidgets.ChildQTabWidget import *
 
@@ -20,7 +20,7 @@ class CAIQTabWidget(ChildQTabWidget):
         except Exception as ex:
             print(ex)
         try:
-            self.ExplosionCurrentDensityQWidget = ExplosionCurrentDensityQWidget(self)
+            self.ExplosionCurrentDensityQWidget = ExplosionCurrentDensityQTabWidget(self)
             self.addTab(self.ExplosionCurrentDensityQWidget,
                         self.ExplosionCurrentDensityQWidget.settings_key)
         except Exception as ex:

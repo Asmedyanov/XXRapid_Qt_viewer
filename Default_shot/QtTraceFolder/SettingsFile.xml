@@ -1,5 +1,6 @@
 <Experiment_settings>
   <CAI>
+    <Explosion_Current_Density>None</Explosion_Current_Density>
     <Explosion_current>None</Explosion_current>
     <Explosion_current_density>
       <User_comment>User_comment</User_comment>
@@ -1361,11 +1362,13 @@
       <User_comment>User_comment</User_comment>
     </Motion>
     <Physical_expansion>
+      <End_width>20.0</End_width>
       <Foil_length>40.0</Foil_length>
       <Foil_waist>3.0</Foil_waist>
       <Foil_width>50.0</Foil_width>
       <Graphics>None</Graphics>
-      <Scale>45.0</Scale>
+      <Scale>45</Scale>
+      <Start_width>4.5</Start_width>
       <User_comment>User_comment</User_comment>
     </Physical_expansion>
     <Result>

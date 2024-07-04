@@ -12,11 +12,13 @@ class CAIResultQTabWidget(QTabWidget):
         self.settings_key = 'Experimental_CAI_result'
         self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         super().__init__()
+        self.FoilQWidget = self.parent.FoilQWidget
         self.current_df = self.parent.current_df.copy()
         self.full_cai_df = self.get_full_cai_df()
         self.current_density_dict = self.parent.ExplosionCurrentDensityQWidget.current_density_dict
         self.cai_dict = self.get_cai_dict()
         self.GraphicsDict = dict()
+
         try:
             self.comsol_dict = self.parent.parent.ComsolSimulationQTabWidget.ComsolCurrentQTabWidget.CAI_dict
         except Exception as ex:
@@ -60,13 +62,10 @@ class CAIResultQTabWidget(QTabWidget):
     def get_cai_dict(self):
         cai_dict = dict()
         for my_key, my_df in self.current_density_dict.items():
-            cai_df = pd.DataFrame({
-                'width': my_df['width'],
-                'current_density': my_df['current_density'],
-                'onset_time': my_df['onset_time'],
-                'cai': self.cai_function(my_df['onset_time'] * 1e-9) / (my_df['cross_section'] * 1e4) ** 2
-            })
-            cai_dict[my_key] = cai_df
+            df = my_df[['x', 'width', 'onset_time', 'current_density']].copy()
+            df['cai'] = self.cai_function(my_df['onset_time'] * 1e-9) / self.FoilQWidget.cross_section_function(
+                df['x']) ** 2  # A^2*s/mm^4
+            cai_dict[my_key] = df
 
         return cai_dict
 
@@ -80,11 +79,25 @@ class CAIResultQTabWidget(QTabWidget):
 
     def save_origin_pro(self, op):
         workbook = op.new_book(lname='CAI results')
-        for my_key, my_df in self.current_density_dict.items():
+        for my_key, my_df in self.cai_dict.items():
             sheet = workbook.add_sheet(name=f'CAI results {my_key}')
             sheet.from_dict({
-                'J, 10^7 A/cm^2': my_df['current_density'],
-                'h, 10^9 A^2*s/cm^4': my_df['cai']
+                'J, 10^7 A/cm^2': my_df['current_density'] * 1e-5,
+                'h, 10^9 A^2*s/cm^4': my_df['cai'] * 1e-5
             })
             graph = op.new_graph(lname=f'CAI results {my_key}')
-            plot = graph.add_plot(sheet, colx=0, coly=1, type='scatter')
+            plot = graph[0].add_plot(sheet, colx=0, coly=1, type='scatter')
+            try:
+                sheet = workbook.add_sheet(name=f'CAI results {my_key} COMSOL')
+                sheet.from_dict({
+                    'J, 10^7 A/cm^2': np.array(self.comsol_dict[my_key]['j_exp']) * 1e-7,
+                    'dJ, 10^7 A/cm^2': np.array(self.comsol_dict[my_key]['j_exp']) * 1e-7 * 0.15,
+                    # 15%=10%current+5% time
+                    'h, 10^9 A^2*s/cm^4': np.array(self.comsol_dict[my_key]['h_exp']) * 1e-9,
+                    'dh, 10^9 A^2*s/cm^4': np.array(self.comsol_dict[my_key]['h_exp']) * 1e-9 * 0.25
+                    # 25%=20%current x 2 +5% time
+                })
+                plot = graph[0].add_plot(sheet, colx=0, coly=2, colxerr=1, colyerr=3, type='scatter')
+            except Exception as ex:
+                print(ex)
+            graph[0].rescale()

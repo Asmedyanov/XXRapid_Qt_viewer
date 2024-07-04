@@ -26,7 +26,7 @@ class Graphics(MatplotlibSingeAxQWidget):
                 time = self.comsol_current_df[my_key].values
             else:
                 width = float(my_key.split(' ')[0])
-                t_exp = self.tof_df['onset_time'].loc[self.tof_df['width'] < width].max()
+                t_exp = self.tof_df['onset_time'].loc[self.tof_df['width'] <= width].max()
                 j_exp_index = np.argwhere(time < t_exp * 1e-9).max()
 
                 current_density = self.comsol_current_df[my_key].values
