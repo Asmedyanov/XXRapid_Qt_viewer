@@ -6,13 +6,15 @@ class Graphics(MatplotlibSingeAxQWidget):
         self.parent = parent
         super().__init__()
         self.ax.set(
-            title='Foil shape',
+            title=f'Foil shape {self.parent.mass:3.3f} g',
             xlabel='y, mm',
             ylabel='x, mm',
         )
         self.plot, = self.ax.plot(self.parent.points_x, self.parent.points_y, '-o')
 
     def refresh(self):
+        self.ax.set(
+            title=f'Foil shape {self.parent.mass:3.3f} g')
         self.plot.set_data(self.parent.points_x, self.parent.points_y)
         self.changed.emit()
 
