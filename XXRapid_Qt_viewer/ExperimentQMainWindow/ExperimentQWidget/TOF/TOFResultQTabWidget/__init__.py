@@ -72,13 +72,13 @@ class TOFResultQTabWidget(ChildQTabWidget):
                 print(ex)
 
     def save_origin_pro(self, op):
-        name_workbook = self.settings_key
+        name_workbook = 'TOF_Result'
         workbook = op.new_book(lname=name_workbook)
         for my_key, my_df in self.velocity_dict.items():
             sheet_name = my_key
             sheet = workbook.add_sheet(name=sheet_name)
             sheet.from_df(my_df)
-            graph = op.new_graph(template='3Ys_Y-Y-Y', lname=f'{name_workbook}_{sheet_name}')
+            graph = op.new_graph(template='DOUBLEY', lname=f'{name_workbook}_{sheet_name}')
             layer_onset_time = graph[0]
             layer_velocity = graph[1]
             plot_onset_time = graph[0].add_plot(sheet, colx=1, coly=4, colyerr=5)

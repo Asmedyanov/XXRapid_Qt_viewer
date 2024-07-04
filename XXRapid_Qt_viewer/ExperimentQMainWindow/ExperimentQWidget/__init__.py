@@ -86,6 +86,10 @@ class ExperimentQWidget(QTabWidget):
             self.XXRapidTOFQTabWidget.save_origin_pro(op)
         except Exception as ex:
             print(ex)
+        try:
+            self.CAIQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
 
         '''try:
             self.XXRapidOriginalQWidget.save_origin_pro(op)

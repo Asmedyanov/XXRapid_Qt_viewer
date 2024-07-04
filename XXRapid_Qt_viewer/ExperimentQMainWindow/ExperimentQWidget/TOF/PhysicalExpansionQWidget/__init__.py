@@ -1,5 +1,6 @@
 import os
 
+import pandas as pd
 from PyQt5.QtWidgets import QWidget, QHBoxLayout
 from PyQt5.QtCore import pyqtSignal
 import numpy as np
@@ -15,6 +16,8 @@ class PhysicalExpansionQWidget(ChildQWidget):
         self.XXRapidFrontingQWidget = self.parent.XXRapidFrontingQWidget
         self.XXRapidFrontingQWidget.changed.connect(self.refresh)
         self.WaveformTimingQWidget = self.parent.WaveformTimingQWidget
+        self.FoilQWidget = self.parent.FoilQWidget
+        self.FoilQWidget.changed.connect(self.refresh)
         # self.WaveformTimingQWidget.changed.connect(self.refresh)
         self.expansion_pixel_dict = self.XXRapidFrontingQWidget.XXRapidFrontingFramesQTabWidget.expansion_dict.copy()
         self.timing_dict = self.WaveformTimingQWidget.t_shutter_dict.copy()
@@ -23,30 +26,38 @@ class PhysicalExpansionQWidget(ChildQWidget):
         self.setLayout(self.QHBoxLayout)
         self.SettingsQWidget = Settings(self)
         self.dx = 1.0 / self.SettingsQWidget.ScaleSettingLine.value
+        self.start_width = self.SettingsQWidget.StartWidthSettingLine.value
+        self.end_width = self.SettingsQWidget.EndWidthSettingLine.value
         self.expansion_dict = self.get_expansion_dict()
         self.GraphicsQTabWidget = GraphicsQTabWidget(self)
         self.QHBoxLayout.addWidget(self.GraphicsQTabWidget, stretch=1)
 
         self.QHBoxLayout.addWidget(self.SettingsQWidget)
-        self.SettingsQWidget.changed.connect(self.OnSettingsQWidget)
+        self.SettingsQWidget.changed.connect(self.on_settings_changed)
 
     def refresh(self):
         self.expansion_pixel_dict = self.XXRapidFrontingQWidget.XXRapidFrontingFramesQTabWidget.expansion_dict.copy()
         self.timing_dict = self.WaveformTimingQWidget.t_shutter_dict.copy()
         self.t_start = self.WaveformTimingQWidget.t_start
-        self.OnSettingsQWidget()
+        self.on_settings_changed()
 
     def get_expansion_dict(self):
         expansion_dict = dict()
         for my_key, my_expansion_dict in self.expansion_pixel_dict.items():
             my_dict = dict()
             for shutter_key, my_expansion in my_expansion_dict.items():
+                df = pd.DataFrame({
+                    'x': self.dx * np.array(my_expansion['x']),
+                    'width': self.FoilQWidget.width_function(self.dx * np.array(my_expansion['x'])),
+                    'expansion': self.dx * np.array(my_expansion['expansion'])
+                })
+                df = df.loc[df['width'].between(self.start_width, self.end_width)]
                 my_dict[shutter_key] = {
                     'trust': my_expansion['trust'],
                     'time': self.timing_dict[f'Shutter_{shutter_key}'] - self.t_start,
-                    'x': self.dx * np.array(my_expansion['x']),
-                    'width': self.get_foil_width(self.dx * np.array(my_expansion['x'])),
-                    'expansion': self.dx * np.array(my_expansion['expansion'])
+                    'x': df['x'].values,
+                    'width': df['width'].values,
+                    'expansion': df['expansion'].values
                 }
             expansion_dict[my_key] = dict(sorted(my_dict.items()))
         return expansion_dict
@@ -58,8 +69,10 @@ class PhysicalExpansionQWidget(ChildQWidget):
         w = 2 * (0.5 * w_min + x * (w_max - w_min) / length)
         return w
 
-    def OnSettingsQWidget(self):
+    def on_settings_changed(self):
         self.dx = 1.0 / self.SettingsQWidget.ScaleSettingLine.value
+        self.start_width = self.SettingsQWidget.StartWidthSettingLine.value
+        self.end_width = self.SettingsQWidget.EndWidthSettingLine.value
         self.expansion_dict = self.get_expansion_dict()
         try:
             self.GraphicsQTabWidget.refresh()

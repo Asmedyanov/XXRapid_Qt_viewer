@@ -81,7 +81,7 @@ class EnergyQWidget(MatplotlibSingeAxTwinxQWidget):
         current_sheet.from_df(self.df_current)
         energy_sheet = workbook.add_sheet(name='Energy')
         energy_sheet.from_df(self.df_energy)
-        graph = op.new_graph(template='3Ys_Y-YY', lname=self.settings_key)
+        graph = op.new_graph(template='DOUBLEY', lname=self.settings_key)
         energy_plot = graph[0].add_plot(energy_sheet, type='line', colx=0, coly=1)
         current_plot = graph[1].add_plot(current_sheet, type='line', colx=0, coly=1)
 

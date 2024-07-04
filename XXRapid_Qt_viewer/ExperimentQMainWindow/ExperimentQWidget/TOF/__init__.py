@@ -9,6 +9,7 @@ class XXRapidTOFQTabWidget(ChildQTabWidget):
         super().__init__(parent, 'TOF')
         self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.XXRapidFrontingQWidget = self.parent.XXRapidFrontingQWidget
+        self.FoilQWidget = self.parent.FoilQWidget
 
         self.WaveformTimingQWidget = self.parent.WaveformQTabWidget.WaveformProcessingQTabWidget.WaveformTimingQWidget
         try:
@@ -54,7 +55,7 @@ class XXRapidTOFQTabWidget(ChildQTabWidget):
         except Exception as ex:
             print(f'XXRapidTOFVelocityQTabWidget.save_report {ex}')
 
-    def save_origin_pro(self,op):
+    def save_origin_pro(self, op):
         try:
             self.PhysicalExpansionQWidget.save_origin_pro(op)
         except Exception as ex:
@@ -67,4 +68,3 @@ class XXRapidTOFQTabWidget(ChildQTabWidget):
             self.TOFResultQTabWidget.save_origin_pro(op)
         except Exception as ex:
             print(ex)
-

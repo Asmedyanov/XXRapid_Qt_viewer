@@ -9,6 +9,7 @@ class CAIQTabWidget(ChildQTabWidget):
         super().__init__(parent, 'CAI')
         self.report_path = f'{self.parent.report_path}/{self.settings_key}'
         self.CurrentQWidget = self.parent.WaveformQTabWidget.WaveformProcessingQTabWidget.WaveformPhysicalValuesQWidget.CurrentQWidget
+        self.FoilQWidget = self.parent.FoilQWidget
         self.current_df = self.CurrentQWidget.current_df_to_plot
         self.current_function = self.CurrentQWidget.current_function
         self.TOF_data_dict = self.parent.XXRapidTOFQTabWidget.TOFResultQTabWidget.velocity_smoothed_dict
@@ -33,11 +34,8 @@ class CAIQTabWidget(ChildQTabWidget):
     def get_explosion_current_dict(self):
         explosion_current_dict = dict()
         for my_key, my_df in self.TOF_data_dict.items():
-            explosion_current_df = pd.DataFrame()
-            explosion_current_df['onset_time'] = my_df['onset_time']
-            explosion_current_df['width'] = my_df['width']
+            explosion_current_df = my_df[['x','width','onset_time']].copy()
             explosion_current_df['current'] = self.current_function(my_df['onset_time'] * 1e-9)
-            # explosion_current_df['density'] = explosion_current_df['current'] / explosion_current_df['width'] / 15e-3
             explosion_current_dict[my_key] = explosion_current_df
 
         return explosion_current_dict
@@ -54,5 +52,11 @@ class CAIQTabWidget(ChildQTabWidget):
             print(ex)
         try:
             self.CAIResultQTabWidget.save_report()
+        except Exception as ex:
+            print(ex)
+
+    def save_origin_pro(self, op):
+        try:
+            self.CAIResultQTabWidget.save_origin_pro(op)
         except Exception as ex:
             print(ex)

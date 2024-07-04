@@ -16,46 +16,32 @@ class Settings(SettingsBoxQWidget):
         self.QVBoxLayout.addWidget(self.ScaleSettingLine)
         self.ScaleSettingLine.changed.connect(self.on_settings_line_changed)
 
-        key = 'Foil_width'
-        default = self.test_key(key, 50)
-        self.WidthSettingLine = SettingsLineQWidget(
+        key = 'Start_width'
+        default = self.test_key(key, 3.0)  # mm
+        self.StartWidthSettingLine = SettingsLineQWidget(
+            name=key,
+            default=default,
+            limit=[0, 1e6],
+            comment='mm',
+            step=0.5
+        )
+        self.QVBoxLayout.addWidget(self.StartWidthSettingLine)
+        self.StartWidthSettingLine.changed.connect(self.on_settings_line_changed)
+
+        key = 'End_width'
+        default = self.test_key(key, 20.0)  # mm
+        self.EndWidthSettingLine = SettingsLineQWidget(
             name=key,
             default=default,
             limit=[1, 1e6],
             comment='mm',
-            step=1
+            step=0.5
         )
-        self.QVBoxLayout.addWidget(self.WidthSettingLine)
-        self.WidthSettingLine.changed.connect(self.on_settings_line_changed)
-
-        key = 'Foil_length'
-        default = self.test_key(key, 40)
-        self.LengthSettingLine = SettingsLineQWidget(
-            name=key,
-            default=default,
-            limit=[1, 1e6],
-            comment='mm',
-            step=1
-        )
-        self.QVBoxLayout.addWidget(self.LengthSettingLine)
-        self.LengthSettingLine.changed.connect(self.on_settings_line_changed)
-
-        key = 'Foil_waist'
-        default = self.test_key(key, 3.0)
-
-        self.WaistSettingLine = SettingsLineQWidget(
-            name=key,
-            default=default,
-            limit=[1, 1e6],
-            comment='mm',
-            step=1
-        )
-        self.QVBoxLayout.addWidget(self.WaistSettingLine)
-        self.WaistSettingLine.changed.connect(self.on_settings_line_changed)
+        self.QVBoxLayout.addWidget(self.EndWidthSettingLine)
+        self.EndWidthSettingLine.changed.connect(self.on_settings_line_changed)
 
     def on_settings_line_changed(self):
         self.SettingsDict['Scale'] = self.ScaleSettingLine.value
-        self.SettingsDict['Foil_width'] = self.WidthSettingLine.value
-        self.SettingsDict['Foil_length'] = self.LengthSettingLine.value
-        self.SettingsDict['Foil_waist'] = self.WaistSettingLine.value
+        self.SettingsDict['Start_width'] = self.StartWidthSettingLine.value
+        self.SettingsDict['End_width'] = self.EndWidthSettingLine.value
         super().on_settings_line_changed()

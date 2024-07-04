@@ -72,9 +72,9 @@ class ResistanceQWidget(MatplotlibSingeAxTwinxQWidget):
         current_sheet.from_df(self.df_current_to_plot)
         resistance_sheet = workbook.add_sheet(name='Resistance')
         resistance_sheet.from_df(self.df_resistance)
-        graph = op.new_graph(template='3Ys_Y-YY',lname=self.settings_key)
-        resistance_plot = graph[0].add_plot(resistance_sheet, colx=0, coly=1)
-        current_plot = graph[1].add_plot(current_sheet, colx=0, coly=1)
+        graph = op.new_graph(template='DOUBLEY', lname=self.settings_key)
+        resistance_plot = graph[0].add_plot(resistance_sheet, type='line', colx=0, coly=1)
+        current_plot = graph[1].add_plot(current_sheet, type='line', colx=0, coly=1)
 
         graph[0].rescale()
         graph[1].rescale()

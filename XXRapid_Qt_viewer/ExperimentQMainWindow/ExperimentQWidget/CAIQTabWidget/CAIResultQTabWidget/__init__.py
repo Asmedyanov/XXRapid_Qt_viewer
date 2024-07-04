@@ -34,7 +34,7 @@ class CAIResultQTabWidget(QTabWidget):
             except Exception as ex:
                 print(ex)
 
-    def update(self):
+    def refresh(self):
         self.current_df = self.parent.current_df.copy()
         self.full_cai_df = self.get_full_cai_df()
         self.current_density_dict = self.parent.ExplosionCurrentDensityQWidget.current_density_dict
@@ -77,3 +77,14 @@ class CAIResultQTabWidget(QTabWidget):
                 graphics.save_report()
             except Exception as ex:
                 print(ex)
+
+    def save_origin_pro(self, op):
+        workbook = op.new_book(lname='CAI results')
+        for my_key, my_df in self.current_density_dict.items():
+            sheet = workbook.add_sheet(name=f'CAI results {my_key}')
+            sheet.from_dict({
+                'J, 10^7 A/cm^2': my_df['current_density'],
+                'h, 10^9 A^2*s/cm^4': my_df['cai']
+            })
+            graph = op.new_graph(lname=f'CAI results {my_key}')
+            plot = graph.add_plot(sheet, colx=0, coly=1, type='scatter')

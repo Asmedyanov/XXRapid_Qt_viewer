@@ -12,6 +12,7 @@ class ExplosionCurrentDensityQWidget(SettingsQWidget2):
         self.parent.test_settings_key(self.settings_key)
         self.SettingsDict = self.parent.SettingsDict[self.settings_key]
         self.report_path = f'{self.parent.report_path}/{self.settings_key}'
+        self.FoilQWidget = self.parent.FoilQWidget
         settings = Settings(self)
         self.thickness = settings.ThicknessSettingLine.value
         self.current_density_dict = self.get_current_density_dict()

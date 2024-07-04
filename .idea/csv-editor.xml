@@ -17,6 +17,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Experimental_CAI_result\Quart_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Experimental_CAI_result\Quart_2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Experimental_CAI_result\Quart_3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\QtTraceFolder\CAI\Experimental_CAI_result\Quart_4.csv">
           <value>
             <Attribute>
@@ -24,7 +45,91 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Explosion_current\Quart_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Explosion_current\Quart_2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Explosion_current\Quart_3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Explosion_current\Quart_4.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Explosion_current_density\Quart_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Explosion_current_density\Quart_2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Explosion_current_density\Quart_3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\CAI\Explosion_current_density\Quart_4.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\QtTraceFolder\Comsol\CAI_Comsol\Quart_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\Comsol\CAI_Comsol\Quart_2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\Comsol\CAI_Comsol\Quart_3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\Comsol\CAI_Comsol\Quart_4.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\TOF\Result\Quart_1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -39,6 +144,13 @@
           </value>
         </entry>
         <entry key="\Default_shot\QtTraceFolder\TOF\Result\Quart_3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Default_shot\QtTraceFolder\TOF\Result\Quart_4.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

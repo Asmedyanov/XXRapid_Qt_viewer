@@ -37,3 +37,6 @@ class TOFResultsQWidget(SettingsMPLQWidget):
     def save_report(self):
         self.MPLQWidget.figure.savefig(f'{self.report_path}/{self.settings_key}.png')
         self.velocity_smoothed_df.to_csv(f'{self.report_path}/{self.settings_key}.csv')
+
+    def refresh(self):
+        self.MPLQWidget.refresh()

@@ -14,7 +14,6 @@ class Graphics(MatplotlibSingeAxQWidget):
 
     def refresh(self):
         self.plot.set_data(self.parent.points_x, self.parent.points_y)
-        self.ax.legend()
         self.changed.emit()
 
     def save_report(self):

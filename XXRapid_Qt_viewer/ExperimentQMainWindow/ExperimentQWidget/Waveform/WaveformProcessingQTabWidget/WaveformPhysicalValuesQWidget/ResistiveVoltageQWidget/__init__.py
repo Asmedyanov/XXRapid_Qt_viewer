@@ -114,9 +114,9 @@ class ResistiveVoltageQWidget(SettingsMPLQWidget):
         resistive_sheet = workbook.add_sheet(name='Resistive voltage')
         resistive_sheet.from_df(self.df_resistive_voltage)
         graph = op.new_graph(lname=self.settings_key)
-        full_plot = graph[0].add_plot(full_sheet, colx=0, coly=1)
-        inductive_plot = graph[0].add_plot(inductive_sheet, colx=0, coly=1)
-        resistive_plot = graph[0].add_plot(resistive_sheet, colx=0, coly=1)
+        full_plot = graph[0].add_plot(full_sheet, type='line', colx=0, coly=1)
+        inductive_plot = graph[0].add_plot(inductive_sheet, type='line', colx=0, coly=1)
+        resistive_plot = graph[0].add_plot(resistive_sheet, type='line', colx=0, coly=1)
         graph[0].rescale()
 
         try:
