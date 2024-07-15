@@ -16,7 +16,7 @@
   <Foil>
     <Density>8.9</Density>
     <Length>40.0</Length>
-    <Thickness>15</Thickness>
+    <Thickness>15.0</Thickness>
     <User_comment>User_comment</User_comment>
     <Waist>3.0</Waist>
     <Width>50.0</Width>
@@ -1354,6 +1354,14 @@
       <User_comment>User_comment</User_comment>
     </Camera_4>
   </Overlapped_images>
+  <Per_Mass_Unit>None</Per_Mass_Unit>
+  <Rotation>
+    <Camera_1>0.0</Camera_1>
+    <Camera_2>-0.8</Camera_2>
+    <Camera_3>0.7</Camera_3>
+    <Camera_4>-2.9</Camera_4>
+    <User_comment>User_comment</User_comment>
+  </Rotation>
   <TOF>
     <Motion>
       <Cross_section_1>67.0</Cross_section_1>
@@ -1423,7 +1431,7 @@
       </Timing>
       <Waveform_channels>
         <Channel_1>
-          <Coefficient>-32500</Coefficient>
+          <Coefficient>-40000</Coefficient>
           <Delay>0</Delay>
           <Diagnostics>Rogowski_coil</Diagnostics>
           <Shift>0.0</Shift>
@@ -1457,5 +1465,58 @@
       </Waveform_channels>
     </Waveform_processing>
   </Waveform>
+  <Waveform_SC>
+    <Waveform_original>None</Waveform_original>
+    <Waveform_processing>
+      <Timing>
+        <End>9000.0</End>
+        <N_shutters>7</N_shutters>
+        <Shutter_1>1366.0</Shutter_1>
+        <Shutter_2>2628.0</Shutter_2>
+        <Shutter_3>3845.0</Shutter_3>
+        <Shutter_4>5127.0</Shutter_4>
+        <Shutter_5>6231.0</Shutter_5>
+        <Shutter_6>7500.0</Shutter_6>
+        <Shutter_7>8724.0</Shutter_7>
+        <Shutter_8>0</Shutter_8>
+        <Start>0</Start>
+        <User_comment>User_comment</User_comment>
+      </Timing>
+      <Waveform_channels>
+        <Channel_1>
+          <Coefficient>1</Coefficient>
+          <Delay>-520</Delay>
+          <Diagnostics>Rogowski_coil</Diagnostics>
+          <Shift>0.3</Shift>
+          <Smoothing>100</Smoothing>
+          <User_comment>User_comment</User_comment>
+        </Channel_1>
+        <Channel_2>
+          <Coefficient>5</Coefficient>
+          <Delay>0</Delay>
+          <Diagnostics>XXRapid_trig_out</Diagnostics>
+          <Shift>0.0</Shift>
+          <Smoothing>5</Smoothing>
+          <User_comment>User_comment</User_comment>
+        </Channel_2>
+        <Channel_3>
+          <Coefficient>5</Coefficient>
+          <Delay>0</Delay>
+          <Diagnostics>Systron</Diagnostics>
+          <Shift>0.0</Shift>
+          <Smoothing>5</Smoothing>
+          <User_comment>User_comment</User_comment>
+        </Channel_3>
+        <Channel_4>
+          <Coefficient>943</Coefficient>
+          <Delay>0</Delay>
+          <Diagnostics>Tektronix_VD</Diagnostics>
+          <Shift>0.0</Shift>
+          <Smoothing>5</Smoothing>
+          <User_comment>User_comment</User_comment>
+        </Channel_4>
+      </Waveform_channels>
+    </Waveform_processing>
+  </Waveform_SC>
   <XXRapid_original>None</XXRapid_original>
 </Experiment_settings>

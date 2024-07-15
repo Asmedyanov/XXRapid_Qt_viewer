@@ -81,12 +81,15 @@ class CAIResultQTabWidget(QTabWidget):
         workbook = op.new_book(lname='CAI results')
         for my_key, my_df in self.cai_dict.items():
             sheet = workbook.add_sheet(name=f'CAI results {my_key}')
+            step = len(my_df) // 5
             sheet.from_dict({
-                'J, 10^7 A/cm^2': my_df['current_density'] * 1e-5,
-                'h, 10^9 A^2*s/cm^4': my_df['cai'] * 1e-5
+                'J, 10^7 A/cm^2': my_df['current_density'].values[::step] * 1e-5,
+                'dJ, 10^7 A/cm^2': my_df['current_density'].values[::step] * 1e-5 * 0.15,
+                'h, 10^9 A^2*s/cm^4': my_df['cai'].values[::step] * 1e-5,
+                'dh, 10^9 A^2*s/cm^4': my_df['cai'].values[::step] * 1e-5 * 0.25
             })
-            graph = op.new_graph(lname=f'CAI results {my_key}')
-            plot = graph[0].add_plot(sheet, colx=0, coly=1, type='scatter')
+            graph = op.new_graph(template='SCAI', lname=f'CAI results {my_key}')
+            plot = graph[0].add_plot(sheet, colx=0, coly=2, colxerr=1, colyerr=3, type='scatter')
             try:
                 sheet = workbook.add_sheet(name=f'CAI results {my_key} COMSOL')
                 sheet.from_dict({

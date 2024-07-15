@@ -1,3 +1,5 @@
+import os
+
 from SettingsQWidgets.ChildQTabWidget import *
 from .Graphics import *
 
@@ -32,7 +34,7 @@ class ExplosionCurrentDensityQTabWidget(ChildQTabWidget):
 
     def refresh(self):
         self.current_density_dict = self.get_explosion_current_density_dict()
-        for my_key, my_df in self.current_density_dict.values():
+        for my_key, my_df in self.current_density_dict.items():
             self.current_df = my_df
             self.current_key = my_key
             try:
@@ -40,3 +42,11 @@ class ExplosionCurrentDensityQTabWidget(ChildQTabWidget):
             except Exception as ex:
                 print(ex)
         self.changed.emit()
+
+    def save_report(self, folder_name=None):
+        os.makedirs(self.report_path,exist_ok=True)
+        for my_key, my_widget in self.Graphics_dict.items():
+            try:
+                my_widget.save_report()
+            except Exception as ex:
+                print(ex)

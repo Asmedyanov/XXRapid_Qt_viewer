@@ -60,3 +60,5 @@ class CAIQTabWidget(ChildQTabWidget):
             self.CAIResultQTabWidget.save_origin_pro(op)
         except Exception as ex:
             print(ex)
+
+

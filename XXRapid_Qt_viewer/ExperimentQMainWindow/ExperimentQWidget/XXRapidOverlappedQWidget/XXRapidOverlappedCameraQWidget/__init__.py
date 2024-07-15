@@ -71,3 +71,4 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         new_h = fig_h * new_w / fig_w
         self.MPLQWidget.figure.set_size_inches(new_w, new_h)
         self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
+        #self.imshow.imsave(f'{self.parent.report_path}/{self.settings_key}_im.png')

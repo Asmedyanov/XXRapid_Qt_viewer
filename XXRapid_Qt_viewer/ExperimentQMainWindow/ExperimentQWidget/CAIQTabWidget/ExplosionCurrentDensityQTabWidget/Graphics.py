@@ -15,15 +15,15 @@ class Graphics(MatplotlibSingeAxQWidget):
         self.df = self.parent.current_df
         self.df_current_density = self.df
         self.current_density_plot, = self.ax.plot(self.df_current_density['width'],
-                                                  self.df_current_density['current_density']*1e-5)
+                                                  self.df_current_density['current_density'] * 1e-5)
 
     def refresh(self):
         self.df = self.parent.current_df
         self.df_current_density = self.df
         self.current_density_plot.set_data(self.df_current_density['width'],
-                                           self.df_current_density['current_density']*1e-5)
+                                           self.df_current_density['current_density'] * 1e-5)
         self.changed.emit()
 
-    def save_report(self):
+    def save_report(self, name=None):
         self.figure.savefig(f'{self.report_path}/{self.settings_key}.png')
         self.df_current_density.to_csv(f'{self.report_path}/{self.settings_key}.csv')

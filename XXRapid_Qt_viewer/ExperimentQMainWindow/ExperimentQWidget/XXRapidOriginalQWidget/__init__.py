@@ -15,6 +15,7 @@ class XXRapidOriginalQTabWidget(ChildQTabWidget):
 
         self.before_array = open_rtv(self.before_name)
         self.shot_array = open_rtv(self.shot_name)
+        # self.get_rotated_camera_dict()
         self.CameraDataDict = self.get_camera_data_dict()
         self.XXRapidOriginalCameraQWidgetDict = dict()
         for my_key, my_camera_data in self.CameraDataDict.items():
@@ -25,6 +26,7 @@ class XXRapidOriginalQTabWidget(ChildQTabWidget):
                 self.addTab(self.XXRapidOriginalCameraQWidgetDict[my_key], my_key)
             except Exception as ex:
                 print(ex)
+
 
     def get_camera_data_dict(self):
         camera_data_dict = dict()
@@ -52,8 +54,8 @@ class XXRapidOriginalQTabWidget(ChildQTabWidget):
         for my_key, myXXRapidOriginalCameraQWidget in self.XXRapidOriginalCameraQWidgetDict.items():
             myXXRapidOriginalCameraQWidget.save_report()
 
-    def save_origin_pro(self,op):
-        for my_key,my_widget in self.XXRapidOriginalCameraQWidgetDict.items():
+    def save_origin_pro(self, op):
+        for my_key, my_widget in self.XXRapidOriginalCameraQWidgetDict.items():
             try:
                 my_widget.save_origin_pro(op)
             except Exception as ex:

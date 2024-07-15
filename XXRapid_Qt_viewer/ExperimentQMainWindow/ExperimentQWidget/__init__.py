@@ -1,7 +1,7 @@
 import os
 
 from .Waveform import *
-from .Waveform.WaveformProcessingQTabWidget import *
+from .Waveform_SC import *
 from dict2xml import dict2xml
 import xmltodict
 from .XXRapidOriginalQWidget import *
@@ -12,6 +12,8 @@ from .ComsolSimulationQTabWidget import *
 from .CAIQTabWidget import *
 import shutil
 from .FoilQWidget import *
+from .PerMassQTabWidget import *
+from .XXRapidRotationQWidget import *
 
 
 class ExperimentQWidget(QTabWidget):
@@ -28,6 +30,11 @@ class ExperimentQWidget(QTabWidget):
         self.SettingsDict = self.open_settings_xml()
         self.auto_refresh = self.parent.auto_refresh
         try:
+            self.WaveformSCQTabWidget = WaveformSCQTabWidget(self)
+            self.addTab(self.WaveformSCQTabWidget, self.WaveformSCQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+        try:
             self.FoilQWidget = FoilQWidget(self)
             self.addTab(self.FoilQWidget, self.FoilQWidget.settings_key)
         except Exception as ex:
@@ -37,9 +44,20 @@ class ExperimentQWidget(QTabWidget):
             self.addTab(self.WaveformQTabWidget, self.WaveformQTabWidget.settings_key)
         except Exception as ex:
             print(ex)
+
+        try:
+            self.PerMassQTabWidget = PerMassQTabWidget(self)
+            self.addTab(self.PerMassQTabWidget, self.PerMassQTabWidget.settings_key)
+        except Exception as ex:
+            print(ex)
         try:
             self.XXRapidOriginalQWidget = XXRapidOriginalQTabWidget(self)
             self.addTab(self.XXRapidOriginalQWidget, self.XXRapidOriginalQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+        try:
+            self.XXRapidRotationQWidget = XXRapidRotationQWidget(self)
+            self.addTab(self.XXRapidRotationQWidget, self.XXRapidRotationQWidget.settings_key)
         except Exception as ex:
             print(ex)
 
@@ -54,7 +72,6 @@ class ExperimentQWidget(QTabWidget):
             self.addTab(self.XXRapidFrontingQWidget, self.XXRapidFrontingQWidget.settings_key)
         except Exception as ex:
             print(ex)
-
         try:
             self.XXRapidTOFQTabWidget = XXRapidTOFQTabWidget(self)
             self.addTab(self.XXRapidTOFQTabWidget, self.XXRapidTOFQTabWidget.settings_key)
@@ -80,6 +97,11 @@ class ExperimentQWidget(QTabWidget):
 
         try:
             self.WaveformQTabWidget.save_origin_pro(op)
+        except Exception as ex:
+            print(ex)
+
+        try:
+            self.PerMassQTabWidget.save_origin_pro(op)
         except Exception as ex:
             print(ex)
         try:
@@ -156,6 +178,11 @@ class ExperimentQWidget(QTabWidget):
             self.WaveformQTabWidget.save_report()
         except Exception as ex:
             print(f'WaveformOriginalQWidget.save_report {ex}')
+
+        try:
+            self.PerMassQTabWidget.save_report()
+        except Exception as ex:
+            print(f'PerMassQTabWidget.save_report {ex}')
         try:
             self.XXRapidOriginalQWidget.save_report()
         except Exception as ex:
@@ -167,7 +194,7 @@ class ExperimentQWidget(QTabWidget):
         try:
             self.XXRapidFrontingQWidget.save_report()
         except Exception as ex:
-            print(f'XXRapidOverlappedQWidget.save_report {ex}')
+            print(f'XXRapidFrontingQWidget.save_report {ex}')
         try:
             self.XXRapidTOFQTabWidget.save_report()
         except Exception as ex:
