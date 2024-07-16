@@ -48,7 +48,7 @@ class IdotQWidget(SettingsMPLQWidget):
         return self.df_idot.loc[((self.df_idot['time'] > 0) & (self.df_idot['time'] < self.t_end))]
 
     def get_df_idot_smoothed(self):
-        return self.df_idot.rolling(self.N_smoothing, min_periods=1).mean()
+        return self.df_idot.rolling(self.N_smoothing, min_periods=10).mean()
 
     def get_dt(self):
         return np.gradient(self.df_current['time'].values).mean()

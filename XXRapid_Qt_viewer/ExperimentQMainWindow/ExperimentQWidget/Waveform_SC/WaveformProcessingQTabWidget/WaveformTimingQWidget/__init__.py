@@ -40,11 +40,17 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.EndLine = self.MPLQWidget.ax.axvline(self.t_end * 1e9, linestyle=':', c=f'{color}')
         self.t_shutter_dict = dict()
         self.ShutterLineDict = dict()
+        self.time_list = [self.t_start]
         for my_key, my_shutter in self.SettingsBox.shutters_line_dict.items():
             color += 0.08
             self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
+            self.time_list.append(my_shutter.value * 1e-9)
             self.ShutterLineDict[my_key] = self.MPLQWidget.ax.axvline(self.t_shutter_dict[my_key] * 1e9, linestyle=':',
                                                                       c=f'{color}')
+        self.period_quart_array = np.gradient(self.time_list)
+        self.omega = np.pi / 2 / self.period_quart_array
+
+        pass
 
     def refresh(self):
         self.physical_df_dict = self.WaveformChannelsQTabWidget.PhysicalDFDict
@@ -64,9 +70,12 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
         self.t_end = self.SettingsBox.EndLine.value * 1e-9
         self.PulseStartLine.set_xdata(self.t_start * 1e9)
         self.EndLine.set_xdata(self.t_end * 1e9)
+        self.time_list = [self.t_start]
         for my_key, my_shutter in self.SettingsBox.shutters_line_dict.items():
             self.t_shutter_dict[my_key] = my_shutter.value * 1e-9
             self.ShutterLineDict[my_key].set_xdata(self.t_shutter_dict[my_key] * 1e9)
+        self.period_quart_array = np.gradient(self.time_list)
+        self.omega = np.pi / 2 / self.period_quart_array
         super().on_settings_box()
 
     def get_max_time(self):
@@ -80,7 +89,7 @@ class WaveformTimingQWidget(SettingsMPLQWidget):
             'Current': pd.DataFrame({
                 'time': self.physical_df_dict['Current']['time'],
                 'Units': np.abs(self.physical_df_dict['Current']['Units'] / self.physical_df_dict['Current'][
-                                      'Units'].max())
+                    'Units'].max())
             }),
 
         }

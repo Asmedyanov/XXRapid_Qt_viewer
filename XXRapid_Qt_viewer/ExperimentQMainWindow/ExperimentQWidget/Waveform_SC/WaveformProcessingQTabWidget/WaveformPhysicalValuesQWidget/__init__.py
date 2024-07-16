@@ -7,6 +7,7 @@ from .ResistanceQWidget import *
 from .EnergyQWidget import *
 import os
 from SettingsQWidgets.ChildQTabWidget import *
+from .I2dotQWidget import *
 
 
 class WaveformPhysicalValuesQWidget(ChildQTabWidget):
@@ -25,11 +26,11 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.addTab(self.CurrentQWidget, self.CurrentQWidget.settings_key)
         except Exception as ex:
             print(f'CurrentQWidget {ex}')
-        try:
+        '''try:
             self.FullVoltageQWidget = FullVoltageQWidget(self)
             self.addTab(self.FullVoltageQWidget, self.FullVoltageQWidget.settings_key)
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
         try:
             self.IdotQWidget = IdotQWidget(self)
@@ -38,6 +39,12 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             print(ex)
 
         try:
+            self.I2dotQWidget = I2dotQWidget(self)
+            self.addTab(self.I2dotQWidget, self.I2dotQWidget.settings_key)
+        except Exception as ex:
+            print(ex)
+
+        '''try:
             self.ResistiveVoltageQWidget = ResistiveVoltageQWidget(self)
             self.addTab(self.ResistiveVoltageQWidget, self.ResistiveVoltageQWidget.settings_key)
         except Exception as ex:
@@ -59,7 +66,7 @@ class WaveformPhysicalValuesQWidget(ChildQTabWidget):
             self.EnergyQWidget = EnergyQWidget(self)
             self.addTab(self.EnergyQWidget, self.EnergyQWidget.settings_key)
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
     def on_changed(self):
         print('Waveform physical values are changed')

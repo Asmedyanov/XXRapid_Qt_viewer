@@ -1468,16 +1468,27 @@
   <Waveform_SC>
     <Waveform_original>None</Waveform_original>
     <Waveform_processing>
+      <Physical_values>
+        <Current>None</Current>
+        <I_2_dot>
+          <Smoothing>2000.0</Smoothing>
+          <User_comment>User_comment</User_comment>
+        </I_2_dot>
+        <I_dot>
+          <Smoothing>400</Smoothing>
+          <User_comment>User_comment</User_comment>
+        </I_dot>
+      </Physical_values>
       <Timing>
-        <End>9000.0</End>
+        <End>9000</End>
         <N_shutters>7</N_shutters>
-        <Shutter_1>1366.0</Shutter_1>
-        <Shutter_2>2628.0</Shutter_2>
-        <Shutter_3>3845.0</Shutter_3>
-        <Shutter_4>5127.0</Shutter_4>
-        <Shutter_5>6231.0</Shutter_5>
-        <Shutter_6>7500.0</Shutter_6>
-        <Shutter_7>8724.0</Shutter_7>
+        <Shutter_1>1366</Shutter_1>
+        <Shutter_2>2628</Shutter_2>
+        <Shutter_3>3845</Shutter_3>
+        <Shutter_4>5127</Shutter_4>
+        <Shutter_5>6231</Shutter_5>
+        <Shutter_6>7500</Shutter_6>
+        <Shutter_7>8724</Shutter_7>
         <Shutter_8>0</Shutter_8>
         <Start>0</Start>
         <User_comment>User_comment</User_comment>
