@@ -76,6 +76,7 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
             'left': np.argwhere(mask)[:, 0].min(),
             'right': np.argwhere(mask)[:, 0].max(),
         }
+
         return mask, edges
 
     @property
@@ -91,13 +92,14 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
                                       sigma=self.sigma_shot)
         shot_image = rotate(shot_image, self.degree)
         mask, edges = self.get_mask(before_image)
-        shadow_image = np.where(shot_image < before_image,
+
+        '''shadow_image = np.where(shot_image < before_image,
                                 # + before_image.std(),
                                 shot_image,
-                                before_image)  # + before_image.std())
+                                before_image)  # + before_image.std())'''
 
         overlapped_image = np.where(before_image <= 0, 0,
-                                    shadow_image / before_image) * mask
+                                    shot_image / before_image) * mask
         overlapped_image = filters.gaussian(overlapped_image, sigma=self.sigma_overlapped)
         # overlapped_image = rotate(overlapped_image, self.degree, reshape=False)
         overlapped_image = overlapped_image[

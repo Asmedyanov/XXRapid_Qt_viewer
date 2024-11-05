@@ -34,16 +34,16 @@ class ExperimentQWidget(QTabWidget):
             self.addTab(self.WaveformSCQTabWidget, self.WaveformSCQTabWidget.settings_key)
         except Exception as ex:
             print(ex)'''
-        try:
+        '''try:
             self.FoilQWidget = FoilQWidget(self)
             self.addTab(self.FoilQWidget, self.FoilQWidget.settings_key)
         except Exception as ex:
-            print(ex)
-        try:
+            print(ex)'''
+        '''try:
             self.WaveformQTabWidget = WaveformQTabWidget(self)
             self.addTab(self.WaveformQTabWidget, self.WaveformQTabWidget.settings_key)
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
         '''try:
             self.PerMassQTabWidget = PerMassQTabWidget(self)
