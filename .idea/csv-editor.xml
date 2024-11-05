@@ -227,6 +227,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Default_shot\SC_270723.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Default_shot\shot57.csv">
           <value>
             <Attribute>

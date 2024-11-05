@@ -121,7 +121,7 @@ class ExperimentQMainWindow(QMainWindow):
         self.statusBar.showMessage(f'Settings are saved')
 
     def on_save_trace(self):
-        self.on_rebuild()
+        #self.on_rebuild()
         self.ExperimentQWidget.save_report()
         self.statusBar.showMessage(f'Trace is saved')
 

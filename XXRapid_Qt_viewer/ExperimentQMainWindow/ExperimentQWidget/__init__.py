@@ -29,11 +29,11 @@ class ExperimentQWidget(QTabWidget):
         self.check_folder()
         self.SettingsDict = self.open_settings_xml()
         self.auto_refresh = self.parent.auto_refresh
-        try:
+        '''try:
             self.WaveformSCQTabWidget = WaveformSCQTabWidget(self)
             self.addTab(self.WaveformSCQTabWidget, self.WaveformSCQTabWidget.settings_key)
         except Exception as ex:
-            print(ex)
+            print(ex)'''
         try:
             self.FoilQWidget = FoilQWidget(self)
             self.addTab(self.FoilQWidget, self.FoilQWidget.settings_key)
@@ -45,21 +45,21 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(ex)
 
-        try:
+        '''try:
             self.PerMassQTabWidget = PerMassQTabWidget(self)
             self.addTab(self.PerMassQTabWidget, self.PerMassQTabWidget.settings_key)
         except Exception as ex:
-            print(ex)
+            print(ex)'''
         try:
             self.XXRapidOriginalQWidget = XXRapidOriginalQTabWidget(self)
             self.addTab(self.XXRapidOriginalQWidget, self.XXRapidOriginalQWidget.settings_key)
         except Exception as ex:
             print(ex)
-        try:
+        '''try:
             self.XXRapidRotationQWidget = XXRapidRotationQWidget(self)
             self.addTab(self.XXRapidRotationQWidget, self.XXRapidRotationQWidget.settings_key)
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
         try:
             self.XXRapidOverlappedQWidget = XXRapidOverlappedQWidget(self)
@@ -67,7 +67,7 @@ class ExperimentQWidget(QTabWidget):
         except Exception as ex:
             print(ex)
 
-        try:
+        '''try:
             self.XXRapidFrontingQWidget = XXRapidFrontingQWidget(self)
             self.addTab(self.XXRapidFrontingQWidget, self.XXRapidFrontingQWidget.settings_key)
         except Exception as ex:
@@ -86,7 +86,7 @@ class ExperimentQWidget(QTabWidget):
             self.CAIQTabWidget = CAIQTabWidget(self)
             self.addTab(self.CAIQTabWidget, self.CAIQTabWidget.settings_key)
         except Exception as ex:
-            print(ex)
+            print(ex)'''
 
     def save_origin_pro(self):
         import originpro as op

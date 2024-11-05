@@ -1,6 +1,7 @@
 from MPLQWidgets.MatplotlibSingeAxQWidget import *
 from .Settings import *
 from MPLQWidgets.SettingsMPLQWidget import *
+from scipy.ndimage import rotate
 
 
 class FrontingSeparatorQWidget(SettingsMPLQWidget):
@@ -39,9 +40,8 @@ class FrontingSeparatorQWidget(SettingsMPLQWidget):
         return extent
 
     def get_image(self, image):
-        if self.rotation == '90':
-            return np.transpose(image)
-        return image
+        ret_image = rotate(image, self.rotation, reshape=True)
+        return ret_image
 
     def get_quarts_dict(self):
         quarts_dict = {

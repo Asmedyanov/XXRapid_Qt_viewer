@@ -17,6 +17,19 @@ class Settings(SettingsBoxQWidget):
         self.SettingsDict[key] = self.ScaleSettingLine.value
         self.ScaleSettingLine.changed.connect(self.on_settings_line_changed)
 
+        key = 'Rotation'
+        default = self.test_key(key, 0)  # degree
+        self.RotationSettingLine = SettingsLineQWidget(
+            name=key,
+            default=default,
+            limit=[-180, 180],
+            step=1,
+            comment='°'
+        )
+        self.QVBoxLayout.addWidget(self.RotationSettingLine)
+        self.SettingsDict[key] = self.RotationSettingLine.value
+        self.RotationSettingLine.changed.connect(self.on_settings_line_changed)
+
         key = 'Mask_threshold'
         default = self.test_key(key, 50)
         self.MaskThresholdSettingLine = SettingsLineQWidget(
@@ -71,6 +84,7 @@ class Settings(SettingsBoxQWidget):
 
     def on_settings_line_changed(self):
         self.SettingsDict['Scale'] = self.ScaleSettingLine.value
+        self.SettingsDict['Rotation'] = self.RotationSettingLine.value
         self.SettingsDict['Sigma_before'] = self.SigmaBeforeLine.value
         self.SettingsDict['Sigma_shot'] = self.SigmaShotLine.value
         self.SettingsDict['Sigma_overlapped'] = self.SigmaOverlappedLine.value
