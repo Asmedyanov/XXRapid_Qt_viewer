@@ -86,10 +86,10 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         """
         before_image = filters.gaussian(self.camera_data['before'],
                                         sigma=self.sigma_before)
-        before_image = rotate(before_image, self.degree, reshape=False)
+        before_image = rotate(before_image, self.degree)
         shot_image = filters.gaussian(self.camera_data['shot'],
                                       sigma=self.sigma_shot)
-        shot_image = rotate(shot_image, self.degree, reshape=False)
+        shot_image = rotate(shot_image, self.degree)
         mask, edges = self.get_mask(before_image)
         shadow_image = np.where(shot_image < before_image,
                                 # + before_image.std(),
@@ -121,7 +121,7 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
     def save_report(self):
         self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}_full.png')
         fig_w, fig_h = self.MPLQWidget.figure.get_size_inches()
-        new_w = 3.0  # inch
+        new_w = 6.0  # inch
         new_h = fig_h * new_w / fig_w
         self.MPLQWidget.figure.set_size_inches(new_w, new_h)
         self.MPLQWidget.figure.savefig(f'{self.parent.report_path}/{self.settings_key}.png')
