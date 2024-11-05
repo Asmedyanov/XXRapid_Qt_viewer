@@ -28,9 +28,9 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         self.sigma_shot = self.SettingsBox.SigmaShotLine.value
         self.sigma_overlapped = self.SettingsBox.SigmaOverlappedLine.value
         self.mask_threshold = self.SettingsBox.MaskThresholdSettingLine.value
-        self.OverlappedImage = self.get_overlapped_image
+        self.OverlappedImage, self.extent = self.get_overlapped_image
 
-        self.imshow = self.MPLQWidget.ax.imshow(self.OverlappedImage, extent=self.get_extent)
+        self.imshow = self.MPLQWidget.ax.imshow(self.OverlappedImage, extent=self.extent)
 
     @property
     def get_extent(self):
@@ -106,7 +106,17 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
                            edges['left']:edges['right'],
                            edges['top']: edges['bottom']
                            ]
-        return overlapped_image
+        w = edges['right']-edges['left']
+        h = edges['bottom']-edges['top']
+        c_x = 0.5*(edges['right']+edges['left']-before_image.shape[0])
+        c_y = 0.5*(edges['bottom']+edges['top']-before_image.shape[1])
+        extent = [(c_y-0.5*h) * self.dx,
+                  (c_y+0.5*h) * self.dx,
+                  (c_x + 0.5 * w) * self.dx,
+                  (c_x - 0.5 * w) * self.dx]
+
+
+        return overlapped_image, extent
 
     def on_settings_box(self):
         self.dx = 1.0 / self.SettingsBox.ScaleSettingLine.value
@@ -115,8 +125,8 @@ class XXRapidOverlappedCameraQWidget(SettingsMPLQWidget):
         self.sigma_shot = self.SettingsBox.SigmaShotLine.value
         self.sigma_overlapped = self.SettingsBox.SigmaOverlappedLine.value
         self.mask_threshold = self.SettingsBox.MaskThresholdSettingLine.value
-        self.OverlappedImage = self.get_overlapped_image
-        self.imshow.set_extent(self.get_extent)
+        self.OverlappedImage, self.extent = self.get_overlapped_image
+        self.imshow.set_extent(self.extent)
         self.imshow.set_data(self.OverlappedImage)
         super().on_settings_box()
 
